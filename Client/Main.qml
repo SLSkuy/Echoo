@@ -18,24 +18,14 @@ ApplicationWindow{
         anchors.fill: parent
         hoverEnabled: true
         cursorShape: Qt.ArrowCursor
-        property point mouseOffset: Qt.point(0,0)
 
         onPressed:function(mouse) {
-            mouseOffset.x = mouse.x
-            mouseOffset.y = mouse.y
             cursorShape = Qt.ClosedHandCursor
+            window.startSystemMove()
         }
 
         onReleased:{
             cursorShape = Qt.ArrowCursor
-        }
-
-        onPositionChanged:function(mouse) {
-            if(mouse.buttons & Qt.LeftButton)
-            {
-                window.x += mouse.x - mouseOffset.x
-                window.y += mouse.y - mouseOffset.y
-            }
         }
     }
 
@@ -87,7 +77,6 @@ ApplicationWindow{
             Layout.fillWidth: true
         }
 
-        Item { Layout.columnSpan: 2; height: 10 } // 空隙
         Button {
             text: "登录"
             Layout.columnSpan: 2
