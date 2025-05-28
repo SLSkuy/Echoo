@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.31)
+cmake_minimum_required(VERSION 3.16)
 
 project(Echoo-Server LANGUAGES CXX)
 
@@ -14,6 +14,7 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core)
 
 add_executable(Echoo-Server
   main.cpp
+  echooserver.h echooserver.cpp
 )
 target_link_libraries(Echoo-Server Qt${QT_VERSION_MAJOR}::Core)
 
