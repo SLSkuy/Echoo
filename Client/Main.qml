@@ -6,7 +6,7 @@ import QtQuick.Controls
 import QtQuick.Window
 import QtQuick.Layouts
 
-ApplicationWindow{
+Window{
     id: window
     height: 450
     width: 320
@@ -64,23 +64,77 @@ ApplicationWindow{
 
     GridLayout {
         anchors.centerIn: parent
-        columns: 2
+        columns: 1
         rowSpacing: 5
         columnSpacing: 10
 
-        Label { text: "账号:" }
-        TextField { Layout.fillWidth: true }
+        Image{
+            source: ":qrc/1.png"
+            visible: true
+            width: 100
+            height: 100
+        }
 
-        Label { text: "密码:" }
         TextField {
-            echoMode: TextInput.Password
-            Layout.fillWidth: true
+            id: accountLine
+
+            placeholderText: "输入Echoo号"
+            horizontalAlignment: Text.AlignHCenter  // 使placeholder居中
+            verticalAlignment: Text.AlignVCenter
+
+            // 大小设置
+            implicitWidth: 200
+            implicitHeight: 30
+
+            background: Rectangle{
+                border.color: accountLine.focus ? "#21be2b" : "lightgray"
+                color: accountLine.focus ? "lightgray" : "transparent"
+            }
+
+            onTextChanged: loginButton.enabled = (accountLine.text.length > 0 && passwordLine.text.length > 0)
+        }
+
+        TextField {
+            id: passwordLine
+
+            placeholderText: "输入Echoo密码"
+            echoMode: TextInput.Password    // 使输入的密码变为 *
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+
+            // 与accountLine长度和宽度相同
+            implicitHeight: accountLine.implicitHeight
+            implicitWidth: accountLine.implicitWidth
+
+            background: Rectangle{
+                border.color: passwordLine.focus ? "#21be2b" : "lightgray"
+                color: passwordLine.focus ? "lightgray" : "transparent"
+            }
+
+            onTextChanged: loginButton.enabled = (accountLine.text.length > 0 && passwordLine.text.length > 0)
         }
 
         Button {
+            id: loginButton
+
+            enabled: false
             text: "登录"
-            Layout.columnSpan: 2
-            Layout.alignment: Qt.AlignHCenter
+            Layout.topMargin: 50    // 单独间距
+
+            // 与accountLine长度和宽度相同
+            implicitHeight: accountLine.implicitHeight
+            implicitWidth: accountLine.implicitWidth
+
+            background: Rectangle{
+                color: loginButton.enabled === false ? "skyblue" : "#1E90FF"
+                border.color: "transparent"
+            }
+
+            // 测试输出
+            onClicked: {
+                console.log("账号:", accountLine.text)
+                console.log("密码:", passwordLine.text)
+            }
         }
     }
 }
