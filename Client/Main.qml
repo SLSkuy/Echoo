@@ -119,6 +119,18 @@ Window{
             }
 
             onTextChanged: loginButton.enabled = (accountLine.text.length > 0 && passwordLine.text.length > 0)
+
+            Button{
+                id: hidenButton
+                text: "👀"
+
+                anchors.right: parent.right
+                anchors.verticalCenter: parent.verticalCenter
+
+                onClicked: passwordLine.echoMode === TextInput.Password
+                            ? passwordLine.echoMode = TextInput.Normal
+                            : passwordLine.echoMode = TextInput.Password
+            }
         }
 
         Button {
