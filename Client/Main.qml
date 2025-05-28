@@ -69,17 +69,20 @@ Window{
         columnSpacing: 10
 
         Image{
-            source: ":qrc/1.png"
-            visible: true
-            width: 100
-            height: 100
+            source: "qrc:/resources/LoginImage.png"
+            Layout.preferredHeight: 80
+            Layout.preferredWidth: 80
+            Layout.alignment: Qt.AlignHCenter
+            Layout.bottomMargin: 20
         }
 
         TextField {
             id: accountLine
 
+            // 输入框中文本设置
             placeholderText: "输入Echoo号"
-            horizontalAlignment: Text.AlignHCenter  // 使placeholder居中
+            placeholderTextColor: "gray"
+            horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
 
             // 大小设置
@@ -97,10 +100,14 @@ Window{
         TextField {
             id: passwordLine
 
+            // 输入框中文本设置
             placeholderText: "输入Echoo密码"
-            echoMode: TextInput.Password    // 使输入的密码变为 *
+            placeholderTextColor: "gray"
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
+
+            // 使输入的密码变为 *
+            echoMode: TextInput.Password
 
             // 与accountLine长度和宽度相同
             implicitHeight: accountLine.implicitHeight
