@@ -14,7 +14,7 @@ qt_add_qml_module(appEchoo-Client
     URI Echoo-Client
     VERSION 1.0
     QML_FILES
-        Main.qml
+    LoginWindow.qml
     SOURCES main.cpp
     RESOURCES Img.qrc
 )

@@ -1,5 +1,5 @@
 // written by SL-Skuy
-// 登录界面示例
+// Echoo登录界面
 
 import QtQuick
 import QtQuick.Controls
@@ -65,7 +65,6 @@ Window{
     GridLayout {
         anchors.centerIn: parent
         columns: 1
-        rowSpacing: 5
         columnSpacing: 10
 
         Image{
@@ -86,8 +85,8 @@ Window{
             verticalAlignment: Text.AlignVCenter
 
             // 大小设置
-            implicitWidth: 200
-            implicitHeight: 30
+            implicitWidth: 250
+            implicitHeight: 40
 
             background: Rectangle{
                 border.color: accountLine.focus ? "#21be2b" : "lightgray"
