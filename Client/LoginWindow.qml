@@ -123,8 +123,12 @@ Window{
                 id: hidenButton
                 text: "👀"
 
+                implicitHeight: parent.height * 0.7
+                implicitWidth: parent.height * 0.7
+
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
+                anchors.rightMargin: parent.height * 0.15
 
                 onClicked: passwordLine.echoMode === TextInput.Password
                             ? passwordLine.echoMode = TextInput.Normal
