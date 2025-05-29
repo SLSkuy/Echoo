@@ -1,8 +1,19 @@
 #include <QCoreApplication>
 
+#include "echooserver.h"
+
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
+
+
+    EchooServer server;
+    if(!server.StartServer(QHostAddress::Any,8080))
+    {
+        // 服务端启动监听失败
+        // 程序退出
+        return 1;
+    }
 
     // Set up code that uses the Qt event loop here.
     // Call a.quit() or a.exit() to quit the application.
