@@ -14,6 +14,7 @@ EchooClient::EchooClient(QObject* parent) : QObject(parent), _socket(new QTcpSoc
 
 void EchooClient::onConnected()
 {
+    // 与服务端构建连接时触发
     qDebug() << "Server connected";
 
     QJsonObject obj;
@@ -27,6 +28,7 @@ void EchooClient::onConnected()
 
 void EchooClient::onReadyRead()
 {
+    // 获取到服务端发送来的消息时触发
     QByteArray data = _socket->readAll();
     QJsonParseError err;
 
@@ -38,6 +40,7 @@ void EchooClient::onReadyRead()
 
 void EchooClient::onDisconnected()
 {
+    // 与服务端断开连接时触发
     qDebug() << "Disconnected";
 }
 

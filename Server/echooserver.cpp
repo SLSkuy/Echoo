@@ -50,18 +50,20 @@ void EchooServer::incomingConnection(qintptr socketDescriptor)
     socket->setSocketDescriptor(socketDescriptor);
 
     // 从能够读取的socket中读取二进制信息
-    connect(socket,&QTcpSocket::readyRead,this,[socket,this](){
-        QByteArray data = socket->readAll();
+    connect(socket, &QTcpSocket::readyRead, this, [socket, this]() {
+        QByteArray data = socket->readAll(); // 读取字节序列
         this->ProcessMessage(socket, data);
     });
 
     // socket断开连接时处理用户在服务器中残留的信息
-    connect(socket,&QTcpSocket::disconnected,this,[socket,this](){
-        QString userAccountToRemove;   // 需要清除的用户的账号
+    connect(socket, &QTcpSocket::disconnected, this, [socket, this]() {
+        QString userAccountToRemove; // 需要清除的用户的账号
 
-         // 获取账号
-        for(auto it = this->_sockets->begin();it != this->_sockets->end();it++)
-        {
+        qDebug().noquote() << ServerInfo(0) + " User on " + socket->localAddress().toString() + ":"
+                                  + socket->localPort() + " disconnected.";
+
+        // 获取账号
+        for (auto it = this->_sockets->begin(); it != this->_sockets->end(); it++) {
             if(it.value() == socket)
             {
                 userAccountToRemove = it.key();
@@ -83,13 +85,13 @@ void EchooServer::incomingConnection(qintptr socketDescriptor)
 void EchooServer::ProcessMessage(QTcpSocket *socket, const QByteArray &data)
 {
     QJsonParseError err;
-    QJsonDocument doc = QJsonDocument::fromJson(data, &err);
+    QJsonDocument doc = QJsonDocument::fromJson(data, &err); // 捕获JSON字节流并反序列化
     if (err.error != QJsonParseError::NoError) {
         qDebug() << "Invalid JSON received";
         return;
     }
 
-    QJsonObject obj = doc.object();
+    QJsonObject obj = doc.object(); // 转换为JSON结构对象
     QString type = obj["type"].toString();
 
     if (type == "text") {
@@ -100,10 +102,10 @@ void EchooServer::ProcessMessage(QTcpSocket *socket, const QByteArray &data)
 
 void EchooServer::SendResponse(QTcpSocket *socket)
 {
-    QJsonObject obj;
+    QJsonObject obj; // 构建JSON的具体内容
     obj["type"] = "text";
     obj["content"] = "response";
 
-    QJsonDocument doc(obj);
-    socket->write(doc.toJson());
+    QJsonDocument doc(obj);      // 构建JSON内容的文档容器，容纳具体的JSON内容
+    socket->write(doc.toJson()); // 序列化JSON数据进行传输
 }

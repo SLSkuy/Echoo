@@ -15,6 +15,7 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Network)
 add_executable(Echoo-Server
   main.cpp
   echooserver.h echooserver.cpp
+  echoouser.h echoouser.cpp
 )
 target_link_libraries(Echoo-Server
   Qt${QT_VERSION_MAJOR}::Core
