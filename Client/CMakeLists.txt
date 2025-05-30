@@ -4,7 +4,7 @@ project(Echoo-Client VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON) # Globally preventing the fallback behaviour of C++ standard
 
-find_package(Qt6 REQUIRED COMPONENTS Quick)
+find_package(Qt6 REQUIRED COMPONENTS Quick Network)
 
 qt_standard_project_setup(REQUIRES 6.5)
 
@@ -17,6 +17,7 @@ qt_add_qml_module(appEchoo-Client
     LoginWindow.qml
     SOURCES main.cpp
     RESOURCES Img.qrc
+    SOURCES echooclient.h echooclient.cpp
 )
 
 target_compile_features(appEchoo-Client PRIVATE cxx_std_23)
@@ -36,6 +37,7 @@ set_target_properties(appEchoo-Client PROPERTIES
 target_link_libraries(appEchoo-Client
     PRIVATE
         Qt6::Quick
+        Qt6::Network
 )
 
 include(GNUInstallDirs)

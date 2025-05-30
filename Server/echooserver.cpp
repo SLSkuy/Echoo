@@ -7,10 +7,12 @@
 
 #include "echooserver.h"
 
-EchooServer::EchooServer(QObject *parent) : QTcpServer(parent)
+EchooServer::EchooServer(QObject *parent)
+    : QTcpServer(parent)
+    , _sockets(new QMap<QString, QTcpSocket *>)
+    , _accounts(new QMap<QString, QString>)
 {
-    _sockets = new QMap<QString, QTcpSocket*>;    // 账号 -> socket
-    _accounts = new QMap<QString, QString>;     // 账号 -> 密码
+
 }
 
 EchooServer::~EchooServer()
@@ -19,7 +21,7 @@ EchooServer::~EchooServer()
     delete _accounts;
 }
 
-QString EchooServer::serverInfo(int type)
+QString EchooServer::ServerInfo(int type)
 {
     QString prefix = (type == 1) ? "[ERROR" : "[INFO";
     return prefix + " " + QTime::currentTime().toString("HH:mm:ss") + "]";
@@ -27,16 +29,16 @@ QString EchooServer::serverInfo(int type)
 
 bool EchooServer::StartServer(const QHostAddress &address, quint16 port)
 {
-    qDebug().noquote() << serverInfo(0) + " Server is starting...";
+    qDebug().noquote() << ServerInfo(0) + " Server is starting...";
 
     if (!this->listen(address, port))
     {
-        qDebug().noquote() << serverInfo(1) + " Server start failed: " + this->errorString();
-        qDebug().noquote() << serverInfo(1) + " Server will exit later.";
+        qDebug().noquote() << ServerInfo(1) + " Server start failed: " + this->errorString();
+        qDebug().noquote() << ServerInfo(1) + " Server will exit later.";
         return false;
     }
 
-    qDebug().noquote() << serverInfo(0) + " Server listening on port:" << QString::number(port);
+    qDebug().noquote() << ServerInfo(0) + " Server listening on port:" << QString::number(port);
     return true;
 }
 
@@ -49,7 +51,7 @@ void EchooServer::incomingConnection(qintptr socketDescriptor)
     // 从能够读取的socket中读取二进制信息
     connect(socket,&QTcpSocket::readyRead,this,[socket,this](){
         QByteArray data = socket->readAll();
-        this->processMessage(socket, data);
+        this->ProcessMessage(socket, data);
     });
 
     // socket断开连接时处理用户在服务器中残留的信息
@@ -77,7 +79,12 @@ void EchooServer::incomingConnection(qintptr socketDescriptor)
     });
 }
 
-void EchooServer::processMessage(QTcpSocket *socket, const QByteArray &data)
+void EchooServer::ProcessMessage(QTcpSocket *socket, const QByteArray &data)
 {
+    qDebug() << QString::fromUtf8(data);
+}
 
+void EchooServer::SendResponse(QTcpSocket *socket)
+{
+    socket->write("response");
 }

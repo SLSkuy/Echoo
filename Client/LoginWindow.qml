@@ -126,6 +126,10 @@ Window{
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
 
+                implicitHeight: parent.implicitHeight * 0.7
+                implicitWidth: parent.implicitHeight * 0.7
+                anchors.rightMargin: parent.implicitHeight * 0.15
+
                 onClicked: passwordLine.echoMode === TextInput.Password
                             ? passwordLine.echoMode = TextInput.Normal
                             : passwordLine.echoMode = TextInput.Password
