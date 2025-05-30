@@ -2,8 +2,9 @@
 // Echoo服务后端类实现
 // 对头文件中声明的各种方法进行实现
 
-#include <QDebug>
 #include <QTime>
+#include <QJsonDocument>
+#include <QJsonObject>
 
 #include "echooserver.h"
 
@@ -81,10 +82,28 @@ void EchooServer::incomingConnection(qintptr socketDescriptor)
 
 void EchooServer::ProcessMessage(QTcpSocket *socket, const QByteArray &data)
 {
-    qDebug() << QString::fromUtf8(data);
+    QJsonParseError err;
+    QJsonDocument doc = QJsonDocument::fromJson(data, &err);
+    if (err.error != QJsonParseError::NoError) {
+        qDebug() << "Invalid JSON received";
+        return;
+    }
+
+    QJsonObject obj = doc.object();
+    QString type = obj["type"].toString();
+
+    if (type == "text") {
+        qDebug() << obj["content"].toString();
+        SendResponse(socket);
+    }
 }
 
 void EchooServer::SendResponse(QTcpSocket *socket)
 {
-    socket->write("response");
+    QJsonObject obj;
+    obj["type"] = "text";
+    obj["content"] = "response";
+
+    QJsonDocument doc(obj);
+    socket->write(doc.toJson());
 }
