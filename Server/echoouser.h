@@ -9,9 +9,10 @@
 class EchooUser
 {
 public:
-    EchooUser();
+    EchooUser(QString nickName, QString account, QString password);
     ~EchooUser();
-    bool hasFriend(QString account);
+    bool HasFriend(QString account);
+    bool PasswordDetection(QString password);
 
 private:
     QString m_nickName;

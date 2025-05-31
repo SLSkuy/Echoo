@@ -6,8 +6,10 @@ class EchooClient : public QObject
 {
     Q_OBJECT
 public:
-    EchooClient(QObject *parent = nullptr);
+    explicit EchooClient(QObject *parent = nullptr);
     ~EchooClient();
+    Q_INVOKABLE void Login(QString account, QString password); // 暴露给qml使用
+    Q_INVOKABLE void Register(QString nickName, QString account, QString password);
 
 private slots:
     void onConnected();

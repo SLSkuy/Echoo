@@ -6,7 +6,10 @@
 
 #include <QTcpServer>
 #include <QTcpSocket>
+#include <QJsonObject>
 #include <QMap>
+
+#include "echoouser.h"
 
 class EchooServer : public QTcpServer
 {
@@ -14,15 +17,17 @@ class EchooServer : public QTcpServer
 public:
     EchooServer(QObject *parent = nullptr);
     ~EchooServer();
-    bool StartServer(const QHostAddress &address,quint16 port);
+    bool StartServer(const QHostAddress &address, quint16 port);
 
 protected:
     virtual void incomingConnection(qintptr socketDescriptor) override;
 
 private:
     void ProcessMessage(QTcpSocket *socket, const QByteArray &data);
-    void SendResponse(QTcpSocket *socket);
+    void SendResponse(QTcpSocket *socket, bool result, QString &content);
+    void RegisterUser(QTcpSocket *socket, const QJsonObject &content);
+    void LoginDetection(QTcpSocket *socket, const QJsonObject &content);
 
-    QMap<QString, QTcpSocket *> *_sockets; // account -> socket
-    QMap<QString, QString> *_accounts;     // account -> password
+    QMap<QString, QTcpSocket *> *_sockets; // account -> socket 在线的所有用户
+    QMap<QString, EchooUser *> *_accounts; // account -> EchooUser 注册的所有用户
 };

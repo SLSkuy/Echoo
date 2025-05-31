@@ -17,3 +17,9 @@ void Logger::Warning(QString content)
 {
     qDebug().noquote() << "[WARNING" << QTime::currentTime().toString("HH:mm:ss") + "] " + content;
 }
+
+void Logger::Message(QString content, QTcpSocket *socket)
+{
+    qDebug().noquote() << "[Message from" << socket->localPort()
+                       << QTime::currentTime().toString("HH:mm:ss") + "] " + content;
+}

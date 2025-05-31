@@ -4,21 +4,36 @@
 
 #include <QTime>
 #include <QJsonDocument>
-#include <QJsonObject>
 
 #include "echooserver.h"
+#include "echoouser.h"
 #include "logger.h"
 
 EchooServer::EchooServer(QObject *parent)
     : QTcpServer(parent)
     , _sockets(new QMap<QString, QTcpSocket *>)
-    , _accounts(new QMap<QString, QString>)
+    , _accounts(new QMap<QString, EchooUser *>)
 {
-
+    // 测试使用账号
+    // 在线账号
+    EchooUser *user1 = new EchooUser("SL_Skuy", "114514", "114514");
+    _accounts->insert("114514", user1);
+    _sockets->insert("114514", nullptr);
+    // 离线账号
+    EchooUser *user2 = new EchooUser("SL_Skuy", "0721", "0721");
+    _accounts->insert("0721", user2);
 }
 
 EchooServer::~EchooServer()
 {
+    for (auto it = _sockets->begin(); it != _sockets->end(); it++) {
+        // 释放socket指针指向的内存空间
+        delete it.value();
+    }
+    for (auto it = _accounts->begin(); it != _accounts->end(); it++) {
+        // 释放EchooUser指针指向的内存空间
+        delete it.value();
+    }
     delete _sockets;
     delete _accounts;
 }
@@ -66,7 +81,7 @@ void EchooServer::incomingConnection(qintptr socketDescriptor)
         if(!userAccountToRemove.isEmpty())
         {
             this->_sockets->remove(userAccountToRemove);
-            qDebug() << "Account " + userAccountToRemove + " disconnected.\n";
+            Logger::Log("Account " + userAccountToRemove + " disconnected.");
         }
 
         // 释放空间
@@ -74,12 +89,22 @@ void EchooServer::incomingConnection(qintptr socketDescriptor)
     });
 }
 
+void EchooServer::SendResponse(QTcpSocket *socket, bool result, QString &content)
+{
+    QJsonObject obj;
+    obj["success"] = result;
+    obj["content"] = content;
+
+    QJsonDocument doc(obj);      // 构建JSON内容的文档容器，容纳具体的JSON内容
+    socket->write(doc.toJson()); // 序列化JSON数据进行传输
+}
+
 void EchooServer::ProcessMessage(QTcpSocket *socket, const QByteArray &data)
 {
     QJsonParseError err;
     QJsonDocument doc = QJsonDocument::fromJson(data, &err); // 捕获JSON字节流并反序列化
     if (err.error != QJsonParseError::NoError) {
-        qDebug() << "Invalid JSON received";
+        Logger::Error("Invalid JSON received");
         return;
     }
 
@@ -87,17 +112,81 @@ void EchooServer::ProcessMessage(QTcpSocket *socket, const QByteArray &data)
     QString type = obj["type"].toString();
 
     if (type == "text") {
+        // 测试收取信息
         qDebug() << obj["content"].toString();
-        SendResponse(socket);
+    } else if (type == "register") {
+        // 用户注册
+        RegisterUser(socket, obj);
+    } else if (type == "login") {
+        // 登录检测
+        LoginDetection(socket, obj);
     }
 }
 
-void EchooServer::SendResponse(QTcpSocket *socket)
+void EchooServer::RegisterUser(QTcpSocket *socket, const QJsonObject &content)
 {
-    QJsonObject obj; // 构建JSON的具体内容
-    obj["type"] = "text";
-    obj["content"] = "response";
+    QString nickName = content["nickName"].toString();
+    QString account = content["account"].toString();
+    QString password = content["password"].toString();
 
-    QJsonDocument doc(obj);      // 构建JSON内容的文档容器，容纳具体的JSON内容
-    socket->write(doc.toJson()); // 序列化JSON数据进行传输
+    QJsonObject obj; // 客户端返回Json对象
+    obj["type"] = "register";
+    if (_accounts->contains(account)) {
+        // 创建的用户已存在
+        // 返回创建失败信息
+        QString str = "Account " + account + " has already registered.";
+        SendResponse(socket, false, str);
+
+        Logger::Warning("Account " + account + " has already registered.");
+        return;
+    }
+
+    // 记录用户信息
+    EchooUser *newUser = new EchooUser(nickName, account, password);
+    _accounts->insert(account, newUser);
+
+    // 返回成功注册成功信息
+    QString str = account + " register successfully, please log in.";
+    SendResponse(socket, true, str);
+    Logger::Log("Account " + account + " register successfully.");
+}
+
+void EchooServer::LoginDetection(QTcpSocket *socket, const QJsonObject &content)
+{
+    QString account = content["account"].toString();
+    QString password = content["password"].toString();
+
+    QJsonObject obj;
+    obj["type"] = "login";
+    if (!_accounts->contains(account)) {
+        // 不存在对应账号的用户
+        QString str = "Account " + account + " is not exist, please register or check input account.";
+        SendResponse(socket, false, str);
+
+        Logger::Warning("No such account " + account + " exist.");
+        return;
+    }
+
+    if (!(*_accounts)[account]->PasswordDetection(password)) {
+        // 密码错误
+        QString str = "Error password.";
+        SendResponse(socket, false, str);
+
+        Logger::Warning("error password");
+        return;
+    }
+
+    if (_sockets->contains(account)) {
+        // 当前账号已经登录
+        QString str = "Account " + account + " has logged in, please don't log again.";
+        SendResponse(socket, false, str);
+
+        Logger::Warning("Account " + account + " has logged in.");
+        return;
+    }
+
+    _sockets->insert(account, socket); // 记录账号在线
+    QString str = "login successfully.";
+    SendResponse(socket, true, str);
+    Logger::Log("Account " + account + " login successfully.");
 }
