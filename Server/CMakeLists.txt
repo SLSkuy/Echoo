@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.31)
+cmake_minimum_required(VERSION 3.16)
 
 project(Echoo-Server LANGUAGES CXX)
 
@@ -9,13 +9,19 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Network)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Network)
 
 add_executable(Echoo-Server
   main.cpp
+  echooserver.h echooserver.cpp
+  echoouser.h echoouser.cpp
+  logger.h logger.cpp
 )
-target_link_libraries(Echoo-Server Qt${QT_VERSION_MAJOR}::Core)
+target_link_libraries(Echoo-Server
+  Qt${QT_VERSION_MAJOR}::Core
+  Qt${QT_VERSION_MAJOR}::Network
+)
 
 include(GNUInstallDirs)
 install(TARGETS Echoo-Server
