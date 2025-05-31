@@ -17,5 +17,5 @@ private:
     QString m_nickName;
     QString m_account;
     QString m_password;
-    QList<QString> m_friends; // friend's account
+    QList<QString> m_friends; // friend's accounts
 };

@@ -14,10 +14,11 @@ qt_add_qml_module(appEchoo-Client
     URI Echoo-Client
     VERSION 1.0
     QML_FILES
-    LoginWindow.qml
-    SOURCES main.cpp
-    RESOURCES Img.qrc
-    SOURCES echooclient.h echooclient.cpp
+        LoginWindow.qml
+    SOURCES
+        main.cpp echooclient.h echooclient.cpp
+    RESOURCES
+        Img.qrc
 )
 
 target_compile_features(appEchoo-Client PRIVATE cxx_std_23)

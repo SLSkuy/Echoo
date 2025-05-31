@@ -20,7 +20,6 @@ protected:
     virtual void incomingConnection(qintptr socketDescriptor) override;
 
 private:
-    QString ServerInfo(int type);
     void ProcessMessage(QTcpSocket *socket, const QByteArray &data);
     void SendResponse(QTcpSocket *socket);
 

@@ -7,6 +7,7 @@
 #include <QJsonObject>
 
 #include "echooserver.h"
+#include "logger.h"
 
 EchooServer::EchooServer(QObject *parent)
     : QTcpServer(parent)
@@ -22,24 +23,18 @@ EchooServer::~EchooServer()
     delete _accounts;
 }
 
-QString EchooServer::ServerInfo(int type)
-{
-    QString prefix = (type == 1) ? "[ERROR" : "[INFO";
-    return prefix + " " + QTime::currentTime().toString("HH:mm:ss") + "]";
-}
-
 bool EchooServer::StartServer(const QHostAddress &address, quint16 port)
 {
-    qDebug().noquote() << ServerInfo(0) + " Server is starting...";
+    Logger::Log("Server is starting...");
 
     if (!this->listen(address, port))
     {
-        qDebug().noquote() << ServerInfo(1) + " Server start failed: " + this->errorString();
-        qDebug().noquote() << ServerInfo(1) + " Server will exit later.";
+        Logger::Error("Server start failed: " + this->errorString());
+        Logger::Error("Server will exit later.");
         return false;
     }
 
-    qDebug().noquote() << ServerInfo(0) + " Server listening on port:" << QString::number(port);
+    Logger::Log("Server listening on port: " + QString::number(port));
     return true;
 }
 
@@ -58,9 +53,6 @@ void EchooServer::incomingConnection(qintptr socketDescriptor)
     // socket断开连接时处理用户在服务器中残留的信息
     connect(socket, &QTcpSocket::disconnected, this, [socket, this]() {
         QString userAccountToRemove; // 需要清除的用户的账号
-
-        qDebug().noquote() << ServerInfo(0) + " User on " + socket->localAddress().toString() + ":"
-                                  + socket->localPort() + " disconnected.";
 
         // 获取账号
         for (auto it = this->_sockets->begin(); it != this->_sockets->end(); it++) {
