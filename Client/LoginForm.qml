@@ -59,11 +59,7 @@ GridLayout {
             color: passwordLine.focus ? "lightgray" : "transparent"
         }
 
-        onTextChanged:
-            {
-                loginButton.enabled = (accountLine.text.length > 0 && passwordLine.text.length > 0)
-                regButton.enabled = (accountLine.text.length > 0 && passwordLine.text.length > 0)
-            }
+        onTextChanged: loginButton.enabled = (accountLine.text.length > 0 && passwordLine.text.length > 0)
 
         Button{
             id: hidenButton
@@ -103,29 +99,6 @@ GridLayout {
             console.log("账号:", accountLine.text)
             console.log("密码:", passwordLine.text)
             EchooClient.Login(accountLine.text,passwordLine.text)
-        }
-    }
-
-    Button {
-        id: regButton
-
-        enabled: false
-        text: "注册"
-
-        // 与accountLine长度和宽度相同
-        implicitHeight: accountLine.implicitHeight
-        implicitWidth: accountLine.implicitWidth
-
-        background: Rectangle{
-            color: regButton.enabled === false ? "skyblue" : "#1E90FF"
-            border.color: "transparent"
-        }
-
-        // 测试输出
-        onClicked: {
-            console.log("账号:", accountLine.text)
-            console.log("密码:", passwordLine.text)
-            EchooClient.Register("SL_Skuy",accountLine.text,passwordLine.text)
         }
     }
 }
