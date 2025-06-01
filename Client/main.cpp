@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
         &app,
         []() { QCoreApplication::exit(-1); },
         Qt::QueuedConnection);
-    engine.loadFromModule("Echoo-Client", "LoginWindow");
+    engine.loadFromModule("Echoo-Client", "StartWindow");
 
     EchooClient client;
     engine.rootContext()->setContextProperty("EchooClient", &client);

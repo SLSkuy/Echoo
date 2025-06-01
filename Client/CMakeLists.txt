@@ -14,7 +14,7 @@ qt_add_qml_module(appEchoo-Client
     URI Echoo-Client
     VERSION 1.0
     QML_FILES
-        LoginWindow.qml
+        StartWindow.qml LoginForm.qml TitleBar.qml RegForm.qml
     SOURCES
         main.cpp echooclient.h echooclient.cpp
     RESOURCES
