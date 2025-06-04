@@ -6,6 +6,8 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 GridLayout {
+    signal loginSuccess(bool result)
+
     columns: 1
     columnSpacing: 10
 
@@ -99,6 +101,9 @@ GridLayout {
             console.log("账号:", accountLine.text)
             console.log("密码:", passwordLine.text)
             EchooClient.Login(accountLine.text,passwordLine.text)
+
+            // 测试信号发出
+            loginSuccess(true)
         }
     }
 }

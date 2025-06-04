@@ -42,6 +42,16 @@ Window{
         LoginForm{
             id: loginWindow
             anchors.centerIn: parent
+
+            onLoginSuccess:(result) => {
+                var userWindow = Qt.createComponent("ToolBar.qml")
+                if(userWindow.status === Component.Ready && result)
+                {
+                    var user = userWindow.createObject()
+                    user.show()
+                    startWindow.close()
+                }
+            }
         }
 
         RegForm{
