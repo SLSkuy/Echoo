@@ -27,6 +27,7 @@ private:
     void SendResponse(QTcpSocket *socket, bool result, QString &content);
     void RegisterUser(QTcpSocket *socket, const QJsonObject &content);
     void LoginDetection(QTcpSocket *socket, const QJsonObject &content);
+    void PrivateMessageForwarding(QTcpSocket *socket, const QJsonObject &content);
 
     QMap<QString, QTcpSocket *> *_sockets; // account -> socket 在线的所有用户
     QMap<QString, EchooUser *> *_accounts; // account -> EchooUser 注册的所有用户

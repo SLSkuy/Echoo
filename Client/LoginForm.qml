@@ -100,8 +100,8 @@ GridLayout {
         onClicked: {
             console.log("账号:", accountLine.text)
             console.log("密码:", passwordLine.text)
-            EchooClient.Login(accountLine.text,passwordLine.text)
-
+            // EchooClient.Login(accountLine.text,passwordLine.text)
+            EchooClient.SendPrivateMessage("114514","114514")
             // 测试信号发出
             loginSuccess(true)
         }

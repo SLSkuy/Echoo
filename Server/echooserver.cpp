@@ -120,6 +120,9 @@ void EchooServer::ProcessMessage(QTcpSocket *socket, const QByteArray &data)
     } else if (type == "login") {
         // 登录检测
         LoginDetection(socket, obj);
+    } else if (type == "privateMsg") {
+        // 消息转发
+        PrivateMessageForwarding(socket, obj);
     }
 }
 
@@ -189,4 +192,21 @@ void EchooServer::LoginDetection(QTcpSocket *socket, const QJsonObject &content)
     QString str = "login successfully.";
     SendResponse(socket, true, str);
     Logger::Log("Account " + account + " login successfully.");
+}
+
+void EchooServer::PrivateMessageForwarding(QTcpSocket *socket, const QJsonObject &content)
+{
+    // 获取信息发送对象
+    QString to = content["to"].toString();
+
+    QJsonDocument doc(content);
+    for(auto it = _sockets->begin();it != _sockets->end();it++){
+        if(it.key() == to && it.value() != nullptr){
+            it.value()->write(doc.toJson());
+            return;
+        }
+    }
+
+    QString response = "The user does not exist or is not online.";
+    SendResponse(socket,false,response);
 }

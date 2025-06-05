@@ -63,3 +63,15 @@ void EchooClient::Register(QString nickName, QString account, QString password)
     QJsonDocument doc(obj);
     _socket->write(doc.toJson());
 }
+
+void EchooClient::SendPrivateMessage(QString content, QString toAccount)
+{
+    QJsonObject obj;
+    obj["type"] = "privateMsg";
+    obj["from"] = this->m_account;
+    obj["to"] = toAccount;
+    obj["content"] = content;
+
+    QJsonDocument doc(obj);
+    _socket->write(doc.toJson());
+}
