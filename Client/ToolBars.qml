@@ -8,7 +8,7 @@ Window{
     height: 800
     width: 60
     visible: true
-    // flags: Qt.FramelessWindowHint | Qt.Window
+    flags: Qt.FramelessWindowHint | Qt.Window
     Rectangle{
         id: toolbar
         height:800; width: 60
