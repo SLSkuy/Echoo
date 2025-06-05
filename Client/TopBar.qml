@@ -6,7 +6,7 @@ import QtQuick.Window
 //titlebar
 Rectangle {
         id: titleBar
-        width: parent.width
+        // width: parent.width
         height: 30
         color: "transparent"  // 标题栏背景颜色
 

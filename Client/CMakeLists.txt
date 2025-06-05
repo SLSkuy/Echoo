@@ -14,13 +14,14 @@ qt_add_qml_module(appEchoo-Client
     URI Echoo-Client
     VERSION 1.0
     QML_FILES
-        StartWindow.qml LoginForm.qml TitleBar.qml RegForm.qml ToolBar.qml
+    StartWindow.qml LoginForm.qml TitleBar.qml RegForm.qml ToolBars.qml
     SOURCES
         main.cpp echooclient.h echooclient.cpp
     RESOURCES
         Img.qrc
         QML_FILES ChatWidget.qml
         QML_FILES TopBar.qml
+        QML_FILES Mainpage_titleBar.qml
 )
 
 target_compile_features(appEchoo-Client PRIVATE cxx_std_23)

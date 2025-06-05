@@ -44,7 +44,7 @@ Window{
             anchors.centerIn: parent
 
             onLoginSuccess:(result) => {
-                var userWindow = Qt.createComponent("ToolBar.qml")
+                var userWindow = Qt.createComponent("ToolBars.qml")
                 if(userWindow.status === Component.Ready && result)
                 {
                     var user = userWindow.createObject()
