@@ -1,4 +1,4 @@
-// writen by SL_Skuy
+// written by SL_Skuy
 // 登录界面模块
 
 import QtQuick
@@ -101,7 +101,6 @@ GridLayout {
             console.log("账号:", accountLine.text)
             console.log("密码:", passwordLine.text)
             EchooClient.Login(accountLine.text,passwordLine.text)
-
             // 测试信号发出
             loginSuccess(true)
         }

@@ -3,15 +3,13 @@ import QtQuick.Layouts
 import QtQuick.Controls
 import QtQuick.Window
 
-Window{
-    id: startWindow
-    height: 800
-    width: 60
-    visible: true
-    // flags: Qt.FramelessWindowHint | Qt.Window
+FrameLessWindow{
+    height: toolbar.implicitHeight
+    width: toolbar.implicitWidth
+
     Rectangle{
         id: toolbar
-        height:800; width: 60
+        implicitHeight:800; implicitWidth: 60
         visible: true
         color: "#D3D3D3"
 
