@@ -2,16 +2,19 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-Window {
-    id: window
-    width: 700
-    height: aaa.implicitHeight
-    visible: true
-    flags: Qt.FramelessWindowHint | Qt.Window
+
+
+// Window {
+
+//     id: window
+//     // width: 700
+//     // height: aaa.implicitHeight
+//     visible: true
+//     flags: Qt.FramelessWindowHint | Qt.Window
 
     ColumnLayout{
         id:aaa
-        anchors.fill: parent
+        // anchors.fill: parent
         spacing: 5
 
         RowLayout{
@@ -105,4 +108,4 @@ Window {
             }
         }
     }
-}
+// }

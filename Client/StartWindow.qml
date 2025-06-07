@@ -23,9 +23,10 @@ FrameLessWindow{
             anchors.centerIn: parent
 
             onLoginSuccess:(result) => {
-                var userWindow = Qt.createComponent("ToolBars.qml")
+                var userWindow = Qt.createComponent("Messagetotal.qml")
                 if(userWindow.status === Component.Ready && result)
                 {
+                    console.log("aa")
                     var user = userWindow.createObject()
                     user.show()
                     startWindow.close()
