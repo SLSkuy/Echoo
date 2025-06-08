@@ -4,11 +4,10 @@
 #pragma once
 
 #include <QTcpServer>
-#include <QTcpSocket>
-#include <QJsonObject>
 #include <QMap>
 
 #include "accountmanager.h"
+#include "messagemanager.h"
 
 class EchooServer : public QTcpServer
 {
@@ -16,15 +15,12 @@ class EchooServer : public QTcpServer
 public:
     EchooServer(QObject *parent = nullptr);
     ~EchooServer();
-    static void SendResponse(QTcpSocket *socket, bool result, QString &content);
     bool StartServer(const QHostAddress &address, quint16 port);
 
 protected:
     virtual void incomingConnection(qintptr socketDescriptor) override;
 
 private:
-    void ProcessMessage(QTcpSocket *socket, const QByteArray &data);
-    void PrivateMessageForwarding(QTcpSocket *socket, const QJsonObject &content);
-
     AccountManager *_accounts;
+    MessageManager *_msgManager;
 };

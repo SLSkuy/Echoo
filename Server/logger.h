@@ -1,3 +1,6 @@
+// Logger类声明
+// 该类用于格式化显示服务器信息
+
 #pragma once
 
 #include <QString>

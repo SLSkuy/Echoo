@@ -1,8 +1,7 @@
 // Echoo 账号管理模块
-// 包含多种对账号管理发放
+// 包含多种对账号管理方法
 
-#ifndef ACCOUNTMANAGER_H
-#define ACCOUNTMANAGER_H
+#pragma once
 
 #include <QTcpSocket>
 #include <QJsonObject>
@@ -24,5 +23,3 @@ private:
     QMap<QString, QTcpSocket *> *_sockets; // account -> socket 在线的所有用户
     QMap<QString, EchooUser *> *_accounts; // account -> EchooUser 注册的所有用户
 };
-
-#endif // ACCOUNTMANAGER_H

@@ -1,7 +1,7 @@
 // Echoo 账号管理模块
 
 #include "accountmanager.h"
-#include "echooserver.h"
+#include "messagemanager.h"
 #include "logger.h"
 
 AccountManager::AccountManager()
@@ -42,7 +42,7 @@ void AccountManager::RegisterUser(QTcpSocket *socket, const QJsonObject &content
         // 创建的用户已存在
         // 返回创建失败信息
         QString str = "Account " + account + " has already registered.";
-        EchooServer::SendResponse(socket, false, str);
+        MessageManager::SendResponse(socket, false, str);
 
         Logger::Warning("Account " + account + " has already registered.");
         return;
@@ -54,7 +54,7 @@ void AccountManager::RegisterUser(QTcpSocket *socket, const QJsonObject &content
 
     // 返回成功注册成功信息
     QString str = account + " register successfully, please log in.";
-    EchooServer::SendResponse(socket, true, str);
+    MessageManager::SendResponse(socket, true, str);
     Logger::Log("Account " + account + " register successfully.");
 }
 
@@ -68,7 +68,7 @@ void AccountManager::LoginDetection(QTcpSocket *socket, const QJsonObject &conte
     if (!_accounts->contains(account)) {
         // 不存在对应账号的用户
         QString str = "Account " + account + " is not exist, please register or check input account.";
-        EchooServer::SendResponse(socket, false, str);
+        MessageManager::SendResponse(socket, false, str);
 
         Logger::Warning("No such account " + account + " exist.");
         return;
@@ -77,7 +77,7 @@ void AccountManager::LoginDetection(QTcpSocket *socket, const QJsonObject &conte
     if (!(*_accounts)[account]->PasswordDetection(password)) {
         // 密码错误
         QString str = "Error password.";
-        EchooServer::SendResponse(socket, false, str);
+        MessageManager::SendResponse(socket, false, str);
 
         Logger::Warning("error password");
         return;
@@ -86,7 +86,7 @@ void AccountManager::LoginDetection(QTcpSocket *socket, const QJsonObject &conte
     if (_sockets->contains(account)) {
         // 当前账号已经登录
         QString str = "Account " + account + " has logged in, please don't log again.";
-        EchooServer::SendResponse(socket, false, str);
+        MessageManager::SendResponse(socket, false, str);
 
         Logger::Warning("Account " + account + " has logged in.");
         return;
@@ -94,7 +94,7 @@ void AccountManager::LoginDetection(QTcpSocket *socket, const QJsonObject &conte
 
     _sockets->insert(account, socket); // 记录账号在线
     QString str = "login successfully.";
-    EchooServer::SendResponse(socket, true, str);
+    MessageManager::SendResponse(socket, true, str);
     Logger::Log("Account " + account + " login successfully.");
 }
 
