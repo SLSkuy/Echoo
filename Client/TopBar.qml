@@ -5,9 +5,10 @@ import QtQuick.Window
 
 //titlebar
 Rectangle {
+
         id: titleBar
-        // width: parent.width
-        height: 30
+        width: parent.width
+        height: 40
         color: "transparent"  // 标题栏背景颜色
 
         RowLayout {
@@ -17,7 +18,7 @@ Rectangle {
             // 窗口标题
             Text {
                 id:widgettext
-                text: "lsy"
+                text: "name"
                 color: "black"
                 font.pixelSize: 14
                 Layout.leftMargin: 10
