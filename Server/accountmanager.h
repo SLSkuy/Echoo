@@ -1,0 +1,28 @@
+// Echoo 账号管理模块
+// 包含多种对账号管理发放
+
+#ifndef ACCOUNTMANAGER_H
+#define ACCOUNTMANAGER_H
+
+#include <QTcpSocket>
+#include <QJsonObject>
+#include <QMap>
+
+#include "echoouser.h"
+
+class AccountManager
+{
+public:
+    AccountManager();
+    ~AccountManager();
+    void RegisterUser(QTcpSocket *socket, const QJsonObject &content);
+    void LoginDetection(QTcpSocket *socket, const QJsonObject &content);
+    void ExitConnection(QTcpSocket *socket);
+    QTcpSocket *GetSocket(QString account);
+
+private:
+    QMap<QString, QTcpSocket *> *_sockets; // account -> socket 在线的所有用户
+    QMap<QString, EchooUser *> *_accounts; // account -> EchooUser 注册的所有用户
+};
+
+#endif // ACCOUNTMANAGER_H
