@@ -22,3 +22,12 @@ bool EchooUser::PasswordDetection(QString password)
     // 密码检测
     return password == m_password;
 }
+
+QJsonObject EchooUser::GetUserInfo()
+{
+    // 返回各种账号的信息用于客户端的初始化
+    QJsonObject obj;
+    obj["nickname"] = m_nickName;
+
+    return obj;
+}

@@ -17,7 +17,8 @@ public:
     void RegisterUser(QTcpSocket *socket, const QJsonObject &content);
     void LoginDetection(QTcpSocket *socket, const QJsonObject &content);
     void ExitConnection(QTcpSocket *socket);
-    QTcpSocket *GetSocket(QString account);
+    void ResponseInfo(QTcpSocket *socket, const QJsonObject &content);
+    QTcpSocket *GetSocket(QString &account);
 
 private:
     QMap<QString, QTcpSocket *> *_sockets; // account -> socket 在线的所有用户

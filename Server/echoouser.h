@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <QJsonObject>
 #include <QString>
 #include <QList>
 
@@ -13,6 +14,7 @@ public:
     ~EchooUser();
     bool HasFriend(QString account);
     bool PasswordDetection(QString password);
+    QJsonObject GetUserInfo();
 
 private:
     QString m_nickName;

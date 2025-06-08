@@ -35,6 +35,8 @@ void MessageManager::ProcessMessage(QTcpSocket *socket, const QByteArray &data)
     } else if (type == "privateMsg") {
         // 消息转发
         PrivateMessageForwarding(socket, obj);
+    } else if (type == "accountinfo") {
+        _accounts->ResponseInfo(socket, obj);
     }
 }
 

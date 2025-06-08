@@ -1,5 +1,7 @@
 // Echoo 账号管理模块
 
+#include <QJsonDocument>
+
 #include "accountmanager.h"
 #include "messagemanager.h"
 #include "logger.h"
@@ -103,13 +105,7 @@ void AccountManager::ExitConnection(QTcpSocket *socket)
     QString userAccountToRemove; // 需要清除的用户的账号
 
     // 获取账号
-    for (auto it = this->_sockets->begin(); it != this->_sockets->end(); it++) {
-        if(it.value() == socket)
-        {
-            userAccountToRemove = it.key();
-            break;
-        }
-    }
+    userAccountToRemove = _sockets->key(socket);
 
     if(!userAccountToRemove.isEmpty())
     {
@@ -121,12 +117,23 @@ void AccountManager::ExitConnection(QTcpSocket *socket)
     socket->deleteLater();
 }
 
-QTcpSocket *AccountManager::GetSocket(QString account)
+QTcpSocket *AccountManager::GetSocket(QString &account)
 {
-    for(auto it = _sockets->begin();it != _sockets->end();it++){
-        if(it.key() == account && it.value() != nullptr){
-            return it.value();
-        }
+    if(_sockets->contains(account))
+    {
+        return (*_sockets)[account];
     }
     return nullptr;
+}
+
+void AccountManager::ResponseInfo(QTcpSocket *socket,const QJsonObject &content)
+{
+    // 回应客户端账号的各种信息
+    QString account = content["account"].toString();
+
+    // 委托获取账号信息
+    QJsonObject obj = (*_accounts)[account]->GetUserInfo();
+    QJsonDocument doc(obj);
+
+    socket->write(doc.toJson());
 }
