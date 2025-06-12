@@ -21,7 +21,11 @@ qt_add_qml_module(appEchoo-Client
         Img.qrc
         QML_FILES ChatWidget.qml
         QML_FILES TopBar.qml
-        QML_FILES Mainpage_titleBar.qml
+        QML_FILES MainpagetitleBar.qml
+        QML_FILES FrameLessWindow.qml
+        QML_FILES Messagetotal.qml
+        QML_FILES MessageItem.qml
+        QML_FILES EmojiPopup.qml
 )
 
 target_compile_features(appEchoo-Client PRIVATE cxx_std_23)

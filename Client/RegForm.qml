@@ -1,4 +1,4 @@
-// writen by SL_Skuy
+// written by SL_Skuy
 // 注册界面模块
 
 import QtQuick

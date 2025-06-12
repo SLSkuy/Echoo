@@ -3,17 +3,26 @@ import QtQuick.Layouts
 import QtQuick.Controls
 import QtQuick.Window
 
-Window{
-    id: startWindow
-    height: 800
-    width: 60
-    visible: true
-    // flags: Qt.FramelessWindowHint | Qt.Window
+// FrameLessWindow{
+//     // height: toolbar.implicitHeight
+//     // width: toolbar.implicitWidth
+
     Rectangle{
         id: toolbar
-        height:800; width: 60
+        implicitHeight:800; implicitWidth: 60
         visible: true
         color: "#D3D3D3"
+
+        property alias app: app
+        property alias headPortrait: headPortrait
+        property alias collection: collection
+        property alias more: more
+        property alias dynamic: dynamic
+        property alias file: file
+        property alias friend: friend
+        property alias email: email
+        property alias manage: manage
+        property alias message: message
 
         ColumnLayout{
             spacing: 10
@@ -46,12 +55,13 @@ Window{
 
                 Image {
                     id: myself
-                    source: "file"
+                    // source: "file"
                 }
             }
             Button{
                 id: message
                 text: "📳"
+                property alias texttext: texttext
                 Layout.preferredHeight:40
                 Layout.preferredWidth:40
                 Layout.leftMargin:10
@@ -61,6 +71,7 @@ Window{
                     color: message.hovered ? "grey" : "transparent"
                 }
                 contentItem: Text {
+                                id: texttext
                                 text: parent.text
                                 color: parent.focus ? "#007FFF" : "black"  // 悬停时文本变为蓝色
                                 horizontalAlignment: Text.AlignHCenter
@@ -204,4 +215,4 @@ Window{
             }
         }
     }
-}
+// }

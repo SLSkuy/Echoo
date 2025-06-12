@@ -11,6 +11,7 @@ Window {
     title: "QQ聊天窗口"
     flags: Qt.FramelessWindowHint | Qt.Window
 
+
     //拖动全局窗口
     MouseArea{
         id: dragArea
@@ -28,22 +29,32 @@ Window {
         }
     }
 
+
     // 主布局
     Column {
+        id:column
         anchors.fill: parent
+
         //titlebar
-        TopBar{}
+        TopBar{
+            id:topbar
+
+        }
         // 顶部工具栏
         ToolBar {
+            id:toolbar
+            // anchors.topMargin:10
             background: Rectangle {
                         color: "white"  // 设置背景颜色为白色
                     }
             anchors.right:parent.right
-            anchors.bottomMargin:100
+            // anchors.bottomMargin:80
             RowLayout {
 
                 anchors.fill: parent
-
+                Item {
+                    Layout.fillWidth: true  // 占位符，将按钮推到右侧
+                }
                 // 发起群聊按钮
                 Button {
                     // text:"add"
@@ -99,7 +110,7 @@ Window {
         // 聊天区域
         Rectangle {
             width: parent.width
-            height: parent.height - 100 // 减去顶部工具栏的高度
+            height: parent.height - 120 // 减去顶部工具栏的高度
 
             Column {
                 anchors.fill: parent
@@ -145,6 +156,7 @@ Window {
                                 onClicked: {
                                     // 实现表情选择的逻辑
                                     console.log("表情");
+                                    emojiPopup.open()
                                 }
                                 background: Rectangle {
                                        color: "transparent"  // 设置背景颜色为透明
@@ -160,6 +172,20 @@ Window {
                                 }
                             }
 
+
+                            // 导入 EmojiPopup
+
+                                   EmojiPopup {
+
+                                       id: emojiPopup
+
+                                       onEmojiSelected: {
+
+                                           messageInput.text += emoji  // 将选中的表情添加到输入框
+
+                                       }
+
+                                   }
 
                             // 更多按钮
                             Button {

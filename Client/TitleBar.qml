@@ -1,4 +1,4 @@
-// writen by SL_Skuy
+// written by SL_Skuy
 // 标题栏模块
 
 import QtQuick
