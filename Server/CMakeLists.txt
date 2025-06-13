@@ -19,6 +19,8 @@ add_executable(Echoo-Server
   logger.h logger.cpp
   accountmanager.cpp accountmanager.h
   messagemanager.h messagemanager.cpp
+  groupmanager.h groupmanager.cpp
+  echoogroup.h echoogroup.cpp
 )
 target_link_libraries(Echoo-Server
   Qt${QT_VERSION_MAJOR}::Core

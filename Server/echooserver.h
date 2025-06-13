@@ -8,6 +8,7 @@
 
 #include "accountmanager.h"
 #include "messagemanager.h"
+#include "groupmanager.h"
 
 class EchooServer : public QTcpServer
 {
@@ -21,6 +22,7 @@ protected:
     virtual void incomingConnection(qintptr socketDescriptor) override;
 
 private:
-    AccountManager *_accounts;
+    AccountManager *_am;
+    GroupManager *_gm;
     MessageManager *_msgManager;
 };

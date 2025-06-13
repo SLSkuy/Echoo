@@ -10,13 +10,15 @@
 
 EchooServer::EchooServer(QObject *parent)
     : QTcpServer(parent)
-    , _accounts(new AccountManager)
-    ,_msgManager(new MessageManager(_accounts))
+    , _am(new AccountManager)
+    , _gm(new GroupManager)
+    , _msgManager(new MessageManager(_am, _gm))
 {}
 
 EchooServer::~EchooServer()
 {
-    delete _accounts;
+    delete _am;
+    delete _gm;
     delete _msgManager;
 }
 
@@ -50,6 +52,6 @@ void EchooServer::incomingConnection(qintptr socketDescriptor)
     // socket断开连接时处理用户在服务器中残留的信息
     connect(socket, &QTcpSocket::disconnected, this, [socket, this]() {
         // 调用AccountManager进行账号离线操作
-        _accounts->ExitConnection(socket);
+        _am->ExitConnection(socket);
     });
 }

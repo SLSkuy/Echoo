@@ -1,15 +1,14 @@
 // MessageManager类实现
 // 该类作为一个服务类来使用
 // 处理客户端传入的各类数据并根据规定的传输文件格式进行相应的转发等操作
+// 处理私聊与群聊信息
 
 #include <QJsonDocument>
 
 #include "messagemanager.h"
 #include "logger.h"
 
-MessageManager::MessageManager(AccountManager *am)
-    : _accounts(am)
-{}
+MessageManager::MessageManager(AccountManager *am, GroupManager *gm) : _accounts(am), _groups(gm) {}
 
 void MessageManager::ProcessMessage(QTcpSocket *socket, const QByteArray &data)
 {
@@ -36,6 +35,7 @@ void MessageManager::ProcessMessage(QTcpSocket *socket, const QByteArray &data)
         // 消息转发
         PrivateMessageForwarding(socket, obj);
     } else if (type == "accountinfo") {
+        // 请求回应用户账号数据
         _accounts->ResponseInfo(socket, obj);
     }
 }

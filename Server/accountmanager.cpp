@@ -34,6 +34,7 @@ AccountManager::~AccountManager()
 
 void AccountManager::RegisterUser(QTcpSocket *socket, const QJsonObject &content)
 {
+    // 用户注册
     QString nickName = content["nickName"].toString();
     QString account = content["account"].toString();
     QString password = content["password"].toString();
@@ -62,6 +63,7 @@ void AccountManager::RegisterUser(QTcpSocket *socket, const QJsonObject &content
 
 void AccountManager::LoginDetection(QTcpSocket *socket, const QJsonObject &content)
 {
+    // 账号登录
     QString account = content["account"].toString();
     QString password = content["password"].toString();
 
@@ -102,6 +104,7 @@ void AccountManager::LoginDetection(QTcpSocket *socket, const QJsonObject &conte
 
 void AccountManager::ExitConnection(QTcpSocket *socket)
 {
+    // 断开连接
     QString userAccountToRemove; // 需要清除的用户的账号
 
     // 获取账号
@@ -119,6 +122,7 @@ void AccountManager::ExitConnection(QTcpSocket *socket)
 
 QTcpSocket *AccountManager::GetSocket(QString &account)
 {
+    // 返回Socket用于消息转发
     if(_sockets->contains(account))
     {
         return (*_sockets)[account];

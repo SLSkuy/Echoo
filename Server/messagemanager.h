@@ -8,16 +8,20 @@
 #include <QJsonObject>
 
 #include "accountmanager.h"
+#include "groupmanager.h"
 
 class MessageManager
 {
 public:
-    MessageManager(AccountManager *am);
+    MessageManager(AccountManager *am, GroupManager *gm);
     static void SendResponse(QTcpSocket *socket, bool result, QString &content);
     void PrivateMessageForwarding(QTcpSocket *socket, const QJsonObject &content);
     void ProcessMessage(QTcpSocket *socket, const QByteArray &data);
 
 private:
+    // 访问指针
     // 用于访问账户信息
     AccountManager *_accounts;
+    // 用于访问群组信息
+    GroupManager *_groups;
 };
