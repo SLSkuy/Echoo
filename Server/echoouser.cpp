@@ -3,7 +3,7 @@
 
 #include "echoouser.h"
 
-EchooUser::EchooUser(QString nickName, QString account, QString password)
+EchooUser::EchooUser(QString &nickName, QString &account, QString &password)
     : m_nickName(nickName)
     , m_account(account)
     , m_password(password)

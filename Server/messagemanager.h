@@ -20,8 +20,6 @@ public:
 
 private:
     // 访问指针
-    // 用于访问账户信息
-    AccountManager *_accounts;
-    // 用于访问群组信息
-    GroupManager *_groups;
+    AccountManager *_accounts; // 用于访问账户信息
+    GroupManager *_groups;     // 用于访问群组信息
 };

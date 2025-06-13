@@ -9,9 +9,11 @@
 class EchooGroup
 {
 public:
-    EchooGroup(QString groupName, QString groupAccount, QString ownerAccount);
+    EchooGroup(QString &groupName, QString &groupAccount, QString &ownerAccount);
     ~EchooGroup();
     bool HasAccount(QString account);
+    void AddAccount(QString account);
+    void RemoveAccount(QString account);
 
 private:
     QString m_groupName;

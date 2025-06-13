@@ -37,6 +37,9 @@ void MessageManager::ProcessMessage(QTcpSocket *socket, const QByteArray &data)
     } else if (type == "accountinfo") {
         // 请求回应用户账号数据
         _accounts->ResponseInfo(socket, obj);
+    } else if (type == "createGroup") {
+        // 创建新的群聊
+        _groups->CreateGroup(socket, obj);
     }
 }
 

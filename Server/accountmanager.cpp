@@ -12,11 +12,15 @@ AccountManager::AccountManager()
 {
     // 测试使用账号
     // 在线账号
-    EchooUser *user1 = new EchooUser("SL_Skuy", "114514", "114514");
+    QString name = "SL_Skuy";
+    QString account = "114514";
+    QString account2 = "0721";
+
+    EchooUser *user1 = new EchooUser(name, account, account);
     _accounts->insert("114514", user1);
     _sockets->insert("114514", nullptr);
     // 离线账号
-    EchooUser *user2 = new EchooUser("SL_Skuy", "0721", "0721");
+    EchooUser *user2 = new EchooUser(name, account2, account2);
     _accounts->insert("0721", user2);
 }
 
@@ -97,6 +101,7 @@ void AccountManager::LoginDetection(QTcpSocket *socket, const QJsonObject &conte
     }
 
     _sockets->insert(account, socket); // 记录账号在线
+
     QString str = "login successfully.";
     MessageManager::SendResponse(socket, true, str);
     Logger::Log("Account " + account + " login successfully.");

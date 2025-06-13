@@ -12,7 +12,7 @@
 class EchooUser
 {
 public:
-    EchooUser(QString nickName, QString account, QString password);
+    EchooUser(QString &nickName, QString &account, QString &password);
     ~EchooUser();
     bool HasFriend(QString account);
     bool PasswordDetection(QString password);
