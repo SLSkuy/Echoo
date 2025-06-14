@@ -26,6 +26,7 @@ qt_add_qml_module(appEchoo-Client
         QML_FILES Messagetotal.qml
         QML_FILES MessageItem.qml
         QML_FILES EmojiPopup.qml
+        QML_FILES PersonPage.qml
 )
 
 target_compile_features(appEchoo-Client PRIVATE cxx_std_23)

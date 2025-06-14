@@ -52,6 +52,32 @@ import QtQuick.Window
                 Text{
                     text:"  \n  头像"
                 }
+                MouseArea {
+                    id: ma
+                    anchors.fill: parent
+                    hoverEnabled: true
+
+                    property var personpage: null // 用于存储 personpage 对象的引用
+                        property bool isPersonPageVisible: false // 用于跟踪窗口的可见性状态
+
+                        onClicked: {
+                            var component = Qt.createComponent("PersonPage.qml");
+                            if (component.status === Component.Ready) {
+                                if (personpage === null) {
+                                    // 如果 personpage 尚未创建，则创建它
+                                    personpage = component.createObject(null, {
+                                        flags: Qt.WindowStaysOnTopHint
+                                    });
+                                    personpage.visible = true; // 初始设置为可见
+                                    isPersonPageVisible = true;
+                                } else {
+                                    // 如果 personpage 已经存在，切换其可见性
+                                    personpage.visible = !isPersonPageVisible;
+                                    isPersonPageVisible = !isPersonPageVisible; // 更新状态
+                                }
+                            }
+                        }
+                }
 
                 Image {
                     id: myself

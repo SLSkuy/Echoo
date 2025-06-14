@@ -8,6 +8,7 @@ import QtQuick.Layouts
 GridLayout {
     signal loginSuccess(bool result)
 
+
     columns: 1
     columnSpacing: 10
 
