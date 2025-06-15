@@ -1,14 +1,12 @@
-import QtQuick 2.15
+import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import QtQuick.Window
 
 FrameLessWindow{
     id:personpage
     width:400
     height:300
-    x:20
-    y:-200
+
     ColumnLayout{
         // anchors.fill:parent
         RowLayout{

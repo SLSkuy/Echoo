@@ -66,7 +66,7 @@ import QtQuick.Window
                                 if (personpage === null) {
                                     // 如果 personpage 尚未创建，则创建它
                                     personpage = component.createObject(null, {
-                                        flags: Qt.WindowStaysOnTopHint
+                                        flags: Qt.Window | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
                                     });
                                     personpage.visible = true; // 初始设置为可见
                                     isPersonPageVisible = true;
