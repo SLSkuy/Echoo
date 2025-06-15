@@ -28,6 +28,7 @@ FrameLessWindow {
                 MainpagetitleBar {
                     id: titleBar
                     Layout.preferredWidth:600
+                    minimizeButton.onClicked: rootWindow.showMinimized()
                 }
 
                 ListView {
