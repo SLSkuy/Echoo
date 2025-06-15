@@ -32,15 +32,17 @@ FrameLessWindow {
                 }
 
                 ListView {
-                    id: messageBar
+                    id: messageItem
                     model: listModel
                     // implicitWidth: 1000
                     implicitHeight: parent.height
+                    implicitWidth: titleBar.width
 
                     delegate:
                         MessageItem{
                             height:rootWindow.height/10
-                            width: rootWindow.width - toolBars.width
+                            // width: rootWindow.width - toolBars.width
+                            width:titleBar.width
                             picture.source: picture1
                             name.text: name1
                             lastMessage.text: lastMessage1

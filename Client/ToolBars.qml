@@ -85,6 +85,7 @@ import QtQuick.Window
                 }
             }
             Button{
+                property alias message : message
                 id: message
                 text: "📳"
                 property alias texttext: texttext
@@ -104,8 +105,24 @@ import QtQuick.Window
                                 verticalAlignment: Text.AlignVCenter
                                 font.pixelSize: 20
                 }
+                property var messagetotal;
+                onClicked: {
+                    var component1 = Qt.createComponent("Messagetotal.qml");
+                    if (component1.status === Component.Ready) {
+                        if (messagetotal === null) {
+                            // 如果 messagetotal 尚未创建，则创建它
+                            messagetotal = component1.createObject();
+                            messagetotal.show();
+                            friend.friendtotal.close();
+                            friend.friendtotal = null;
+                        } else {
+                            return
+                        }
+                    }
+                }
             }
             Button{
+                property alias friend: friend
                 id:friend
                 text:"👩"
                 Layout.preferredHeight:40
@@ -122,6 +139,21 @@ import QtQuick.Window
                                 horizontalAlignment: Text.AlignHCenter
                                 verticalAlignment: Text.AlignVCenter
                                 font.pixelSize: 20
+                }
+                property var friendtotal: null
+                onClicked: {
+                    var component2 = Qt.createComponent("Friendtotal.qml");
+
+                    if (component2.status === Component.Ready) {
+                        if(friendtotal === null) {
+                            friendtotal =  component2.createObject();
+                            friendtotal.show();
+                            message.messagetotal.close();
+                            message.messagetotal=null
+                        }else{
+                            return;
+                        }
+                    }
                 }
             }
             Button{
