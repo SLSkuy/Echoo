@@ -15,6 +15,7 @@ public:
 signals:
     void loginSuccess(bool result);
     void registerSuccess(bool result);
+    void receiveMsg(QString content);
 
 private slots:
     void onConnected();

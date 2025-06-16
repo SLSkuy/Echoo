@@ -46,6 +46,8 @@ void EchooClient::onReadyRead()
         emit loginSuccess(result);
     } else if (type == "register") {
         emit registerSuccess(result);
+    } else if (type == "privateMsg") {
+        emit receiveMsg(obj["content"].toString());
     }
 }
 
