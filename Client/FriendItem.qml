@@ -1,3 +1,5 @@
+//单个好友
+
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
@@ -7,8 +9,9 @@ Rectangle {
     // width: parent.width
     // height: parent.height/6
 
-    color: friend_single.hovered ? "grey" : "transparent"
+    // color: hovered ? "grey" : "transparent"
     // color: "black"
+    color: mouseArea.containsMouse ? "#E6E6E6" : "transparent"
 
     property alias headPortrait : headPortrait
     property alias name : name
@@ -17,35 +20,42 @@ Rectangle {
     RowLayout{
         id: row
         anchors.fill: parent
+        spacing: 0
         // anchors.leftMargin: 1
         Image{
             id:headPortrait
-            // source: ""
-            height: parent.height*5/6
-            width: parent.width/13
+            Layout.preferredHeight: 38
+            Layout.preferredWidth: 38
             antialiasing: true
         }
 
         ColumnLayout{
             id: column
+            Layout.fillWidth: true
 
             Text {
                 id: name
-                // text: qsTr(" ")
                 font.pixelSize: 16
                 color: "black"
-                anchors.topMargin: 5
+                text: "123w"
             }
 
             Text {
                 id: sign
-                // text: qsTr("text")
                 font.pixelSize: 10
                 color: "grey"
                 clip: true
-                anchors.bottomMargin: 5
+                // anchors.bottomMargin: 5
+                // anchors.left: headPortrait.right
             }
         }
+    }
+
+    MouseArea {
+        id: mouseArea
+        anchors.fill: parent
+        hoverEnabled: true
+
     }
 
 }

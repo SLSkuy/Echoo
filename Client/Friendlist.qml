@@ -1,3 +1,5 @@
+//单个分组
+
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts

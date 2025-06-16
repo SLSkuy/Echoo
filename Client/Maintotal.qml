@@ -1,3 +1,5 @@
+//总的主页面 可以选择展示不同的页面
+
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
@@ -46,7 +48,8 @@ FrameLessWindow {
                 Loader {
                         id: delegateLoader
                         width: titleBar.width
-                        height: rootWindow.height - titleBar.height
+                        height:rootWindow.height - titleBar.heigh
+                        Layout.fillHeight: true
                 }
             }
             states: [

@@ -1,3 +1,5 @@
+//消息列表
+
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
@@ -76,18 +78,17 @@ import QtQuick.Layouts
 
 
 Rectangle{
-    visible: true
-    anchors.fill: parent
     ListView {
             id: messageItem
+            anchors.fill: parent
             model: listModel
-            // implicitWidth: 1000
-            implicitHeight: parent.height
-            implicitWidth: titleBar.width
+            // width: 1000
+            // height: parent.height
+            // width: parent.width
 
             delegate:
                 MessageItem{
-                    height:parent.height/10
+                    height:parent.height/listModel.count
                     // width: rootWindow.width - toolBars.width
                     width:parent.width
                     picture.source: picture1
@@ -102,7 +103,7 @@ Rectangle{
         ListModel {
             id: listModel
             ListElement {
-                picture1: ""
+                picture1: "qrc:/resources/LoginImage.png"
                 name1: "李四"
                 lastMessage1: "项目进展如何？"
                 time1: "昨天"

@@ -1,3 +1,5 @@
+//某个分组的好友
+
 import QtQuick
 
 Rectangle{
@@ -12,8 +14,8 @@ Rectangle{
 
         delegate:
             FriendItem{
-                height:friendItem.height/10
-                width: titleBar.width
+                height:friendItem.height/15
+                width: parent.width
                 headPortrait.source: headPortrait1
                 name.text: name1
                 sign.text: sign1
@@ -24,7 +26,7 @@ Rectangle{
     ListModel {
         id: listModel
         ListElement {
-            headPortrait1: ""
+            headPortrait1: "qrc:/resources/LoginImage.png"
             name1: "李四"
             sign1: "abc"
         }

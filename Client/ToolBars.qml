@@ -1,3 +1,6 @@
+//工具栏
+//位于主页面的左边
+
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls

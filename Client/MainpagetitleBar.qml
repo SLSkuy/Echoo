@@ -1,3 +1,6 @@
+//主页面的标题栏
+//位于主页面的上方
+
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
