@@ -233,6 +233,7 @@ Window {
                         enabled: messageInput.text.length > 0  // 根据输入框内容启用或禁用按钮
                         onClicked: {
                             console.log("发送消息: " + messageInput.text)
+                            EchooClient.SendPrivateMessage(messageInput.text,"123");
                             messageInput.text = ""
                         }
                     }
