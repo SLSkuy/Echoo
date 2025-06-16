@@ -20,7 +20,7 @@ Rectangle {
     RowLayout{
         id: row
         anchors.fill: parent
-        spacing: 0
+        spacing: 10
         // anchors.leftMargin: 1
         Image{
             id:headPortrait
@@ -29,24 +29,29 @@ Rectangle {
             antialiasing: true
         }
 
-        ColumnLayout{
-            id: column
+        Item{
             Layout.fillWidth: true
+            Layout.alignment: Qt.AlignLeft | Qt.AlignTop
+            ColumnLayout{
+                id: column
+                Layout.fillWidth: true
+                Layout.topMargin: 10
 
-            Text {
-                id: name
-                font.pixelSize: 16
-                color: "black"
-                text: "123w"
-            }
+                Text {
+                    id: name
+                    font.pixelSize: 16
+                    color: "black"
+                    Layout.alignment: Qt.AlignTop
+                }
 
-            Text {
-                id: sign
-                font.pixelSize: 10
-                color: "grey"
-                clip: true
-                // anchors.bottomMargin: 5
-                // anchors.left: headPortrait.right
+                Text {
+                    id: sign
+                    font.pixelSize: 10
+                    color: "grey"
+                    clip: true
+                    // anchors.bottomMargin: 5
+                    // anchors.left: headPortrait.right
+                }
             }
         }
     }
