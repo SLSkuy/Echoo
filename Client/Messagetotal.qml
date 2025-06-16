@@ -1,6 +1,6 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 2.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
 
 FrameLessWindow {
     id: rootWindow
@@ -28,18 +28,21 @@ FrameLessWindow {
                 MainpagetitleBar {
                     id: titleBar
                     Layout.preferredWidth:600
+                    minimizeButton.onClicked: rootWindow.showMinimized()
                 }
 
                 ListView {
-                    id: messageBar
+                    id: messageItem
                     model: listModel
                     // implicitWidth: 1000
                     implicitHeight: parent.height
+                    implicitWidth: titleBar.width
 
                     delegate:
                         MessageItem{
                             height:rootWindow.height/10
-                            width: rootWindow.width - toolBars.width
+                            // width: rootWindow.width - toolBars.width
+                            width:titleBar.width
                             picture.source: picture1
                             name.text: name1
                             lastMessage.text: lastMessage1

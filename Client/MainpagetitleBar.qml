@@ -17,6 +17,8 @@ import QtQuick.Layouts
         // anchors.fill: parent
         spacing: 5
 
+        property alias minimizeButton: minimizeButton
+
         RowLayout{
             Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
             Layout.fillHeight: true
@@ -30,7 +32,7 @@ import QtQuick.Layouts
                 implicitHeight: 35
                 implicitWidth: 35
                 Layout.preferredHeight: 20
-                onClicked: window.showMinimized()
+                // onClicked: window.showMinimized()
                 background: Rectangle{
                     color: minimizeButton.hovered ? "gray" : "transparent"
                     border.color: "transparent"
