@@ -3,9 +3,15 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 FrameLessWindow{
+    property alias username:_username
+    property alias sex:_sex
+    property alias signature:qm_nr
+    property alias region:szd_nr
+    property alias headPortrait:tx
     id:personpage
     width:400
     height:300
+
 
     ColumnLayout{
         // anchors.fill:parent
@@ -19,20 +25,21 @@ FrameLessWindow{
                 radius: width / 2  // 使圆角半径等于宽度的一半
                 color: "lightgrey"
                 //后面改
-                // Image {
-                //     id: tx
-                //     source: "qrc:/resources/LoginImage.png"
-                // }
+                Image {
+                    id: tx
+                    anchors.fill:parent
+                    source: "qrc:/resources/LoginImage.png"
+                }
             }
             ColumnLayout{
                 RowLayout{
 
                     Text{
-                        id:username
+                        id:_username
                         text:"香菜ovo"
                     }
                     Text{
-                        id:sex
+                        id:_sex
                         text: "\u2640"
                         color:"pink"
                     }

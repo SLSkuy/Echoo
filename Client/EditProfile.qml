@@ -2,9 +2,11 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Window 2.15
+import QtQuick.Dialogs
 
 FrameLessWindow {
     property alias editprofile: _editprofile
+    property alias image: _image
     width: 400
     height: 400
     visible: true
@@ -24,13 +26,31 @@ FrameLessWindow {
             width: 400
             height: 100
             Image {
+                id:_image
                 width: 80
                 height: 80
                 anchors.topMargin: 20
                 anchors.centerIn: parent
-                source: "qrc:/resources/LoginImage.png"
+                source:"qrc:/resources/LoginImage.png"
             }
+            MouseArea{
+                anchors.fill:parent
+                onClicked:{
+                   fileDialog.open()
+                }
+            }
+            FileDialog {
+                    id: fileDialog
+                    title: "Select an Image"
+                    nameFilters: ["Image files (*.png *.jpg *.jpeg)"] // 过滤图片文件
+                    onAccepted: {
+                        let filePath = fileDialog.selectedFile;
+                        _image.source = filePath
+                    }
+                }
+
         }
+
 
         // 单个输入项（昵称）
         RowLayout {
@@ -42,6 +62,7 @@ FrameLessWindow {
 
             // 标签（昵称）
             Text {
+                id:nickname
                 text: "昵称:"
                 color: "black"
                 font.pixelSize: 16
@@ -149,7 +170,7 @@ FrameLessWindow {
             ComboBox{
                     id:genderCombo
                     Layout.preferredWidth: 186
-                    model:["女","男","其他"]
+                    model:["女","男"]
                     currentIndex:0
                     font.pixelSize: 16
                 }
@@ -229,6 +250,43 @@ FrameLessWindow {
                 }
             Item{
                 Layout.fillWidth: true
+            }
+        }
+        RowLayout{
+            Layout.alignment: Qt.AlignBottom | Qt.AlignRight
+            Button{
+                id:bjzl
+                text:"确定"
+                width:150
+                Layout.alignment: Qt.AlignBottom | Qt.AlignLeft // 底部对齐，左对齐
+                Layout.margins: 10 // 边距
+                onClicked:{
+                    username.text=nicknameField.text
+                    signature.text="            "+signatureField.text
+                    if(genderCombo.currentText=="男"){
+                        sex.text= "\u2642"
+                        sex.color= "blue"
+                    }
+                    else if(genderCombo.currentText=="女"){
+                        sex.text= "\u2640"
+                        sex.color="pink"
+                    }
+                    region.text="        "+regionCombo.currentText
+                    headPortrait.source=_image.source
+                    _editprofile.close()
+                }
+
+
+
+            }
+            Button{
+                id:fsxx
+                text:"取消"
+                width:150
+                Layout.alignment: Qt.AlignBottom | Qt.AlignRight // 底部对齐，右对齐
+                Layout.margins: 10 // 边距
+                onClicked: _editprofile.close()
+
             }
         }
     }
