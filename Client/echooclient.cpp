@@ -39,6 +39,7 @@ void EchooClient::onReadyRead()
 
     // 获取到服务端发送来的消息时触发
     qDebug() << "Receive message form server: " + obj["content"].toString();
+    if (obj["success"].toBool()) { emit loginSuccess(true); }
 }
 
 void EchooClient::Login(QString account, QString password)
