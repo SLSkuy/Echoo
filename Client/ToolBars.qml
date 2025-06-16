@@ -3,17 +3,26 @@ import QtQuick.Layouts
 import QtQuick.Controls
 import QtQuick.Window
 
-Window{
-    id: startWindow
-    height: 800
-    width: 60
-    visible: true
-    // flags: Qt.FramelessWindowHint | Qt.Window
+// FrameLessWindow{
+//     // height: toolbar.implicitHeight
+//     // width: toolbar.implicitWidth
+
     Rectangle{
         id: toolbar
-        height:800; width: 60
+        implicitHeight:800; implicitWidth: 60
         visible: true
         color: "#D3D3D3"
+
+        property alias app: app
+        property alias headPortrait: headPortrait
+        property alias collection: collection
+        property alias more: more
+        property alias dynamic: dynamic
+        property alias file: file
+        property alias friend: friend
+        property alias email: email
+        property alias manage: manage
+        property alias message: message
 
         ColumnLayout{
             spacing: 10
@@ -43,15 +52,43 @@ Window{
                 Text{
                     text:"  \n  头像"
                 }
+                MouseArea {
+                    id: ma
+                    anchors.fill: parent
+                    hoverEnabled: true
+
+                    property var personpage: null // 用于存储 personpage 对象的引用
+                        property bool isPersonPageVisible: false // 用于跟踪窗口的可见性状态
+
+                        onClicked: {
+                            var component = Qt.createComponent("PersonPage.qml");
+                            if (component.status === Component.Ready) {
+                                if (personpage === null) {
+                                    // 如果 personpage 尚未创建，则创建它
+                                    personpage = component.createObject(null, {
+                                        flags: Qt.Window | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
+                                    });
+                                    personpage.visible = true; // 初始设置为可见
+                                    isPersonPageVisible = true;
+                                } else {
+                                    // 如果 personpage 已经存在，切换其可见性
+                                    personpage.visible = !isPersonPageVisible;
+                                    isPersonPageVisible = !isPersonPageVisible; // 更新状态
+                                }
+                            }
+                        }
+                }
 
                 Image {
                     id: myself
-                    source: "file"
+                    // source: "file"
                 }
             }
             Button{
+                property alias message : message
                 id: message
                 text: "📳"
+                property alias texttext: texttext
                 Layout.preferredHeight:40
                 Layout.preferredWidth:40
                 Layout.leftMargin:10
@@ -61,14 +98,31 @@ Window{
                     color: message.hovered ? "grey" : "transparent"
                 }
                 contentItem: Text {
+                                id: texttext
                                 text: parent.text
                                 color: parent.focus ? "#007FFF" : "black"  // 悬停时文本变为蓝色
                                 horizontalAlignment: Text.AlignHCenter
                                 verticalAlignment: Text.AlignVCenter
                                 font.pixelSize: 20
                 }
+                property var messagetotal;
+                onClicked: {
+                    var component1 = Qt.createComponent("Messagetotal.qml");
+                    if (component1.status === Component.Ready) {
+                        if (messagetotal === null) {
+                            // 如果 messagetotal 尚未创建，则创建它
+                            messagetotal = component1.createObject();
+                            messagetotal.show();
+                            friend.friendtotal.close();
+                            friend.friendtotal = null;
+                        } else {
+                            return
+                        }
+                    }
+                }
             }
             Button{
+                property alias friend: friend
                 id:friend
                 text:"👩"
                 Layout.preferredHeight:40
@@ -85,6 +139,21 @@ Window{
                                 horizontalAlignment: Text.AlignHCenter
                                 verticalAlignment: Text.AlignVCenter
                                 font.pixelSize: 20
+                }
+                property var friendtotal: null
+                onClicked: {
+                    var component2 = Qt.createComponent("Friendtotal.qml");
+
+                    if (component2.status === Component.Ready) {
+                        if(friendtotal === null) {
+                            friendtotal =  component2.createObject();
+                            friendtotal.show();
+                            message.messagetotal.close();
+                            message.messagetotal=null
+                        }else{
+                            return;
+                        }
+                    }
                 }
             }
             Button{
@@ -204,4 +273,4 @@ Window{
             }
         }
     }
-}
+// }

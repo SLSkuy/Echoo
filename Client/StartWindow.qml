@@ -5,34 +5,13 @@ import QtQuick
 import QtQuick.Window
 import QtQuick.Controls
 
-Window{
+FrameLessWindow{
     id: startWindow
-    height: 450
-    width: 320
-    visible: true
-    flags: Qt.FramelessWindowHint | Qt.Window
 
     Rectangle{
         id: rootContainer
         anchors.fill: parent
         state: "loginState"
-
-        // 实现全局拖拽功能
-        MouseArea{
-            id: dragArea
-            anchors.fill: parent
-            hoverEnabled: true
-            cursorShape: Qt.ArrowCursor
-
-            onPressed:function() {
-                cursorShape = Qt.ClosedHandCursor
-                startWindow.startSystemMove()
-            }
-
-            onReleased:{
-                cursorShape = Qt.ArrowCursor
-            }
-        }
 
         TitleBar{
             anchors.right: parent.right
@@ -44,7 +23,7 @@ Window{
             anchors.centerIn: parent
 
             onLoginSuccess:(result) => {
-                var userWindow = Qt.createComponent("ToolBars.qml")
+                var userWindow = Qt.createComponent("Messagetotal.qml")
                 if(userWindow.status === Component.Ready && result)
                 {
                     var user = userWindow.createObject()
