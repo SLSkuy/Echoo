@@ -27,6 +27,9 @@ FrameLessWindow {
             friend.onClicked:{
                 right.state= "friend"
             }
+            group.onClicked:{
+                right.state= "group"
+            }
         }
 
         Rectangle {
@@ -65,6 +68,13 @@ FrameLessWindow {
                     PropertyChanges {
                         target: delegateLoader
                         source:"Friendtotal.qml"
+                    }
+                },
+                State {
+                    name: "group"
+                    PropertyChanges {
+                        target: delegateLoader
+                        source: "Grouptotal.qml"
                     }
                 }
             ]
