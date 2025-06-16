@@ -105,21 +105,21 @@ import QtQuick.Window
                                 verticalAlignment: Text.AlignVCenter
                                 font.pixelSize: 20
                 }
-                property var messagetotal;
-                onClicked: {
-                    var component1 = Qt.createComponent("Messagetotal.qml");
-                    if (component1.status === Component.Ready) {
-                        if (messagetotal === null) {
-                            // 如果 messagetotal 尚未创建，则创建它
-                            messagetotal = component1.createObject();
-                            messagetotal.show();
-                            friend.friendtotal.close();
-                            friend.friendtotal = null;
-                        } else {
-                            return
-                        }
-                    }
-                }
+                // property var messagetotal;
+                // onClicked: {
+                //     var component1 = Qt.createComponent("Messagetotal.qml");
+                //     if (component1.status === Component.Ready) {
+                //         if (messagetotal === null) {
+                //             // 如果 messagetotal 尚未创建，则创建它
+                //             messagetotal = component1.createObject();
+                //             messagetotal.show();
+                //             friend.friendtotal.close();
+                //             friend.friendtotal = null;
+                //         } else {
+                //             return
+                //         }
+                //     }
+                // }
             }
             Button{
                 property alias friend: friend
@@ -140,21 +140,21 @@ import QtQuick.Window
                                 verticalAlignment: Text.AlignVCenter
                                 font.pixelSize: 20
                 }
-                property var friendtotal: null
-                onClicked: {
-                    var component2 = Qt.createComponent("Friendtotal.qml");
+                // property var friendtotal: null
+                // onClicked: {
+                //     var component2 = Qt.createComponent("Friendtotal.qml");
 
-                    if (component2.status === Component.Ready) {
-                        if(friendtotal === null) {
-                            friendtotal =  component2.createObject();
-                            friendtotal.show();
-                            message.messagetotal.close();
-                            message.messagetotal=null
-                        }else{
-                            return;
-                        }
-                    }
-                }
+                //     if (component2.status === Component.Ready) {
+                //         if(friendtotal === null) {
+                //             friendtotal =  component2.createObject();
+                //             friendtotal.show();
+                //             message.messagetotal.close();
+                //             message.messagetotal=null
+                //         }else{
+                //             return;
+                //         }
+                //     }
+                // }
             }
             Button{
                 id:dynamic
