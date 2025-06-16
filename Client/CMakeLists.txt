@@ -31,6 +31,8 @@ qt_add_qml_module(appEchoo-Client
         QML_FILES Friendtotal.qml
         QML_FILES Friendlist.qml
         QML_FILES Friends.qml
+        QML_FILES EditTitle.qml
+        QML_FILES EditProfile.qml
 )
 
 target_compile_features(appEchoo-Client PRIVATE cxx_std_23)

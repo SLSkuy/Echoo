@@ -58,7 +58,7 @@ import QtQuick.Window
                     hoverEnabled: true
 
                     property var personpage: null // 用于存储 personpage 对象的引用
-                        property bool isPersonPageVisible: false // 用于跟踪窗口的可见性状态
+                    property bool isPersonPageVisible: false // 用于跟踪窗口的可见性状态
 
                         onClicked: {
                             var component = Qt.createComponent("PersonPage.qml");
