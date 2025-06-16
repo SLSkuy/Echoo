@@ -1,3 +1,6 @@
+// Logger类声明
+// 该类用于格式化显示服务器信息
+
 #pragma once
 
 #include <QString>
@@ -6,8 +9,8 @@
 class Logger
 {
 public:
-    static void Log(QString content);
-    static void Error(QString content);
-    static void Warning(QString content);
-    static void Message(QString content, QTcpSocket *socket);
+    static void Log(const QString &content);
+    static void Error(const QString &content);
+    static void Warning(const QString &content);
+    static void Message(const QString &content, QTcpSocket *socket);
 };

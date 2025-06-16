@@ -76,7 +76,7 @@ import QtQuick.Layouts
 
 
 Rectangle{
-    visible: ture
+    visible: true
     anchors.fill: parent
     ListView {
             id: messageItem

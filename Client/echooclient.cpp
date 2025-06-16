@@ -39,6 +39,16 @@ void EchooClient::onReadyRead()
 
     // 获取到服务端发送来的消息时触发
     qDebug() << "Receive message form server: " + obj["content"].toString();
+    QString type = obj["type"].toString();
+    bool result = obj["success"].toBool();
+
+    if (type == "login") {
+        emit loginSuccess(result);
+    } else if (type == "register") {
+        emit registerSuccess(result);
+    } else if (type == "privateMsg") {
+        emit receiveMsg(obj["content"].toString());
+    }
 }
 
 void EchooClient::Login(QString account, QString password)
@@ -59,6 +69,18 @@ void EchooClient::Register(QString nickName, QString account, QString password)
     obj["nickName"] = nickName;
     obj["account"] = account;
     obj["password"] = password;
+
+    QJsonDocument doc(obj);
+    _socket->write(doc.toJson());
+}
+
+void EchooClient::SendPrivateMessage(QString content, QString toAccount)
+{
+    QJsonObject obj;
+    obj["type"] = "privateMsg";
+    obj["from"] = this->m_account;
+    obj["to"] = toAccount;
+    obj["content"] = content;
 
     QJsonDocument doc(obj);
     _socket->write(doc.toJson());

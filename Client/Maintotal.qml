@@ -48,26 +48,23 @@ FrameLessWindow {
                         width: titleBar.width
                         height: rootWindow.height - titleBar.height
                 }
-
-                states: [
-                    State{
-                        name:"message"
-                        PropertyChanges {
-                            target: delegateLoader
-                            source:"Messagetotal.qml"
-                        }
-                    },
-
-                    State{
-                        name:"friend"
-                        PropertyChanges {
-                            target: delegateLoader
-                            source:"Friendtotal.qml"
-                        }
-                    }
-
-                ]
             }
+            states: [
+                State{
+                    name:"message"
+                    PropertyChanges {
+                        target: delegateLoader
+                        source:"Messagetotal.qml"
+                    }
+                },
+                State{
+                    name:"friend"
+                    PropertyChanges {
+                        target: delegateLoader
+                        source:"Friendtotal.qml"
+                    }
+                }
+            ]
         }
     }
 }
