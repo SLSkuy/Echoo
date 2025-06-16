@@ -14,6 +14,7 @@ public:
     bool HasAccount(QString account);
     void AddAccount(QString account);
     void RemoveAccount(QString account);
+    QList<QString> GetGroupMember();
 
 private:
     QString m_groupName;

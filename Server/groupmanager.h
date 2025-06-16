@@ -6,6 +6,7 @@
 
 #include <QTcpSocket>
 #include <QJsonObject>
+#include <QList>
 #include <QMap>
 
 #include "echoogroup.h"
@@ -16,6 +17,7 @@ public:
     GroupManager();
     ~GroupManager();
     void CreateGroup(QTcpSocket *socket, const QJsonObject &content);
+    QList<QString> GetGroupMember(const QString &groupAccount);
 
 private:
     QMap<QString, EchooGroup *> *_groups;

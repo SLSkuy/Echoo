@@ -34,12 +34,15 @@ void MessageManager::ProcessMessage(QTcpSocket *socket, const QByteArray &data)
     } else if (type == "privateMsg") {
         // 消息转发
         PrivateMessageForwarding(socket, obj);
-    } else if (type == "accountinfo") {
+    } else if (type == "accountInfo") {
         // 请求回应用户账号数据
         _accounts->ResponseInfo(socket, obj);
     } else if (type == "createGroup") {
         // 创建新的群聊
         _groups->CreateGroup(socket, obj);
+    } else if (type == "groupMsg") {
+        // 群聊消息转发
+        GroupMessageForwarding(socket, obj);
     }
 }
 
@@ -56,16 +59,39 @@ void MessageManager::SendResponse(QTcpSocket *socket, bool result, QString &cont
 void MessageManager::PrivateMessageForwarding(QTcpSocket *socket, const QJsonObject &content)
 {
     // 获取信息发送对象
-    QString to = content["to"].toString();
+    QString account = content["to"].toString();
 
     QJsonDocument doc(content);
-    QTcpSocket *receiver = _accounts->GetSocket(to);
+    QTcpSocket *receiver = _accounts->GetSocket(account);
 
     if(receiver != nullptr)
     {
         receiver->write(doc.toJson());
+        return;
     }
 
     QString response = "The user does not exist or is not online.";
     SendResponse(socket,false,response);
+}
+
+void MessageManager::GroupMessageForwarding(QTcpSocket *socket, const QJsonObject &content)
+{
+    QString groupAccount = content["to"].toString();
+
+    QJsonDocument doc(content);
+    QList<QString> groupMembers = _groups->GetGroupMember(groupAccount);
+    if (groupMembers.isEmpty()) {
+        Logger::Warning("Group has no members or doesn't exist: " + groupAccount);
+        return;
+    }
+
+    for (QString &memberAccount : groupMembers) {
+        QTcpSocket *user = _accounts->GetSocket(memberAccount);
+        if (user == nullptr) {
+            // 用户不存在或未登录
+            // TODO
+        } else {
+            user->write(doc.toJson());
+        }
+    }
 }

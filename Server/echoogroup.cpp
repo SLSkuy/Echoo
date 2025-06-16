@@ -31,3 +31,8 @@ void EchooGroup::RemoveAccount(QString account)
         Logger::Warning("Account: " + account + " not exist in this group: " + m_groupAccount);
     }
 }
+
+QList<QString> EchooGroup::GetGroupMember()
+{
+    return m_groupUsers;
+}

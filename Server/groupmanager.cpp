@@ -39,3 +39,14 @@ void GroupManager::CreateGroup(QTcpSocket *socket, const QJsonObject &content)
     MessageManager::SendResponse(socket, true, str);
     Logger::Log("Group: " + groupAccount + " create successfully.");
 }
+
+QList<QString> GroupManager::GetGroupMember(const QString &groupAccount)
+{
+    // 返回群聊成员信息
+    QList<QString> groupMember;
+
+    EchooGroup *group = (*_groups)[groupAccount];
+    groupMember = group->GetGroupMember();
+
+    return groupMember;
+}

@@ -15,8 +15,9 @@ class MessageManager
 public:
     MessageManager(AccountManager *am, GroupManager *gm);
     static void SendResponse(QTcpSocket *socket, bool result, QString &content);
-    void PrivateMessageForwarding(QTcpSocket *socket, const QJsonObject &content);
     void ProcessMessage(QTcpSocket *socket, const QByteArray &data);
+    void PrivateMessageForwarding(QTcpSocket *socket, const QJsonObject &content);
+    void GroupMessageForwarding(QTcpSocket *socket, const QJsonObject &content);
 
 private:
     // 访问指针
