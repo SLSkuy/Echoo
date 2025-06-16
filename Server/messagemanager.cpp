@@ -22,10 +22,7 @@ void MessageManager::ProcessMessage(QTcpSocket *socket, const QByteArray &data)
     QJsonObject obj = doc.object(); // 转换为JSON结构对象
     QString type = obj["type"].toString();
 
-    if (type == "text") {
-        // 测试收取信息
-        qDebug() << obj["content"].toString();
-    } else if (type == "register") {
+    if (type == "register") {
         // 用户注册
         _accounts->RegisterUser(socket, obj);
     } else if (type == "login") {
@@ -46,9 +43,10 @@ void MessageManager::ProcessMessage(QTcpSocket *socket, const QByteArray &data)
     }
 }
 
-void MessageManager::SendResponse(QTcpSocket *socket, bool result, QString &content)
+void MessageManager::SendResponse(QTcpSocket *socket, bool result, QString &content, QString &type)
 {
     QJsonObject obj;
+    obj["type"] = type;
     obj["success"] = result;
     obj["content"] = content;
 
@@ -60,6 +58,7 @@ void MessageManager::PrivateMessageForwarding(QTcpSocket *socket, const QJsonObj
 {
     // 获取信息发送对象
     QString account = content["to"].toString();
+    QString type = content["type"].toString();
 
     QJsonDocument doc(content);
     QTcpSocket *receiver = _accounts->GetSocket(account);
@@ -71,7 +70,7 @@ void MessageManager::PrivateMessageForwarding(QTcpSocket *socket, const QJsonObj
     }
 
     QString response = "The user does not exist or is not online.";
-    SendResponse(socket,false,response);
+    SendResponse(socket, false, response, type);
 }
 
 void MessageManager::GroupMessageForwarding(QTcpSocket *socket, const QJsonObject &content)

@@ -14,7 +14,7 @@ class MessageManager
 {
 public:
     MessageManager(AccountManager *am, GroupManager *gm);
-    static void SendResponse(QTcpSocket *socket, bool result, QString &content);
+    static void SendResponse(QTcpSocket *socket, bool result, QString &content, QString &type);
     void ProcessMessage(QTcpSocket *socket, const QByteArray &data);
     void PrivateMessageForwarding(QTcpSocket *socket, const QJsonObject &content);
     void GroupMessageForwarding(QTcpSocket *socket, const QJsonObject &content);

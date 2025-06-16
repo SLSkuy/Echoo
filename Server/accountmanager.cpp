@@ -42,6 +42,7 @@ void AccountManager::RegisterUser(QTcpSocket *socket, const QJsonObject &content
     QString nickName = content["nickName"].toString();
     QString account = content["account"].toString();
     QString password = content["password"].toString();
+    QString type = content["type"].toString();
 
     QJsonObject obj; // 客户端返回Json对象
     obj["type"] = "register";
@@ -49,7 +50,7 @@ void AccountManager::RegisterUser(QTcpSocket *socket, const QJsonObject &content
         // 创建的用户已存在
         // 返回创建失败信息
         QString str = "Account " + account + " has already registered.";
-        MessageManager::SendResponse(socket, false, str);
+        MessageManager::SendResponse(socket, false, str, type);
 
         Logger::Warning("Account " + account + " has already registered.");
         return;
@@ -61,7 +62,7 @@ void AccountManager::RegisterUser(QTcpSocket *socket, const QJsonObject &content
 
     // 返回成功注册成功信息
     QString str = account + " register successfully, please log in.";
-    MessageManager::SendResponse(socket, true, str);
+    MessageManager::SendResponse(socket, true, str, type);
     Logger::Log("Account " + account + " register successfully.");
 }
 
@@ -70,13 +71,14 @@ void AccountManager::LoginDetection(QTcpSocket *socket, const QJsonObject &conte
     // 账号登录
     QString account = content["account"].toString();
     QString password = content["password"].toString();
+    QString type = content["type"].toString();
 
     QJsonObject obj;
     obj["type"] = "login";
     if (!_accounts->contains(account)) {
         // 不存在对应账号的用户
         QString str = "Account " + account + " is not exist, please register or check input account.";
-        MessageManager::SendResponse(socket, false, str);
+        MessageManager::SendResponse(socket, false, str, type);
 
         Logger::Warning("No such account " + account + " exist.");
         return;
@@ -85,7 +87,7 @@ void AccountManager::LoginDetection(QTcpSocket *socket, const QJsonObject &conte
     if (!(*_accounts)[account]->PasswordDetection(password)) {
         // 密码错误
         QString str = "Error password.";
-        MessageManager::SendResponse(socket, false, str);
+        MessageManager::SendResponse(socket, false, str, type);
 
         Logger::Warning("error password");
         return;
@@ -94,7 +96,7 @@ void AccountManager::LoginDetection(QTcpSocket *socket, const QJsonObject &conte
     if (_sockets->contains(account)) {
         // 当前账号已经登录
         QString str = "Account " + account + " has logged in, please don't log again.";
-        MessageManager::SendResponse(socket, false, str);
+        MessageManager::SendResponse(socket, false, str, type);
 
         Logger::Warning("Account " + account + " has logged in.");
         return;
@@ -103,7 +105,7 @@ void AccountManager::LoginDetection(QTcpSocket *socket, const QJsonObject &conte
     _sockets->insert(account, socket); // 记录账号在线
 
     QString str = "login successfully.";
-    MessageManager::SendResponse(socket, true, str);
+    MessageManager::SendResponse(socket, true, str, type);
     Logger::Log("Account " + account + " login successfully.");
 }
 

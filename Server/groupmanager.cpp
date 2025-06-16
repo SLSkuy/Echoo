@@ -22,6 +22,7 @@ void GroupManager::CreateGroup(QTcpSocket *socket, const QJsonObject &content)
 {
     QString groupName = content["groupName"].toString();
     QString groupOwner = content["groupOwner"].toString();
+    QString type = content["type"].toString();
     QString groupAccount;
 
     do {
@@ -36,7 +37,7 @@ void GroupManager::CreateGroup(QTcpSocket *socket, const QJsonObject &content)
 
     // 返回创建成功信息
     QString str = "Group create successfully.";
-    MessageManager::SendResponse(socket, true, str);
+    MessageManager::SendResponse(socket, true, str, type);
     Logger::Log("Group: " + groupAccount + " create successfully.");
 }
 
