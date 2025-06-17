@@ -124,16 +124,37 @@ Window {
 
                     ListView {
                         anchors.fill: parent
-                        model: 3 // 示例消息数量
-                        delegate: Item {
-                            width: messageDisplay.width
-                            height: 30
+                        spacing:5
+                        model: ListModel {
+                            id: messageModel
+                            ListElement { sender: "对方"; message: "你好！"; isMe: false }
+                            ListElement { sender: "我"; message: "你好！有什么事吗？"; isMe: true }
+                            ListElement { sender: "对方"; message: "我想和你讨论一下项目。"; isMe: false }
+                        }
+                        delegate: Rectangle {
+                            width: parent.width/2
+                            height: messageText.implicitHeight + 20
+                            color: isMe ? "#dcf8c6" : "white"
+                            radius: 5
+
+                            anchors.right: isMe ? parent.right : undefined
+                            anchors.left: isMe ? undefined : parent.left
+
                             Text {
-                                text: "消息 " + (index + 1)
-                                anchors.left: parent.left
-                                anchors.leftMargin: 10
-                                anchors.verticalCenter: parent.verticalCenter
+                                id: messageText
+                                text: message
+                                anchors.centerIn: parent
+                                width: parent.width - 20
+                                wrapMode: Text.Wrap
+                                color: isMe ? "black" : "black"
                             }
+                            Text {
+                                        id: timeText
+                                        text: Qt.formatDateTime(new Date(), "hh:mm")
+                                        color: "gray"
+                                        font.pixelSize: 10
+                                        horizontalAlignment: Text.AlignRight
+                                    }
                         }
                     }
                 }
@@ -156,8 +177,9 @@ Window {
                                 text: "😊 "
                                 onClicked: {
                                     // 实现表情选择的逻辑
+                                    emojiPopup.open()
                                     console.log("表情");
-                                    // emojiPopup.open()
+
                                 }
                                 background: Rectangle {
                                        color: "transparent"  // 设置背景颜色为透明
@@ -171,6 +193,14 @@ Window {
                                     horizontalAlignment: Text.AlignHCenter
                                     verticalAlignment: Text.AlignVCenter
                                 }
+                            }
+                            // 导入 EmojiPopup
+                            EmojiPopup {
+                                id: emojiPopup
+                                onEmojiSelected: {
+                                    messageInput.text += emoji  // 将选中的表情添加到输入框
+                                }
+
                             }
 
 
@@ -206,6 +236,7 @@ Window {
                         anchors.bottom: parent.bottom
                         // anchors.leftMargin: 10
                         // anchors.rightMargin: 10
+                        // font.family: "Microsoft YaHei"
                         placeholderText: "输入消息..."
                         placeholderTextColor: "grey"
                         width:40
@@ -222,8 +253,11 @@ Window {
                         enabled: messageInput.text.length > 0  // 根据输入框内容启用或禁用按钮
                         onClicked: {
                             console.log("发送消息: " + messageInput.text)
-                            EchooClient.SendPrivateMessage(messageInput.text,"123");
+                            // EchooClient.SendPrivateMessage(messageInput.text,"123");
+                            messageModel.append({ sender: "我", message: messageInput.text, isMe: true })
+
                             messageInput.text = ""
+
                         }
                     }
                     Button {

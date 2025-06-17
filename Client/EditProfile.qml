@@ -273,6 +273,7 @@ FrameLessWindow {
                     }
                     region.text="        "+regionCombo.currentText
                     headPortrait.source=_image.source
+                    myself_tx.source=_image.source
                     _editprofile.close()
                 }
 
