@@ -1,3 +1,6 @@
+// Echoo群组类实现
+// 用于检测、添加与删除账号等与群组类成员相关操作
+
 #include "echoogroup.h"
 #include "logger.h"
 

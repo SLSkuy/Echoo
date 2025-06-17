@@ -1,4 +1,4 @@
-// Echoo 群组管理模块实现
+// Echoo群组管理模块实现
 // 所有的群组管理逻辑都在此实现
 // 包括群组创建等
 
@@ -18,7 +18,7 @@ GroupManager::~GroupManager()
     delete _groups;
 }
 
-void GroupManager::CreateGroup(QTcpSocket *socket, const QJsonObject &content)
+QString GroupManager::CreateGroup(QTcpSocket *socket, const QJsonObject &content)
 {
     QString groupName = content["groupName"].toString();
     QString groupOwner = content["groupOwner"].toString();
@@ -39,15 +39,33 @@ void GroupManager::CreateGroup(QTcpSocket *socket, const QJsonObject &content)
     QString str = "Group create successfully.";
     MessageManager::SendResponse(socket, true, str, type);
     Logger::Log("Group: " + groupAccount + " create successfully.");
+
+    // 返回新创建的群组号，用于委托账号管理器给特定用户记录群聊信息
+    return groupAccount;
+}
+
+QList<QString> GroupManager::RemoveGroup(QTcpSocket *socket, const QJsonObject &content)
+{
+    QList<QString> member;
+    QString groupAccout = content["groupAccount"].toString();
+
+    if (_groups->contains(groupAccout)) {
+        // 若存在对应群聊则删除
+        // 返回成员对象列表用于委托删除用户加入的群聊记录
+        EchooGroup *group = (*_groups)[groupAccout];
+        _groups->remove(groupAccout);
+        member = group->GetGroupMember();
+        delete group;
+        Logger::Log(groupAccout + " group removed.");
+    } else {
+        Logger::Error(groupAccout + " group not exist.");
+    }
+    return member;
 }
 
 QList<QString> GroupManager::GetGroupMember(const QString &groupAccount)
 {
     // 返回群聊成员信息
-    QList<QString> groupMember;
-
     EchooGroup *group = (*_groups)[groupAccount];
-    groupMember = group->GetGroupMember();
-
-    return groupMember;
+    return group->GetGroupMember();
 }

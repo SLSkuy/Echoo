@@ -1,4 +1,4 @@
-// Echoo 账号管理模块
+// Echoo账号管理模块
 
 #include <QJsonDocument>
 
@@ -80,7 +80,7 @@ void AccountManager::LoginDetection(QTcpSocket *socket, const QJsonObject &conte
         QString str = "Account " + account + " is not exist, please register or check input account.";
         MessageManager::SendResponse(socket, false, str, type);
 
-        Logger::Warning("No such account " + account + " exist.");
+        Logger::Error("No such account " + account + " exist.");
         return;
     }
 
@@ -130,10 +130,14 @@ void AccountManager::ExitConnection(QTcpSocket *socket)
 QTcpSocket *AccountManager::GetSocket(QString &account)
 {
     // 返回Socket用于消息转发
-    if(_sockets->contains(account))
-    {
-        return (*_sockets)[account];
-    }
+    if (_sockets->contains(account)) { return (*_sockets)[account]; }
+    return nullptr;
+}
+
+EchooUser *AccountManager::GetUser(QString &account)
+{
+    // 返回EchooUser指针用于用于操作
+    if (_accounts->contains(account)) { return (*_accounts)[account]; }
     return nullptr;
 }
 
