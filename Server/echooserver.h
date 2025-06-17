@@ -1,4 +1,3 @@
-// written by SL_Skuy
 // Echoo服务后端类声明
 
 #pragma once

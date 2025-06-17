@@ -1,4 +1,4 @@
-// Echoo 群组管理模块
+// Echoo群组管理模块
 // 提供群组的管理操作
 // 如群组的创建与删除等功能
 
@@ -16,7 +16,8 @@ class GroupManager
 public:
     GroupManager();
     ~GroupManager();
-    void CreateGroup(QTcpSocket *socket, const QJsonObject &content);
+    QString CreateGroup(QTcpSocket *socket, const QJsonObject &content);
+    QList<QString> RemoveGroup(QTcpSocket *socket, const QJsonObject &content);
     QList<QString> GetGroupMember(const QString &groupAccount);
 
 private:
