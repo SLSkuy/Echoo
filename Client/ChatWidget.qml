@@ -141,8 +141,9 @@ Window {
                 // 消息输入区
                 Rectangle {
                     width: parent.width
-                    height: 130
-                    color: "#e0e0e0"
+                    height: 143
+                    color: "white"
+
 
                     ToolBar{
                         id:ll
@@ -156,7 +157,7 @@ Window {
                                 onClicked: {
                                     // 实现表情选择的逻辑
                                     console.log("表情");
-                                    emojiPopup.open()
+                                    // emojiPopup.open()
                                 }
                                 background: Rectangle {
                                        color: "transparent"  // 设置背景颜色为透明
@@ -173,19 +174,7 @@ Window {
                             }
 
 
-                            // 导入 EmojiPopup
 
-                                   EmojiPopup {
-
-                                       id: emojiPopup
-
-                                       onEmojiSelected: {
-
-                                           messageInput.text += emoji  // 将选中的表情添加到输入框
-
-                                       }
-
-                                   }
 
                             // 更多按钮
                             Button {
@@ -213,7 +202,7 @@ Window {
                         id: messageInput
                         anchors.fill: parent
                         anchors.top:ll.bottom
-                        anchors.topMargin: 40
+                        anchors.topMargin: 30
                         anchors.bottom: parent.bottom
                         // anchors.leftMargin: 10
                         // anchors.rightMargin: 10

@@ -46,8 +46,8 @@ FrameLessWindow{
                 }
                 Text{
                     id:echoo_id
-                    text:"Echoo:123456"
-                    //+loginform.id
+                    text:"id:"+startWindow.globalAccountId
+
                     font.pixelSize: 20
                 }
                 Text{
