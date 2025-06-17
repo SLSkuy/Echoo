@@ -8,7 +8,18 @@
 #include "messagemanager.h"
 #include "logger.h"
 
-MessageManager::MessageManager(AccountManager *am, GroupManager *gm) : _accounts(am), _groups(gm) {}
+MessageManager::MessageManager() : _accounts(new AccountManager), _groups(new GroupManager) {}
+
+MessageManager::~MessageManager()
+{
+    delete _accounts;
+    delete _groups;
+}
+
+void MessageManager::DisconnectionProcess(QTcpSocket *socket)
+{
+    _accounts->ExitConnection(socket);
+}
 
 void MessageManager::ProcessMessage(QTcpSocket *socket, const QByteArray &data)
 {

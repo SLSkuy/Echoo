@@ -45,7 +45,7 @@ void AccountManager::RegisterUser(QTcpSocket *socket, const QJsonObject &content
     QString type = content["type"].toString();
 
     QJsonObject obj; // 客户端返回Json对象
-    obj["type"] = "register";
+    obj["type"] = type;
     if (_accounts->contains(account)) {
         // 创建的用户已存在
         // 返回创建失败信息
@@ -74,7 +74,7 @@ void AccountManager::LoginDetection(QTcpSocket *socket, const QJsonObject &conte
     QString type = content["type"].toString();
 
     QJsonObject obj;
-    obj["type"] = "login";
+    obj["type"] = type;
     if (!_accounts->contains(account)) {
         // 不存在对应账号的用户
         QString str = "Account " + account + " is not exist, please register or check input account.";

@@ -13,14 +13,15 @@
 class MessageManager
 {
 public:
-    MessageManager(AccountManager *am, GroupManager *gm);
+    MessageManager();
+    ~MessageManager();
+    void DisconnectionProcess(QTcpSocket *socket);
     static void SendResponse(QTcpSocket *socket, bool result, QString &content, QString &type);
     void ProcessMessage(QTcpSocket *socket, const QByteArray &data);
     void PrivateMessageForwarding(QTcpSocket *socket, const QJsonObject &content);
     void GroupMessageForwarding(QTcpSocket *socket, const QJsonObject &content);
 
 private:
-    // 访问指针
     AccountManager *_accounts; // 用于访问账户信息
     GroupManager *_groups;     // 用于访问群组信息
 };
