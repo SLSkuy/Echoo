@@ -41,7 +41,7 @@ FrameLessWindow{
         Connections {
             target: EchooClient
             function onLoginSuccess(result) {
-                var userWindow = Qt.createComponent("Messagetotal.qml")
+                var userWindow = Qt.createComponent("Maintotal.qml")
                 if(userWindow.status === Component.Ready && result) {
                     var user = userWindow.createObject()
                     user.show()

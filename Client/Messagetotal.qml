@@ -83,7 +83,7 @@ Rectangle{
             model: listModel
             // implicitWidth: 1000
             implicitHeight: parent.height
-            implicitWidth: titleBar.width
+            implicitWidth: parent.width
 
             delegate:
                 MessageItem{

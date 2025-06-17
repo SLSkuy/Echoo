@@ -9,7 +9,7 @@ EchooClient::EchooClient(QObject* parent) : QObject(parent), _socket(new QTcpSoc
     connect(_socket, &QTcpSocket::disconnected, this, &EchooClient::onDisconnected);
     connect(_socket, &QTcpSocket::readyRead, this, &EchooClient::onReadyRead);
 
-    _socket->connectToHost("127.0.0.1", 8080);
+    _socket->connectToHost("127.0.0.1", 9382);
 }
 
 EchooClient::~EchooClient()
