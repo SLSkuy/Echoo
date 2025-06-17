@@ -205,7 +205,7 @@ Window {
                         }
                         ListModel{
                             id: memberlist
-                            ListElement{image1:"111.png"
+                            ListElement{image1:""
                                         name1:"111"}
                             ListElement{image1:""
                                         name1:"222"}

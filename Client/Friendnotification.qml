@@ -8,7 +8,6 @@ Window {
     visible: true
     width: 500
     height: 600
-    // title: "QQ聊天窗口"
     flags: Qt.FramelessWindowHint | Qt.Window
 
 
@@ -40,7 +39,7 @@ Window {
             id:topbar
             Layout.alignment: Qt.AlignTop
             Layout.topMargin: 5
-            text11.text:"群通知"
+            text11.text:"好友通知"
             text11.font.pixelSize: 18
         }
 
@@ -103,6 +102,23 @@ Window {
                             color: "#666"
                         }
                     }
+
+                    RowLayout{
+                        Layout.alignment: Qt.AlignRight
+                        spacing:0
+                        Button{
+                            text:"同意"
+                            onClicked: {
+                                //
+                            }
+                        }
+                        Button{
+                            text: "拒绝"
+                            onClicked: {
+                                //
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -111,12 +127,12 @@ Window {
     ListModel{
         id: listModel
         ListElement{
-            image1: "111.png"
+            image1: ""
             name1: "111"
             aaction1: "222"
         }
         ListElement{
-            image1: "111.png"
+            image1: ""
             name1: "111"
             aaction1: "222"
         }

@@ -36,11 +36,9 @@ qt_add_qml_module(appEchoo-Client
         QML_FILES Maintotal.qml
         QML_FILES GroupItem.qml
         QML_FILES Grouptotal.qml
-<<<<<<< HEAD
         QML_FILES GroupChat.qml
-=======
         QML_FILES Groupnotification.qml
->>>>>>> main
+        QML_FILES Friendnotification.qml
 )
 
 target_compile_features(appEchoo-Client PRIVATE cxx_std_23)
