@@ -55,13 +55,13 @@ Rectangle{
         anchors.fill: parent
         hoverEnabled: true
 
-        // onClicked:{
-        //     var component  = Qt.createComponent("ChatWidget.qml");
-        //     if (component.status === Component.Ready) {
-        //         var chatWidget = component.createObject(parent);
-        //         chatWidget.show();
-        //      }
-        // }
+        onClicked:{
+            var component  = Qt.createComponent("GroupChat.qml");
+            if (component.status === Component.Ready) {
+                var groupchat = component.createObject(parent);
+                groupchat.show();
+             }
+        }
     }
 
     // 分割线
