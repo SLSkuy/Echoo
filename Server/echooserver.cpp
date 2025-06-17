@@ -1,5 +1,4 @@
-// written by SL_Skuy
-// Echoo 服务器主程序
+// Echoo服务器主程序
 // 调用各个子模块实现多种功能
 
 #include <QTime>
@@ -45,7 +44,7 @@ void EchooServer::incomingConnection(qintptr socketDescriptor)
 
     // socket断开连接时处理用户在服务器中残留的信息
     connect(socket, &QTcpSocket::disconnected, this, [socket, this]() {
-        // 调用AccountManager进行账号离线操作
+        // 调用MessageManager进行账号离线操作
         _mm->DisconnectionProcess(socket);
     });
 }

@@ -1,0 +1,126 @@
+import QtQuick 2.15
+import QtQuick.Controls
+import QtQuick.Layouts
+import QtQuick.Window
+
+Window {
+    id:chatwidget
+    visible: true
+    width: 500
+    height: 600
+    // title: "QQ聊天窗口"
+    flags: Qt.FramelessWindowHint | Qt.Window
+
+
+    //拖动全局窗口
+    MouseArea{
+        id: dragArea
+        anchors.fill: parent
+        hoverEnabled: true
+        cursorShape: Qt.ArrowCursor
+
+        onPressed:function() {
+            cursorShape = Qt.ClosedHandCursor
+            chatwidget.startSystemMove()
+        }
+
+        onReleased:{
+            cursorShape = Qt.ArrowCursor
+        }
+    }
+
+
+    // 主布局
+    Column{
+        id:column
+        anchors.fill: parent
+        spacing: 2
+
+        TopBar{
+            id:topbar
+            Layout.alignment: Qt.AlignTop
+            Layout.topMargin: 5
+            text11.text:"群通知"
+            text11.font.pixelSize: 18
+        }
+
+        Text{
+            id: bin
+            text: "🗑️"
+            anchors.right: parent.right
+            anchors.rightMargin: 8
+            font.pixelSize: 18
+            // color: hovered ? "red" : "transparent"
+            TapHandler{
+                onTapped:{
+                    listModel.clear();
+                }
+            }
+        }
+
+        ListView {
+            id: notification
+            width: parent.width
+            height: parent.height-bin.height-topbar.height
+            model: listModel
+            spacing: 5 // 项间距
+
+            delegate: Rectangle {
+                width: notification.width
+                height: 60
+                color: mouseArea.containsMouse ? "#e0e0e0" : "transparent" // 悬停时灰色，否则交替色
+
+                // 添加鼠标区域
+                MouseArea {
+                    id: mouseArea
+                    anchors.fill: parent
+                    hoverEnabled: true // 启用悬停检测
+                    cursorShape: Qt.PointingHandCursor // 悬停时显示手型指针
+                    onClicked: {
+                        // 点击项的处理逻辑（可选）
+                        console.log("Clicked:", model.name1)
+                    }
+                }
+
+                RowLayout {
+                    anchors.fill: parent
+                    spacing: 10
+
+                    Image {
+                        Layout.preferredWidth: 40
+                        Layout.preferredHeight: 40
+                        source: model.image1 || "qrc:/default_avatar.png"
+                    }
+
+                    ColumnLayout {
+                        Layout.alignment: Qt.AlignLeft
+                        Label {
+                            text: model.name1
+                            font.bold: true
+                        }
+                        Label {
+                            text: model.aaction1
+                            color: "#666"
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    ListModel{
+        id: listModel
+        ListElement{
+            image1: "111.png"
+            name1: "111"
+            aaction1: "222"
+        }
+        ListElement{
+            image1: "111.png"
+            name1: "111"
+            aaction1: "222"
+        }
+    }
+
+
+}

@@ -17,7 +17,9 @@ public:
     ~MessageManager();
     void DisconnectionProcess(QTcpSocket *socket);
     static void SendResponse(QTcpSocket *socket, bool result, QString &content, QString &type);
+    // 命令处理
     void ProcessMessage(QTcpSocket *socket, const QByteArray &data);
+    // 消息转发
     void PrivateMessageForwarding(QTcpSocket *socket, const QJsonObject &content);
     void GroupMessageForwarding(QTcpSocket *socket, const QJsonObject &content);
 

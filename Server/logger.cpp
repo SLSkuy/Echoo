@@ -1,3 +1,6 @@
+// 日志类实现
+// 实现多个静态方法用于服务端格式化日志输出
+
 #include "logger.h"
 
 #include <QDebug>

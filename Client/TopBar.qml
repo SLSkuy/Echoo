@@ -6,6 +6,7 @@ import QtQuick.Window
 //titlebar
 Rectangle {
 
+    property alias text11: widgettext
         id: titleBar
         width: parent.width
         height: 40

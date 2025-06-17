@@ -1,4 +1,4 @@
-// Echoo 账号管理模块
+// Echoo账号管理模块
 // 包含多种对账号管理方法
 // 用户账号对象的创建等
 
@@ -20,6 +20,7 @@ public:
     void ExitConnection(QTcpSocket *socket);
     void ResponseInfo(QTcpSocket *socket, const QJsonObject &content);
     QTcpSocket *GetSocket(QString &account);
+    EchooUser *GetUser(QString &account);
 
 private:
     QMap<QString, QTcpSocket *> *_sockets; // account -> socket 在线的所有用户

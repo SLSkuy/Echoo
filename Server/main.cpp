@@ -6,7 +6,6 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-
     EchooServer server;
     if (!server.StartServer(QHostAddress::Any, 9382)) {
         // 服务端启动监听失败

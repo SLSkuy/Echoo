@@ -21,6 +21,18 @@ void MessageManager::DisconnectionProcess(QTcpSocket *socket)
     _accounts->ExitConnection(socket);
 }
 
+void MessageManager::SendResponse(QTcpSocket *socket, bool result, QString &content, QString &type)
+{
+    // 用于向客户端发送回应消息
+    QJsonObject obj;
+    obj["type"] = type;
+    obj["success"] = result;
+    obj["content"] = content;
+
+    QJsonDocument doc(obj);      // 构建JSON内容的文档容器，容纳具体的JSON内容
+    socket->write(doc.toJson()); // 序列化JSON数据进行传输
+}
+
 void MessageManager::ProcessMessage(QTcpSocket *socket, const QByteArray &data)
 {
     QJsonParseError err;
@@ -39,30 +51,31 @@ void MessageManager::ProcessMessage(QTcpSocket *socket, const QByteArray &data)
     } else if (type == "login") {
         // 登录检测
         _accounts->LoginDetection(socket, obj);
-    } else if (type == "privateMsg") {
-        // 消息转发
-        PrivateMessageForwarding(socket, obj);
     } else if (type == "accountInfo") {
         // 请求回应用户账号数据
         _accounts->ResponseInfo(socket, obj);
     } else if (type == "createGroup") {
-        // 创建新的群聊
-        _groups->CreateGroup(socket, obj);
+        // 创建群聊
+        QString groupAccount = _groups->CreateGroup(socket, obj);
+        QString groupOwner = obj["groupOwner"].toString();
+        EchooUser *owner = _accounts->GetUser(groupOwner);
+        if (owner) owner->AddGroup(groupAccount);
+    } else if (type == "removeGroup") {
+        // 删除群聊
+        QList<QString> member = _groups->RemoveGroup(socket, obj);
+        if (!member.isEmpty()) {
+            QString groupAccount = obj["groupAccout"].toString();
+            for (auto it = member.begin(); it != member.end(); ++it) {
+                _accounts->GetUser(*it)->ExitGroup(groupAccount);
+            }
+        }
     } else if (type == "groupMsg") {
         // 群聊消息转发
         GroupMessageForwarding(socket, obj);
+    } else if (type == "privateMsg") {
+        // 消息转发
+        PrivateMessageForwarding(socket, obj);
     }
-}
-
-void MessageManager::SendResponse(QTcpSocket *socket, bool result, QString &content, QString &type)
-{
-    QJsonObject obj;
-    obj["type"] = type;
-    obj["success"] = result;
-    obj["content"] = content;
-
-    QJsonDocument doc(obj);      // 构建JSON内容的文档容器，容纳具体的JSON内容
-    socket->write(doc.toJson()); // 序列化JSON数据进行传输
 }
 
 void MessageManager::PrivateMessageForwarding(QTcpSocket *socket, const QJsonObject &content)
@@ -80,6 +93,8 @@ void MessageManager::PrivateMessageForwarding(QTcpSocket *socket, const QJsonObj
         return;
     }
 
+    // 用户不存在或未登录，后续实现离线消息
+    // TODO
     QString response = "The user does not exist or is not online.";
     SendResponse(socket, false, response, type);
 }
@@ -99,6 +114,7 @@ void MessageManager::GroupMessageForwarding(QTcpSocket *socket, const QJsonObjec
         QTcpSocket *user = _accounts->GetSocket(memberAccount);
         if (user == nullptr) {
             // 用户不存在或未登录
+            // 后续实现离线消息
             // TODO
         } else {
             user->write(doc.toJson());
