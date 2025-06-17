@@ -1,3 +1,5 @@
+//单个消息列表
+
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts

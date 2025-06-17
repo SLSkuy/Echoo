@@ -1,3 +1,5 @@
+//总的主页面 可以选择展示不同的页面
+
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
@@ -25,6 +27,9 @@ FrameLessWindow {
             friend.onClicked:{
                 right.state= "friend"
             }
+            group.onClicked:{
+                right.state= "group"
+            }
         }
 
         Rectangle {
@@ -46,7 +51,8 @@ FrameLessWindow {
                 Loader {
                         id: delegateLoader
                         width: titleBar.width
-                        height: rootWindow.height - titleBar.height
+                        height:rootWindow.height - titleBar.heigh
+                        Layout.fillHeight: true
                 }
             }
             states: [
@@ -62,6 +68,13 @@ FrameLessWindow {
                     PropertyChanges {
                         target: delegateLoader
                         source:"Friendtotal.qml"
+                    }
+                },
+                State {
+                    name: "group"
+                    PropertyChanges {
+                        target: delegateLoader
+                        source: "Grouptotal.qml"
                     }
                 }
             ]

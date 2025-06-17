@@ -1,3 +1,6 @@
+//工具栏
+//位于主页面的左边
+
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
@@ -15,7 +18,7 @@ import QtQuick.Window
 
         property alias app: app
         property alias headPortrait: headPortrait
-        property alias collection: collection
+        property alias group: group
         property alias more: more
         property alias dynamic: dynamic
         property alias file: file
@@ -157,15 +160,15 @@ import QtQuick.Window
                 // }
             }
             Button{
-                id:dynamic
-                text:"🔯"
+                id:group
+                text:"👫"
                 Layout.preferredHeight:40
                 Layout.preferredWidth:40
                 Layout.leftMargin:10
                 // anchors.horizontalCenter: parent.horizontalCenter
                 background: Rectangle{
                     // color: dynamic.hovered ? "grey" : (dynamic.focus ? "skyblue" : "transparent")
-                    color: dynamic.hovered ? "grey" : "transparent"
+                    color:group.hovered ? "grey" : "transparent"
                 }
                 contentItem: Text {
                                 text: parent.text
@@ -234,15 +237,15 @@ import QtQuick.Window
                 }
             }
             Button{
-                id:collection
-                text:"💟"
+                id:dynamic
+                text:"🔯"
                 Layout.preferredHeight:40
                 Layout.preferredWidth:40
                 Layout.leftMargin:10
                 // anchors.horizontalCenter: parent.horizontalCenter
                 background: Rectangle{
-                    // color: collection.hovered ? "grey" : (collection.focus ? "skyblue" : "transparent")
-                    color: collection.hovered ? "grey" : "transparent"
+                    // color: dynamic.hovered ? "grey" : (dynamic.focus ? "skyblue" : "transparent")
+                    color: dynamic.hovered ? "grey" : "transparent"
                 }
                 contentItem: Text {
                                 text: parent.text

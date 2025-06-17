@@ -34,6 +34,8 @@ qt_add_qml_module(appEchoo-Client
         QML_FILES EditTitle.qml
         QML_FILES EditProfile.qml
         QML_FILES Maintotal.qml
+        QML_FILES GroupItem.qml
+        QML_FILES Grouptotal.qml
 )
 
 target_compile_features(appEchoo-Client PRIVATE cxx_std_23)
