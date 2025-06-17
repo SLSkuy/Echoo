@@ -33,6 +33,31 @@ qt_add_qml_module(appEchoo-Client
         QML_FILES Friends.qml
         QML_FILES EditTitle.qml
         QML_FILES EditProfile.qml
+        SOURCES netizen.h netizen.cpp
+        SOURCES
+        SOURCES group.h group.cpp
+        SOURCES databasemanager.h databasemanager.cpp
+        SOURCES communicator.h communicator.cpp
+        SOURCES message.h message.cpp
+        SOURCES
+)
+
+source_group("QML Files" FILES
+    StartWindow.qml LoginForm.qml TitleBar.qml RegForm.qml ToolBars.qml
+    ChatWidget.qml
+    TopBar.qml
+    MainpagetitleBar.qml
+    FrameLessWindow.qml
+    Messagetotal.qml
+    MessageItem.qml
+    EmojiPopup.qml
+    PersonPage.qml
+    FriendItem.qml
+    Friendtotal.qml
+    Friendlist.qml
+    Friends.qml
+    EditTitle.qml
+    EditProfile.qml
 )
 
 target_compile_features(appEchoo-Client PRIVATE cxx_std_23)
