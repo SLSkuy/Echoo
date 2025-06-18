@@ -19,7 +19,7 @@ Rectangle {
             // 窗口标题
             Text {
                 id:widgettext
-                text: "name"
+                text: nameMessage.text
                 color: "black"
                 font.pixelSize: 14
                 Layout.leftMargin: 10

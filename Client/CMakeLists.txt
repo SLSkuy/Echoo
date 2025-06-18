@@ -41,6 +41,7 @@ qt_add_qml_module(appEchoo-Client
         QML_FILES Friendnotification.qml
         QML_FILES SelectFriends.qml
         QML_FILES SelectTitleBar.qml
+        QML_FILES Friendpersonpage.qml
 )
 
 target_compile_features(appEchoo-Client PRIVATE cxx_std_23)
