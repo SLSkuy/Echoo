@@ -12,6 +12,7 @@ class Communicator : public QObject
     Q_OBJECT
 public:
     Communicator();
+    void BroadcastPresence(QJsonObject &obj);
 
     // 消息传输
     void SendMessage(Message *message);
@@ -29,4 +30,5 @@ private:
     quint16 m_tcpPort;
 
     void OnUdpReadyRead();
+    void OnNewTcpConnection();
 };
