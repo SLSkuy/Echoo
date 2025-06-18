@@ -18,8 +18,8 @@ public:
     Q_INVOKABLE void Register(const QString &nickName, const QString &account, const QString &password);
 
     // 消息功能
-    Q_INVOKABLE void SendMessage(QString &receiver, QString &content);
-    Q_INVOKABLE void SendGroupMessage(QString &group, QString &content);
+    Q_INVOKABLE void SendMessage(QString &receiverAccount, QString &content);
+    Q_INVOKABLE void SendGroupMessage(QString &groupAccount, QString &content);
 
 signals:
     void loginSuccess(bool result);

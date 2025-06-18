@@ -25,3 +25,7 @@ bool Netizen::LoginDetection(const QString &password)
     }
     return false;
 }
+
+void Netizen::SendMessage(Netizen *receiver, Message *msg) {}
+
+void Netizen::SendGroupMessage(Group *group, Message *msg) {}

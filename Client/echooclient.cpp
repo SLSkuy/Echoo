@@ -1,5 +1,6 @@
 #include "databasemanager.h"
 #include "echooclient.h"
+#include "message.h"
 #include "netizen.h"
 #include "logger.h"
 
@@ -40,6 +41,23 @@ void EchooClient::Register(const QString &nickName, const QString &account, cons
     emit registerSuccess(true);
 }
 
-void EchooClient::SendMessage(QString &receiver, QString &content) {}
+void EchooClient::SendMessage(QString &receiverAccount, QString &content)
+{
+    // 从数据库获取发送对象指针
+    Netizen *receiver = DatabaseManager::instance()->GetNetizen(receiverAccount);
+    QDateTime curTime = QDateTime::currentDateTime();
 
-void EchooClient::SendGroupMessage(QString &group, QString &content) {}
+    // 创建消息实体对象,接受者设置为空用于委托检测是否有对应好友
+    Message *msg = new Message(_user, nullptr, content, curTime);
+    _user->SendMessage(receiver, msg);
+}
+
+void EchooClient::SendGroupMessage(QString &groupAccount, QString &content)
+{
+    Group *receiver = DatabaseManager::instance()->GetGroup(groupAccount);
+    QDateTime curTime = QDateTime::currentDateTime();
+
+    // 创建消息实体
+    Message *msg = new Message(_user, nullptr, content, curTime);
+    _user->SendGroupMessage(receiver, msg);
+}

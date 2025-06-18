@@ -1,5 +1,4 @@
 #include "databasemanager.h"
-#include "netizen.h"
 
 // 初始化单例指针
 DatabaseManager *DatabaseManager::m_instance = nullptr;
@@ -37,6 +36,12 @@ bool DatabaseManager::RemoveNetizen(const QString &account)
 }
 
 Netizen *DatabaseManager::GetNetizen(const QString &account)
+{
+    // TODO
+    return nullptr;
+}
+
+Group *DatabaseManager::GetGroup(const QString &account)
 {
     // TODO
     return nullptr;

@@ -3,6 +3,7 @@
 #include <QString>
 
 #include "netizen.h"
+class Group;
 
 class DatabaseManager
 {
@@ -16,6 +17,7 @@ public:
     bool AddNetizen(Netizen *user);
     bool RemoveNetizen(const QString &account);
     Netizen *GetNetizen(const QString &account);
+    Group *GetGroup(const QString &account);
 
     // 数据管理
     bool loadFromDatabase();
