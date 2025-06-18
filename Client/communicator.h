@@ -1,17 +1,20 @@
 #pragma once
 
-#include <QTcpServer>
 #include <QUdpSocket>
+#include <QTcpServer>
 #include <QTcpSocket>
 
-#include "message.h"
-#include "group.h"
+class Group;
+class Message;
+class Netizen;
 
 class Communicator : public QObject
 {
     Q_OBJECT
 public:
-    Communicator();
+    Communicator(Netizen *netizen);
+    ~Communicator();
+    void BroadcastPresence(QJsonObject &obj);
 
     // 消息传输
     void SendMessage(Message *message);
@@ -22,9 +25,15 @@ signals:
     void groupMessageReceived(Group *group, Message *message);
 
 private:
-    QUdpSocket* m_udpSocket;
-    QTcpSocket* m_tcpServer;
-    QTcpSocket* m_tcpClientSocket;
+    Netizen *_netizen;
+    QUdpSocket *_udpSocket;
+    QTcpServer *_tcpServer;
+    QTcpSocket *_tcpClientSocket;
     quint16 m_udpPort;
     quint16 m_tcpPort;
+
+    void OnUdpReadyRead();
+    void OnlineProcess(QJsonObject &obj);
+    void OfflineProcess(QJsonObject &obj);
+    void OnNewTcpConnection();
 };

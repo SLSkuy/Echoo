@@ -2,8 +2,6 @@
 
 #include <QTcpSocket>
 
-class DatabaseManager;
-class Communicator;
 class Message;
 class Netizen;
 class Group;
@@ -14,10 +12,14 @@ class EchooClient : public QObject
 public:
     explicit EchooClient(QObject *parent = nullptr);
     ~EchooClient();
-    Q_INVOKABLE bool Login(const QString &account, const QString &password); // 暴露给qml使用
-    Q_INVOKABLE bool Register(const QString &nickName, const QString &account, const QString &password);
-    Q_INVOKABLE void SendMessage(Message *msg);
-    Q_INVOKABLE void SendGroupMessage(Message *msg, Group *group);
+
+    // 账号功能
+    Q_INVOKABLE void Login(const QString &account, const QString &password); // 暴露给qml使用
+    Q_INVOKABLE void Register(const QString &nickName, const QString &account, const QString &password);
+
+    // 消息功能
+    Q_INVOKABLE void SendMessage(QString &receiverAccount, QString &content);
+    Q_INVOKABLE void SendGroupMessage(QString &groupAccount, QString &content);
 
 signals:
     void loginSuccess(bool result);
@@ -26,15 +28,10 @@ signals:
     void groupMessageReceived(Group *group, Message *msg);
 
 private slots:
-    void onConnected();
-    void onDisconnected();
-    void onReadyRead();
+    // 消息处理
+    void messageProcess(Message *msg);
+    void groupMessageProcess(Group *group, Message *msg);
 
 private:
     Netizen *_user;
-    Communicator *_cmc;
-    DatabaseManager *_dm;
-
-    void InitCommunicator();
-    void GetNetizenInfo();
 };

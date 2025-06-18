@@ -1,12 +1,17 @@
 #pragma once
 
+#include <QObject>
 #include <QString>
 #include <QList>
 
-class Group
+class Group : public QObject
 {
+    Q_OBJECT
 public:
-    Group();
+    explicit Group(const QString &groupName,const QString &account,QObject *parent = nullptr);
+
+    QString GetGroupName() { return m_groupName; }
+    QString GetGroupAccount() { return m_account; }
 
 private:
     QString m_account;

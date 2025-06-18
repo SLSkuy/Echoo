@@ -1,18 +1,29 @@
 #pragma once
 
-#include <QString>
+#include <QObject>
 #include <QDateTime>
 
-class Message
+class Netizen;
+
+class Message : public QObject
 {
+    Q_OBJECT
 public:
-    enum MessageType { text, image, file };
-    Message();
+    enum ReceiverType { Individual, Group };
+
+    Message(Netizen *sender,
+            QObject *receiver,
+            const QString &content,
+            const QDateTime &timestamp,
+            QObject *parent = nullptr);
+
+    // 使用Json作为消息传输媒介
+    QByteArray ToJson();
+    Message *FromJson(const QByteArray &data);
 
 private:
-    QString m_from;
-    QString m_to;
+    Netizen *m_sender;
+    QObject *m_receiver; // 可以是Netizen或Group
     QString m_content;
-    QDateTime m_time;
-    MessageType m_type;
+    QDateTime m_timestamp;
 };
