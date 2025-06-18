@@ -39,6 +39,8 @@ qt_add_qml_module(appEchoo-Client
         QML_FILES GroupChat.qml
         QML_FILES Groupnotification.qml
         QML_FILES Friendnotification.qml
+        QML_FILES SelectFriends.qml
+        QML_FILES SelectTitleBar.qml
 )
 
 target_compile_features(appEchoo-Client PRIVATE cxx_std_23)

@@ -62,6 +62,12 @@ Window {
                     onClicked: {
                         // 实现发起群聊的逻辑
                         console.log("发起群聊");
+                        var component  = Qt.createComponent("SelectFriends.qml");
+                        if (component.status === Component.Ready) {
+                            var selectfirends = component.createObject(parent);
+                            selectfirends.show();
+
+                        }
                     }
                     background: Rectangle {
                            color: "white"  // 设置背景颜色为白色

@@ -261,8 +261,10 @@ FrameLessWindow {
                 Layout.alignment: Qt.AlignBottom | Qt.AlignLeft // 底部对齐，左对齐
                 Layout.margins: 10 // 边距
                 onClicked:{
-                    username.text=nicknameField.text
-                    signature.text="            "+signatureField.text
+                    if(nicknameField.text.length>0)
+                        username.text=nicknameField.text
+                    if(signatureField.text.length>0)
+                        signature.text="            "+signatureField.text
                     if(genderCombo.currentText=="男"){
                         sex.text= "\u2642"
                         sex.color= "blue"
@@ -272,6 +274,7 @@ FrameLessWindow {
                         sex.color="pink"
                     }
                     region.text="        "+regionCombo.currentText
+
                     headPortrait.source=_image.source
                     myself_tx.source=_image.source
                     _editprofile.close()

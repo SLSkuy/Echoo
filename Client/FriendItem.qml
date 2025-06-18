@@ -11,11 +11,23 @@ Rectangle {
 
     // color: hovered ? "grey" : "transparent"
     // color: "black"
-    color: mouseArea.containsMouse ? "#E6E6E6" : "transparent"
+    property bool isSelected: false  // 新增选中状态
+
+        color: {
+            if (isSelected) {
+                "lightblue"  // 选中状态保持蓝色
+            } else if (mouseArea.containsMouse) {
+                "#E6E6E6"  // 悬停时变灰
+            } else {
+                "transparent"  // 默认透明
+            }
+        }
+
 
     property alias headPortrait : headPortrait
     property alias name : name
     property alias sign : sign
+        property alias mouseAreall: mouseArea
 
     RowLayout{
         id: row
@@ -60,6 +72,12 @@ Rectangle {
         id: mouseArea
         anchors.fill: parent
         hoverEnabled: true
+        // focus: true
+        onDoubleClicked: {
+                    isSelected = true
+                        // 点击后保持蓝色
+                }
+
 
     }
 
