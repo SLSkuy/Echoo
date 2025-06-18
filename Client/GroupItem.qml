@@ -55,12 +55,20 @@ Rectangle{
         anchors.fill: parent
         hoverEnabled: true
 
-        onClicked:{
-            var component  = Qt.createComponent("GroupChat.qml");
-            if (component.status === Component.Ready) {
-                var groupchat = component.createObject(parent);
-                groupchat.show();
-             }
+        property var groupchat: null;
+        onClicked: {
+            if(!groupchat) {
+                var component = Qt.createComponent("GroupChat.qml");
+                if (component.status === Component.Ready) {
+                    groupchat = component.createObject(root, {
+                        "flags": Qt.Window // 确保是独立窗口
+                    });
+                }
+            }
+            groupchat.show();
+            groupchat.raise(); // 关键：置顶窗口
+            groupchat.requestActivate(); // 激活窗口
+            // unreadCount.text = "0"; //点击进聊天界面就会让未读消息清零
         }
     }
 

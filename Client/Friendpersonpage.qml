@@ -14,7 +14,6 @@ FrameLessWindow{
 
 
     ColumnLayout{
-        // anchors.fill:parent
         RowLayout{
             Rectangle {
                 Layout.topMargin:20
@@ -78,71 +77,35 @@ FrameLessWindow{
                 }
             }
         }
-        // RowLayout{
-        //     Text{
-        //         id:szd
-        //         text:"所在地"
-        //         Layout.topMargin:20
-        //         Layout.leftMargin:10
-        //         Layout.rightMargin:10
-        //         font.pixelSize: 20
-        //         Layout.alignment: Qt.AlignVCenter
+        RowLayout{
+            Text{
+                id:szd
+                text:"所在地"
+                Layout.topMargin:20
+                Layout.leftMargin:10
+                Layout.rightMargin:10
+                font.pixelSize: 20
+                Layout.alignment: Qt.AlignVCenter
 
-        //     }
-        //     Rectangle{
-        //         Layout.alignment: Qt.AlignVCenter
-        //         Text{
-        //             id:szd_nr
-        //             text:"        中国重庆市"
-        //             font.pixelSize: 15
-        //             Layout.alignment: Qt.AlignVCenter
-        //             Layout.fillWidth: true
+            }
+            Rectangle{
+                Layout.alignment: Qt.AlignVCenter
+                Text{
+                    id:szd_nr
+                    text:"        中国重庆市"
+                    font.pixelSize: 15
+                    Layout.alignment: Qt.AlignVCenter
+                    Layout.fillWidth: true
 
 
 
-        //         }
-        //     }
-        // }
+                }
+            }
+        }
 
 
     }
-    // Button{
-    //     id:bjzl
-    //     text:"编辑资料"
-    //     width:150
-    //     anchors.bottomMargin:10
-    //     anchors.bottom:parent.bottom
-    //     anchors.left:parent.left
-    //     anchors.leftMargin:10
-    //     MouseArea {
-    //         id: ma
-    //         anchors.fill: parent
-    //         hoverEnabled: true
 
-    //         property var editprofile: null // 用于存储 personpage 对象的引用
-    //         property bool isEditProfileVisible: false // 用于跟踪窗口的可见性状态
-
-    //             onClicked: {
-    //                 var component = Qt.createComponent("EditProfile.qml");
-    //                 if (component.status === Component.Ready) {
-    //                     if (editprofile === null) {
-    //                         // 如果 personpage 尚未创建，则创建它
-    //                         editprofile = component.createObject(null, {
-    //                             flags: Qt.Window | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
-    //                         });
-    //                         editprofile.visible = true; // 初始设置为可见
-    //                         isEditProfileVisible = true;
-    //                     } else {
-    //                         // 如果 editprofile 已经存在，切换其可见性
-    //                         editprofile.visible = !isEditProfileVisible;
-    //                         isEditProfileVisible = !isEditProfileVisible; // 更新状态
-    //                     }
-    //                 }
-    //             }
-    //     }
-
-
-    // }
     Button{
         id:fsxx
         text:"发送消息"
@@ -151,14 +114,20 @@ FrameLessWindow{
         anchors.bottomMargin:10
         anchors.right:parent.right
         anchors.rightMargin:10
+        property var chatWidget: null;
         onClicked: {
-            var component2  = Qt.createComponent("ChatWidget.qml");
-            if (component2.status === Component.Ready) {
-                var chatWidget = component2.createObject(parent);
-                chatWidget.show();
-                unreadCount.text = "0"
-                root.unreadCountContainer.visible = false
-             }
+            if(!chatWidget) {
+                var component = Qt.createComponent("ChatWidget.qml");
+                if (component.status === Component.Ready) {
+                    chatWidget = component.createObject(root, {
+                        "flags": Qt.Window // 确保是独立窗口
+                    });
+                }
+            }
+            chatWidget.show();
+            chatWidget.raise(); // 关键：置顶窗口
+            chatWidget.requestActivate(); // 激活窗口
+            // unreadCount.text = "0"; //点击进聊天界面就会让未读消息清零
         }
 
     }

@@ -12,7 +12,7 @@ Rectangle{
     property alias unreadCount: _unreadCount
     property alias unreadCountContainer : _unreadCountContainer
 
-    property bool isGroup: false
+    property bool isGroup: false //判断当前ListView的条目为群聊的还是私聊的
 
     id: root
     // height: 70
@@ -98,26 +98,39 @@ Rectangle{
         anchors.fill: parent
         hoverEnabled: true
 
-        onClicked:{
+        //设置初始值为null
+        property var groupchat: null;
+        property var chatWidget: null;
+        onClicked: {
             if(isGroup){
-                var component1  = Qt.createComponent("GroupChat.qml");
-                if (component1.status === Component.Ready) {
-                    var groupchat = component1.createObject(parent);
-                    groupchat.show();
-                    unreadCount.text = "0"
-                    root.unreadCountContainer.visible = false
-                 }
-            }else{
-                var component2  = Qt.createComponent("ChatWidget.qml");
-                if (component2.status === Component.Ready) {
-                    var chatWidget = component2.createObject(parent);
-                    chatWidget.show();
-                    unreadCount.text = "0"
-                    root.unreadCountContainer.visible = false
-                 }
+                if(!groupchat) {
+                    var component1 = Qt.createComponent("GroupChat.qml");
+                    if (component1.status === Component.Ready) {
+                        groupchat = component1.createObject(root, {
+                            "flags": Qt.Window // 确保是独立窗口
+                        });
+                    }
+                }
+                groupchat.show();
+                groupchat.raise(); // 关键：置顶窗口
+                groupchat.requestActivate(); // 激活窗口
+            } else {
+                if(!chatWidget) {
+                    var component2 = Qt.createComponent("ChatWidget.qml");
+                    if (component2.status === Component.Ready) {
+                        chatWidget = component2.createObject(root, {
+                            "flags": Qt.Window
+                        });
+                    }
+                }
+                chatWidget.show();
+                chatWidget.raise();
+                chatWidget.requestActivate();
             }
+            unreadCount.text = "0"; //点击进聊天界面就会让未读消息清零
         }
     }
+
 
     // 分割线
     Rectangle {
