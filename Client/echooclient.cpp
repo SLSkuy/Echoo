@@ -1,9 +1,24 @@
+#include "databasemanager.h"
 #include "echooclient.h"
+#include "netizen.h"
 
-EchooClient::EchooClient(QObject *parent) : QObject(parent) {}
-
-bool Login(QString account, QString password)
+EchooClient::EchooClient(QObject *parent) : QObject(parent)
 {
-    // TODO
-    return true;
+    _dm = new DatabaseManager;
+}
+
+EchooClient::~EchooClient()
+{
+    delete _dm;
+}
+
+bool EchooClient::Login(const QString &account, const QString &password)
+{
+    Netizen *user = nullptr;
+    if (_dm->Contains(account)) {
+        // TODO
+        user = _dm->GetNetizen(account);
+        return user->LoginDetection(password);
+    }
+    return false;
 }
