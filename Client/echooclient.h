@@ -27,6 +27,11 @@ signals:
     void messageReceived(Message *msg);
     void groupMessageReceived(Group *group, Message *msg);
 
+private slots:
+    // 消息处理
+    void messageProcess(Message *msg);
+    void groupMessageProcess(Group *group, Message *msg);
+
 private:
     Netizen *_user;
 };

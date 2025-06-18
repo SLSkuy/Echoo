@@ -23,6 +23,9 @@ DatabaseManager::DatabaseManager()
     // 测试用户数据
     Netizen *newUser = new Netizen("SL_Skuy", "123", "123");
     AddNetizen(newUser);
+
+    Netizen *newUser2 = new Netizen("Yumikaze", "0721", "0721");
+    AddNetizen(newUser2);
 }
 
 bool DatabaseManager::AddNetizen(Netizen *user)

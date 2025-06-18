@@ -22,6 +22,9 @@ bool Netizen::LoginDetection(const QString &password)
 {
     if (password == m_password) {
         _cmc = new Communicator;
+        // 连接信号
+        connect(_cmc, &Communicator::messageReceived, this, &Netizen::messageReceived);
+        connect(_cmc, &Communicator::groupMessageReceived, this, &Netizen::groupMessageReceived);
 
         // 广播在线消息
         QJsonObject obj;
