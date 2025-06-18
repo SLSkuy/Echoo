@@ -3,32 +3,11 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Window
 
-Window {
+FrameLessWindow {
     id:chatwidget
-    visible: true
+    // visible: true
     width: 500
     height: 600
-    // title: "QQ聊天窗口"
-    flags: Qt.FramelessWindowHint | Qt.Window
-
-
-    //拖动全局窗口
-    MouseArea{
-        id: dragArea
-        anchors.fill: parent
-        hoverEnabled: true
-        cursorShape: Qt.ArrowCursor
-
-        onPressed:function() {
-            cursorShape = Qt.ClosedHandCursor
-            chatwidget.startSystemMove()
-        }
-
-        onReleased:{
-            cursorShape = Qt.ArrowCursor
-        }
-    }
-
 
     // 主布局
     Column{
@@ -83,8 +62,8 @@ Window {
                 }
 
                 RowLayout {
-                    anchors.fill: parent
-                    spacing: 10
+                    // anchors.fill: parent
+                    spacing: 15
 
                     Image {
                         Layout.preferredWidth: 40
