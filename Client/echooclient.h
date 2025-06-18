@@ -14,8 +14,12 @@ class EchooClient : public QObject
 public:
     explicit EchooClient(QObject *parent = nullptr);
     ~EchooClient();
-    Q_INVOKABLE bool Login(const QString &account, const QString &password); // 暴露给qml使用
-    Q_INVOKABLE bool Register(const QString &nickName, const QString &account, const QString &password);
+
+    // 账号功能
+    Q_INVOKABLE void Login(const QString &account, const QString &password); // 暴露给qml使用
+    Q_INVOKABLE void Register(const QString &nickName, const QString &account, const QString &password);
+
+    // 消息功能
     Q_INVOKABLE void SendMessage(Message *msg);
     Q_INVOKABLE void SendGroupMessage(Message *msg, Group *group);
 
@@ -24,11 +28,6 @@ signals:
     void registerSuccess(bool result);
     void messageReceived(Message *msg);
     void groupMessageReceived(Group *group, Message *msg);
-
-private slots:
-    void onConnected();
-    void onDisconnected();
-    void onReadyRead();
 
 private:
     Netizen *_user;

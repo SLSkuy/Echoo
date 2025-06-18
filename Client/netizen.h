@@ -24,8 +24,12 @@ public:
     bool IsOnline() { return m_isOnline; };
 
     // 账号功能
-    bool LoginDetection(const QString &password) { return password == m_password; };
-    void Logout();
+    bool LoginDetection(const QString &password)
+    {
+        m_isOnline = (password == m_password);
+        return m_isOnline;
+    };
+    void Logout() { m_isOnline = false; };
 
     // 好友管理
     bool AddFriend(Netizen *user);
