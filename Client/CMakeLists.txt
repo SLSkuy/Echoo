@@ -63,6 +63,7 @@ source_group("QML Files" FILES
     GroupItem.qml
     Grouptotal.qml
     Maintotal.qml
+    QML_FILES Groupnotification.qml
 )
 
 target_compile_features(appEchoo-Client PRIVATE cxx_std_23)
