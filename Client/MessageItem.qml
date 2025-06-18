@@ -12,9 +12,12 @@ Rectangle{
     property alias unreadCount: _unreadCount
     property alias unreadCountContainer : _unreadCountContainer
 
+    property bool isGroup: false
+
     id: root
     // height: 70
     color: mouseArea.containsMouse ? "#E6E6E6" : "transparent"
+
 
     RowLayout {
         anchors.fill: parent
@@ -96,13 +99,23 @@ Rectangle{
         hoverEnabled: true
 
         onClicked:{
-            var component  = Qt.createComponent("ChatWidget.qml");
-            if (component.status === Component.Ready) {
-                var chatWidget = component.createObject(parent);
-                chatWidget.show();
-                unreadCount.text = "0"
-                root.unreadCountContainer.visible = false
-             }
+            if(isGroup){
+                var component1  = Qt.createComponent("GroupChat.qml");
+                if (component1.status === Component.Ready) {
+                    var groupchat = component1.createObject(parent);
+                    groupchat.show();
+                    unreadCount.text = "0"
+                    root.unreadCountContainer.visible = false
+                 }
+            }else{
+                var component2  = Qt.createComponent("ChatWidget.qml");
+                if (component2.status === Component.Ready) {
+                    var chatWidget = component2.createObject(parent);
+                    chatWidget.show();
+                    unreadCount.text = "0"
+                    root.unreadCountContainer.visible = false
+                 }
+            }
         }
     }
 
