@@ -21,10 +21,13 @@ Netizen::~Netizen()
 bool Netizen::LoginDetection(const QString &password)
 {
     if (password == m_password) {
-        _cmc = new Communicator(this);
         // 连接信号
+        _cmc = new Communicator(this);
         connect(_cmc, &Communicator::messageReceived, this, &Netizen::messageReceived);
         connect(_cmc, &Communicator::groupMessageReceived, this, &Netizen::groupMessageReceived);
+
+        // 设置在线信息
+        m_isOnline = true;
 
         // 广播在线消息
         QJsonObject obj;
@@ -32,8 +35,6 @@ bool Netizen::LoginDetection(const QString &password)
         obj["account"] = m_account;
         obj["online"] = true;
         _cmc->BroadcastPresence(obj);
-
-        m_isOnline = true;
         return true;
     }
     return false;

@@ -10,6 +10,7 @@
 
 #include "communicator.h"
 #include "databasemanager.h"
+#include "logger.h"
 
 Communicator::Communicator(Netizen *netizen) : _netizen(netizen), QObject(netizen)
 {
@@ -27,14 +28,15 @@ Communicator::Communicator(Netizen *netizen) : _netizen(netizen), QObject(netize
 
 Communicator::~Communicator()
 {
+    // 发送离线消息
     QJsonObject response;
     response["nickName"] = _netizen->GetNickname();
     response["account"] = _netizen->GetAccount();
-    response["online"] = true;
+    response["online"] = false;
     BroadcastPresence(response);
 
-    _udpSocket->close();
-    _tcpServer->close();
+    _udpSocket->deleteLater();
+    _tcpServer->deleteLater();
 }
 
 void Communicator::BroadcastPresence(QJsonObject &obj)
@@ -88,7 +90,10 @@ void Communicator::OnlineProcess(QJsonObject &obj)
             QJsonObject response;
             response["nickName"] = _netizen->GetNickname();
             response["account"] = _netizen->GetAccount();
+            response["online"] = true;
             BroadcastPresence(response);
+
+            Logger::Log(account + " online.");
         }
     } else {
         // 不存在该用户，则添加
@@ -100,7 +105,10 @@ void Communicator::OnlineProcess(QJsonObject &obj)
         QJsonObject response;
         response["nickName"] = _netizen->GetNickname();
         response["account"] = _netizen->GetAccount();
+        response["online"] = true;
         BroadcastPresence(response);
+
+        Logger::Log(account + " online.");
     }
 }
 
@@ -111,7 +119,7 @@ void Communicator::OfflineProcess(QJsonObject &obj)
         auto netizen = DatabaseManager::instance()->GetNetizen(account);
         if (netizen->IsOnline()) {
             netizen->SetOnline(false);
-            qDebug() << account << " went offline";
+            Logger::Log(account + " went offline.");
         }
     }
 }
