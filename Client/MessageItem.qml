@@ -10,6 +10,7 @@ Rectangle{
     property alias lastMessage: _lastMessage
     property alias time: _time
     property alias unreadCount: _unreadCount
+    property alias unreadCountContainer : _unreadCountContainer
 
     id: root
     // height: 70
@@ -51,6 +52,7 @@ Rectangle{
                 // 时间
                 Label {
                     id: _time
+                    Layout.rightMargin: 10
                     text: root.time
                     font.pixelSize: 12
                     color: "darkgrey"
@@ -69,16 +71,18 @@ Rectangle{
 
         // 未读消息计数
         Rectangle {
+            id: _unreadCountContainer
             implicitHeight: 20
             implicitWidth: 20
             radius: 10
             color: "red"
             Layout.rightMargin: 10
             Layout.bottomMargin: 5
+            visible: parseInt(root.unreadCount.text) > 0 // 只有当未读消息数大于0时才显示
 
             Label {
                 anchors.centerIn: parent
-                id:_unreadCount
+                id: _unreadCount
                 color: "white"
                 font.pixelSize: 12
             }
@@ -96,6 +100,8 @@ Rectangle{
             if (component.status === Component.Ready) {
                 var chatWidget = component.createObject(parent);
                 chatWidget.show();
+                unreadCount.text = "0"
+                root.unreadCountContainer.visible = false
              }
         }
     }

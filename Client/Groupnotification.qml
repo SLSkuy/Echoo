@@ -77,9 +77,15 @@ FrameLessWindow {
                             text: model.name1
                             font.bold: true
                         }
-                        Label {
-                            text: model.aaction1
-                            color: "#666"
+                        RowLayout{
+                            Label {
+                                text: model.aaction1
+                                color: "#666"
+                            }
+                            Label{
+                                text: "  " + model.groupname
+                                color:"blue"
+                            }
                         }
                     }
                 }
@@ -92,14 +98,14 @@ FrameLessWindow {
         ListElement{
             image1: "111.png"
             name1: "111"
-            aaction1: "222"
+            aaction1: "加入"
+            groupname: "abc"
         }
         ListElement{
             image1: "111.png"
             name1: "111"
-            aaction1: "222"
+            aaction1: "退出"
+            groupname: "abc"
         }
     }
-
-
 }
