@@ -5,6 +5,7 @@
 #include <QString>
 #include <QList>
 
+class Communicator;
 class Message;
 class Group;
 
@@ -24,11 +25,7 @@ public:
     bool IsOnline() { return m_isOnline; };
 
     // 账号功能
-    bool LoginDetection(const QString &password)
-    {
-        m_isOnline = (password == m_password);
-        return m_isOnline;
-    };
+    bool LoginDetection(const QString &password);
     void Logout() { m_isOnline = false; };
 
     // 好友管理
@@ -36,8 +33,8 @@ public:
     bool RemoveFriend(const QString &account);
 
     // 消息功能
-    void SendMessage(Netizen *receiver, const QString &content);
-    void SendGroupMessage(Group *group, const QString &content);
+    void SendMessage(Netizen *receiver, Message *msg);
+    void SendGroupMessage(Group *group, Message *msg);
 
     // 群组功能
     bool CreateGroup(const QString &name, const QString &owner);
@@ -56,4 +53,7 @@ private:
 
     QList<Netizen *> m_friends;
     QList<Group *> m_groups;
+
+    // p2p服务
+    Communicator *_cmc;
 };

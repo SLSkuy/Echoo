@@ -22,9 +22,9 @@ signals:
     void groupMessageReceived(Group *group, Message *message);
 
 private:
-    QUdpSocket* m_udpSocket;
-    QTcpSocket* m_tcpServer;
-    QTcpSocket* m_tcpClientSocket;
+    QUdpSocket *m_udpSocket;
+    QTcpSocket *m_tcpServer;
+    QTcpSocket *m_tcpClientSocket;
     quint16 m_udpPort;
     quint16 m_tcpPort;
 };

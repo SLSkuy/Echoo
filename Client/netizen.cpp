@@ -1,3 +1,4 @@
+#include "communicator.h"
 #include "netizen.h"
 
 Netizen::Netizen(QObject *parent) : QObject(parent) {}
@@ -10,4 +11,17 @@ Netizen::Netizen(const QString &nickName, const QString &account, const QString 
     , QObject(parent)
 {}
 
-Netizen::~Netizen() {}
+Netizen::~Netizen()
+{
+    delete _cmc;
+}
+
+bool Netizen::LoginDetection(const QString &password)
+{
+    if (password == m_password) {
+        _cmc = new Communicator;
+        m_isOnline = true;
+        return true;
+    }
+    return false;
+}
