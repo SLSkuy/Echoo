@@ -2,7 +2,8 @@
 
 #include <QObject>
 #include <QDateTime>
-#include "netizen.h"
+
+class Netizen;
 
 class Message : public QObject
 {
@@ -16,9 +17,9 @@ public:
             const QDateTime &timestamp,
             QObject *parent = nullptr);
 
-    // 序列化方法
-    QByteArray serialize() const;
-    static Message *deserialize(const QByteArray &data);
+    // 使用Json作为消息传输媒介
+    QByteArray ToJson();
+    Message *FromJson(const QByteArray &data);
 
 private:
     Netizen *m_sender;

@@ -4,7 +4,11 @@
 #include "netizen.h"
 #include "logger.h"
 
-EchooClient::EchooClient(QObject *parent) : QObject(parent) {}
+EchooClient::EchooClient(QObject *parent) : QObject(parent)
+{
+    connect(_user,&Netizen::messageReceived,this,&EchooClient::messageReceived);
+    connect(_user,&Netizen::groupMessageReceived,this,&EchooClient::groupMessageReceived);
+}
 
 EchooClient::~EchooClient()
 {

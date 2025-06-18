@@ -5,9 +5,9 @@
 #include <QString>
 #include <QList>
 
+class Group;
 class Communicator;
 class Message;
-class Group;
 
 class Netizen : public QObject
 {

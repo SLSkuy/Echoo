@@ -1,11 +1,11 @@
 #pragma once
 
-#include <QTcpServer>
 #include <QUdpSocket>
+#include <QTcpServer>
 #include <QTcpSocket>
 
-#include "message.h"
-#include "group.h"
+class Group;
+class Message;
 
 class Communicator : public QObject
 {
@@ -23,8 +23,10 @@ signals:
 
 private:
     QUdpSocket *m_udpSocket;
-    QTcpSocket *m_tcpServer;
+    QTcpServer *m_tcpServer;
     QTcpSocket *m_tcpClientSocket;
     quint16 m_udpPort;
     quint16 m_tcpPort;
+
+    void OnUdpReadyRead();
 };

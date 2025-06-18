@@ -3,6 +3,7 @@
 #include <QString>
 
 #include "netizen.h"
+
 class Group;
 
 class DatabaseManager
