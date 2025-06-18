@@ -34,6 +34,6 @@ private:
     Communicator *_cmc;
     DatabaseManager *_dm;
 
+    // 初始化相关
     void InitCommunicator();
-    void GetNetizenInfo();
 };

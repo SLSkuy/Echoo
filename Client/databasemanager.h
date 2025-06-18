@@ -17,5 +17,9 @@ public:
     void RemoveNetizen(const QString &account);
     Netizen *GetNetizen(const QString &account);
 
+    // 数据管理
+    void LoadFromDatabase();
+    void SaveToDatabase();
+
 private:
 };
