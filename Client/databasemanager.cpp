@@ -1,4 +1,5 @@
 #include "databasemanager.h"
+#include "logger.h"
 
 // 初始化单例指针
 DatabaseManager *DatabaseManager::m_instance = nullptr;
@@ -17,28 +18,30 @@ void DatabaseManager::destroy()
     }
 }
 
-bool DatabaseManager::Contains(const QString &account)
+DatabaseManager::DatabaseManager()
 {
-    // TODO
-    return true;
+    // 测试用户数据
+    Netizen *newUser = new Netizen("SL_Skuy", "123", "123");
+    AddNetizen(newUser);
 }
 
 bool DatabaseManager::AddNetizen(Netizen *user)
 {
-    // TODO
-    return true;
+    // 检测是否存在对应用户
+    if (user && !Contains(user->GetAccount())) {
+        m_netizens.insert(user->GetAccount(), user);
+        Logger::Log("Account " + user->GetAccount() + " add successfully.");
+        return true;
+    } else {
+        Logger::Error("Account " + user->GetAccount() + " already exist.");
+        return false;
+    }
 }
 
 bool DatabaseManager::RemoveNetizen(const QString &account)
 {
     // TODO
     return true;
-}
-
-Netizen *DatabaseManager::GetNetizen(const QString &account)
-{
-    // TODO
-    return nullptr;
 }
 
 Group *DatabaseManager::GetGroup(const QString &account)

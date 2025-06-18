@@ -27,6 +27,7 @@ public:
     // 账号功能
     bool LoginDetection(const QString &password);
     void Logout() { m_isOnline = false; };
+    void SetOnline() { m_isOnline = true; };
 
     // 好友管理
     bool AddFriend(Netizen *user);

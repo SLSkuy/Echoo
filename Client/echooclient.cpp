@@ -6,8 +6,7 @@
 
 EchooClient::EchooClient(QObject *parent) : QObject(parent)
 {
-    connect(_user,&Netizen::messageReceived,this,&EchooClient::messageReceived);
-    connect(_user,&Netizen::groupMessageReceived,this,&EchooClient::groupMessageReceived);
+
 }
 
 EchooClient::~EchooClient()
@@ -19,15 +18,12 @@ void EchooClient::Login(const QString &account, const QString &password)
 {
     Netizen *user = nullptr;
     if (DatabaseManager::instance()->Contains(account)) {
-        // user = _dm->GetNetizen(account);
-        // if (user->LoginDetection(password)) {
-        //     // 设置当前用户的Netizen为从数据管理层获取到的Netizen对象
-        //     _user = user;
-        //     emit loginSuccess(true);
-        // }
-
-        // 测试使用，直接触发成功信号
-        emit loginSuccess(true);
+        user = DatabaseManager::instance()->GetNetizen(account);
+        if (user->LoginDetection(password)) {
+            // 设置当前用户的Netizen为从数据管理层获取到的Netizen对象
+            _user = user;
+            emit loginSuccess(true);
+        }
     }
     emit loginSuccess(false);
 }
@@ -42,6 +38,7 @@ void EchooClient::Register(const QString &nickName, const QString &account, cons
 
     Netizen *newUser = new Netizen(nickName, account, password);
     _user = newUser; // 设置当前客户端的账号信息
+    DatabaseManager::instance()->AddNetizen(newUser);
     emit registerSuccess(true);
 }
 

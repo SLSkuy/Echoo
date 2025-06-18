@@ -27,8 +27,6 @@ bool Netizen::LoginDetection(const QString &password)
         QJsonObject obj;
         obj["nickName"] = m_nickName;
         obj["account"] = m_account;
-        obj["password"] = m_password;
-        obj["online"] = true;
         _cmc->BroadcastPresence(obj);
 
         m_isOnline = true;

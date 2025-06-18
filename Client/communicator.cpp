@@ -8,6 +8,8 @@
 #include <QJsonObject>
 
 #include "communicator.h"
+#include "databasemanager.h"
+#include "logger.h"
 
 Communicator::Communicator()
 {
@@ -26,7 +28,7 @@ Communicator::Communicator()
 
 void Communicator::BroadcastPresence(QJsonObject &obj)
 {
-    // 广播在线消息
+    // 客户端登录后，广播在线消息
     QJsonDocument doc(obj);
     m_udpSocket->writeDatagram(doc.toJson(),QHostAddress::Broadcast,m_udpPort);
 }
@@ -46,6 +48,24 @@ void Communicator::OnUdpReadyRead()
         if(!doc.isNull() && doc.isObject())
         {
             // 读取json内容
+            QJsonObject obj = doc.object();
+            QString nickName = obj["nickName"].toString();
+            QString account = obj["account"].toString();
+
+            Logger::Log("Account " + account + " online.");
+
+            // 检测当前设备本地数据库是否存在广播者信息
+            DatabaseManager *db = DatabaseManager::instance();
+            if (db->Contains(account)) {
+                // 存在该用户
+                // 检测用户是否在线，若为否则标志为在线
+                if (!db->GetNetizen(account)->IsOnline()) db->GetNetizen(account)->SetOnline();
+            } else {
+                // 不存在该用户，则添加
+                Netizen *newUser = new Netizen(nickName, account, NULL, nullptr);
+                newUser->SetOnline();
+                db->AddNetizen(newUser);
+            }
         }
     }
 }

@@ -3,7 +3,6 @@
 #include <QQmlContext>
 
 #include "echooclient.h"
-#include "message.h"
 
 int main(int argc, char *argv[])
 {
@@ -14,9 +13,6 @@ int main(int argc, char *argv[])
     // 避免出现QML已经加载但client对象还未初始化
     EchooClient client;
     engine.rootContext()->setContextProperty("EchooClient", &client);
-
-    // 注册Message对象用于在qml中传输消息
-    qmlRegisterType<Message>("P2PModule", 1, 0, "Message");
 
     QObject::connect(
         &engine,
