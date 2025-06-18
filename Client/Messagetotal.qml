@@ -18,7 +18,7 @@ Rectangle{
                     height:parent.height/listModel.count
                     width:parent.width
                     picture.source: picture1
-                    name.text: name1
+                    nameMessage.text: name1
                     lastMessage.text: lastMessage1
                     time.text: time1
                     unreadCount.text: unreadCount1

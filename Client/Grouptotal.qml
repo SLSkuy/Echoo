@@ -62,7 +62,7 @@ Rectangle{
                     // width: rootWindow.width - toolBars.width
                     width:parent.width
                     picture.source: picture1
-                    name.text: name1
+                    nameGroup.text: name1
                     personcount.text: count1
                 }
 

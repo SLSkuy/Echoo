@@ -6,7 +6,7 @@ import QtQuick.Layouts
 
 Rectangle{
     property alias picture: _picture
-    property alias name: _name
+    property alias nameMessage: _name
     property alias lastMessage: _lastMessage
     property alias time: _time
     property alias unreadCount: _unreadCount

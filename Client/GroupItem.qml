@@ -6,7 +6,7 @@ import QtQuick.Layouts
 
 Rectangle{
     property alias picture: _picture
-    property alias name: _name
+    property alias nameGroup: _name
     property alias personcount: _personcount
 
     id: root
