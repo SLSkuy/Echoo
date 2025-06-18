@@ -2,20 +2,28 @@
 
 #include <QTcpSocket>
 
+class DatabaseManager;
+class Communicator;
+class Message;
+class Netizen;
+class Group;
+
 class EchooClient : public QObject
 {
     Q_OBJECT
 public:
     explicit EchooClient(QObject *parent = nullptr);
     ~EchooClient();
-    Q_INVOKABLE void Login(QString account, QString password); // 暴露给qml使用
-    Q_INVOKABLE void Register(QString nickName, QString account, QString password);
-    Q_INVOKABLE void SendPrivateMessage(QString content, QString toAccount);
+    Q_INVOKABLE bool Login(QString account, QString password); // 暴露给qml使用
+    Q_INVOKABLE bool Register(QString nickName, QString account, QString password);
+    Q_INVOKABLE void SendMessage(Message *msg);
+    Q_INVOKABLE void SendGroupMessage(Message *msg, Group *group);
 
 signals:
     void loginSuccess(bool result);
     void registerSuccess(bool result);
-    void receiveMsg(QString content);
+    void messageReceived(Message *msg);
+    void groupMessageReceived(Group *group, Message *msg);
 
 private slots:
     void onConnected();
@@ -23,11 +31,7 @@ private slots:
     void onReadyRead();
 
 private:
-    QTcpSocket *_socket;
-
-    // 账号信息
-    QString m_nickName;
-    QString m_account;
-    QString m_password;
-    QList<QString> m_friends; // friend's accounts
+    Netizen *_user;
+    Communicator *_cmc;
+    DatabaseManager *_dm;
 };

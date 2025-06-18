@@ -4,10 +4,22 @@
 #include <QUdpSocket>
 #include <QTcpSocket>
 
-class Communicator
+#include "message.h"
+#include "group.h"
+
+class Communicator : public QObject
 {
+    Q_OBJECT
 public:
     Communicator();
+
+    // 消息传输
+    void SendMessage(Message *message);
+    void SendGroupMessage(Message *message);
+
+signals:
+    void messageReceived(Message *message);
+    void groupMessageReceived(Group *group, Message *message);
 
 private:
     QUdpSocket* m_udpSocket;

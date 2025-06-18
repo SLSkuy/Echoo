@@ -34,12 +34,11 @@ qt_add_qml_module(appEchoo-Client
         QML_FILES EditTitle.qml
         QML_FILES EditProfile.qml
         SOURCES netizen.h netizen.cpp
-        SOURCES
         SOURCES group.h group.cpp
         SOURCES databasemanager.h databasemanager.cpp
         SOURCES communicator.h communicator.cpp
         SOURCES message.h message.cpp
-        SOURCES
+        SOURCES logger.h logger.cpp
 )
 
 source_group("QML Files" FILES

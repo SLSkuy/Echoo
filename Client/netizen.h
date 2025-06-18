@@ -5,42 +5,40 @@
 #include <QString>
 #include <QList>
 
-#include "databasemanager.h"
-#include "communicator.h"
-#include "message.h"
-#include "group.h"
+class Message;
+class Group;
 
 class Netizen : public QObject
 {
     Q_OBJECT
 public:
-    Netizen(const QString &nickName, const QString &account, const QString &password, QObject *parent = nullptr);
+    explicit Netizen(QObject *parent = nullptr);
+    ~Netizen();
 
-    // 用户属性获取
-    QString GetNickname();
-    QString GetAccount();
-    bool IsOnline();
-
-    // 好友管理
-    bool addFriend(Netizen *user);
-    bool removeFriend(const QString &account);
-
-    // 消息功能
-    void sendMessage(Netizen *receiver, const QString &content);
-    void sendGroupMessage(Group *group, const QString &content);
-
-    // 群组功能
-    bool createGroup(const QString &name, const QString &owner);
-    bool joinGroup(Group *group);
-    bool leaveGroup(Group *group);
+    // 用户属性获取，用户数据库信息存储
+    QString GetNickname() { return m_nickName; };
+    QString GetAccount() { return m_account; };
+    QList<Netizen *> GetFriendAccounts() { return m_friends; };
+    QList<Group *> GetGroupAccounts() { return m_groups; };
+    bool IsOnline() { return m_isOnline; };
 
     // 账号功能
-    bool login(const QString &password);
-    void logout();
+    bool Register(const QString &nickName, const QString &account, const QString &password);
+    bool LoginDetection(const QString *account, const QString &password);
+    void Logout();
 
-    // 数据库操作
-    void loadFromDatabase();
-    void saveToDatabase() const;
+    // 好友管理
+    bool AddFriend(Netizen *user);
+    bool RemoveFriend(const QString &account);
+
+    // 消息功能
+    void SendMessage(Netizen *receiver, const QString &content);
+    void SendGroupMessage(Group *group, const QString &content);
+
+    // 群组功能
+    bool CreateGroup(const QString &name, const QString &owner);
+    bool JoinGroup(Group *group);
+    bool LeaveGroup(Group *group);
 
 signals:
     void messageReceived(Message *msg);
@@ -54,11 +52,4 @@ private:
 
     QList<Netizen *> m_friends;
     QList<Group *> m_groups;
-
-    Communicator *_cmc;
-    DatabaseManager *_dm;
-
-    // 初始化
-    void initCommunicator();
-    void setUpConnection();
 };
