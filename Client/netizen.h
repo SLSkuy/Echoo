@@ -13,6 +13,7 @@ class Netizen : public QObject
     Q_OBJECT
 public:
     explicit Netizen(QObject *parent = nullptr);
+    Netizen(const QString &nickName, const QString &account, const QString &password, QObject *parent = nullptr);
     ~Netizen();
 
     // 用户属性获取，用户数据库信息存储
@@ -23,8 +24,7 @@ public:
     bool IsOnline() { return m_isOnline; };
 
     // 账号功能
-    bool Register(const QString &nickName, const QString &account, const QString &password);
-    bool LoginDetection(const QString *account, const QString &password);
+    bool LoginDetection(const QString &password) { return password == m_password; };
     void Logout();
 
     // 好友管理

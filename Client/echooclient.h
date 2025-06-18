@@ -14,8 +14,8 @@ class EchooClient : public QObject
 public:
     explicit EchooClient(QObject *parent = nullptr);
     ~EchooClient();
-    Q_INVOKABLE bool Login(QString account, QString password); // 暴露给qml使用
-    Q_INVOKABLE bool Register(QString nickName, QString account, QString password);
+    Q_INVOKABLE bool Login(const QString &account, const QString &password); // 暴露给qml使用
+    Q_INVOKABLE bool Register(const QString &nickName, const QString &account, const QString &password);
     Q_INVOKABLE void SendMessage(Message *msg);
     Q_INVOKABLE void SendGroupMessage(Message *msg, Group *group);
 
@@ -34,4 +34,7 @@ private:
     Netizen *_user;
     Communicator *_cmc;
     DatabaseManager *_dm;
+
+    void InitCommunicator();
+    void GetNetizenInfo();
 };
