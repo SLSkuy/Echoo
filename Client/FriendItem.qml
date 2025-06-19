@@ -11,11 +11,25 @@ Rectangle {
 
     // color: hovered ? "grey" : "transparent"
     // color: "black"
-    color: mouseArea.containsMouse ? "#E6E6E6" : "transparent"
+    property bool isSelected: false  // 新增选中状态
 
-    property alias headPortrait : headPortrait
-    property alias name : name
-    property alias sign : sign
+        color: {
+            if (isSelected) {
+                "lightblue"  // 选中状态保持蓝色
+            } else if (mouseArea.containsMouse) {
+                "#E6E6E6"  // 悬停时变灰
+            } else {
+                "transparent"  // 默认透明
+            }
+        }
+
+
+    property alias friendheadPortrait : headPortrait
+    property alias friendname : name
+    property alias friendsign : sign
+    property alias friendmouseAreall: mouseArea
+    property string friendpersonid: " "
+    property string friendregion: " "
 
     RowLayout{
         id: row
@@ -60,6 +74,27 @@ Rectangle {
         id: mouseArea
         anchors.fill: parent
         hoverEnabled: true
+        // focus: true
+        // onDoubleClicked: {
+        //             isSelected = true
+        //                 // 点击后保持蓝色
+        //         }
+
+        //单击出现好友个主页
+        property var friendpersonpage: null;
+        onClicked: {
+            if(!friendpersonpage) {
+                var component = Qt.createComponent("Friendpersonpage.qml");
+                if (component.status === Component.Ready) {
+                    friendpersonpage = component.createObject(null, {
+                            flags: Qt.Window | Qt.FramelessWindowHint
+                    });
+                }
+            }
+            friendpersonpage.show();
+            friendpersonpage.raise(); // 关键：置顶窗口
+            friendpersonpage.requestActivate(); // 激活窗口
+        }
 
     }
 

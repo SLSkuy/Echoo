@@ -3,13 +3,35 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Window
 
-FrameLessWindow {
+Window {
+    // property alias chatwidget: groupChat
     property alias topBar: topbar
+    // property alias text22: text11.text
+
     id:chatwidget
     visible: true
     width: 800
     height: 600
     title: "QQ聊天窗口"
+    flags: Qt.FramelessWindowHint | Qt.Window
+
+
+    //拖动全局窗口
+    MouseArea{
+        id: dragArea
+        anchors.fill: parent
+        hoverEnabled: true
+        cursorShape: Qt.ArrowCursor
+
+        onPressed:function() {
+            cursorShape = Qt.ClosedHandCursor
+            chatwidget.startSystemMove()
+        }
+
+        onReleased:{
+            cursorShape = Qt.ArrowCursor
+        }
+    }
 
 
     // 主布局
@@ -20,6 +42,7 @@ FrameLessWindow {
         //titlebar
         TopBar{
             id:topbar
+            text11.text: ""
 
         }
         // 顶部工具栏
@@ -44,12 +67,6 @@ FrameLessWindow {
                     onClicked: {
                         // 实现发起群聊的逻辑
                         console.log("发起群聊");
-                        var component  = Qt.createComponent("SelectFriends.qml");
-                        if (component.status === Component.Ready) {
-                            var selectfirends = component.createObject(parent);
-                            selectfirends.show();
-
-                        }
                     }
                     background: Rectangle {
                            color: "white"  // 设置背景颜色为白色
@@ -103,47 +120,102 @@ FrameLessWindow {
             Column {
                 anchors.fill: parent
 
-                // 聊天消息显示区
-                Rectangle {
-                    id: messageDisplay
-                    width: parent.width
+                RowLayout{
                     height: parent.height - 100
-                    color: "#ffffff"
+                    width: parent.width
 
-                    ListView {
-                        anchors.fill: parent
-                        spacing:5
-                        model: ListModel {
-                            id: messageModel
-                            ListElement { sender: "对方"; message: "你好！"; isMe: false }
-                            ListElement { sender: "我"; message: "你好！有什么事吗？"; isMe: true }
-                            ListElement { sender: "对方"; message: "我想和你讨论一下项目。"; isMe: false }
-                        }
-                        delegate: Rectangle {
-                            width: parent.width/2
-                            height: messageText.implicitHeight + 20
-                            color: isMe ? "#dcf8c6" : "white"
-                            radius: 5
+                // 聊天消息显示区
+                    Rectangle {
+                        Layout.alignment: Qt.AlignTop
+                        id: messageDisplay
+                        width: parent.width
+                        height: parent.height
+                        color: "#ffffff"
 
-                            anchors.right: isMe ? parent.right : undefined
-                            anchors.left: isMe ? undefined : parent.left
-
-                            Text {
-                                id: messageText
-                                text: message
-                                anchors.centerIn: parent
-                                width: parent.width - 20
-                                wrapMode: Text.Wrap
-                                color: isMe ? "black" : "black"
+                        ListView {
+                            anchors.fill: parent
+                            model: 3 // 示例消息数量
+                            delegate: Item {
+                                width: messageDisplay.width
+                                height: 30
+                                Text {
+                                    text: "消息 " + (index + 1)
+                                    anchors.left: parent.left
+                                    anchors.leftMargin: 10
+                                    anchors.verticalCenter: parent.verticalCenter
+                                }
                             }
-                            Text {
-                                        id: timeText
-                                        text: Qt.formatDateTime(new Date(), "hh:mm")
-                                        color: "gray"
-                                        font.pixelSize: 10
-                                        horizontalAlignment: Text.AlignRight
-                                    }
                         }
+                    }
+                    //设置分割线
+                    Rectangle {
+                        Layout.alignment: Qt.AlignTop
+                        width: 1
+                        height: parent.height
+                        color: "#E6E6E6"
+                        anchors.right: members.left
+                        // Layout.rightMargin: 15
+                        anchors.rightMargin: 15
+
+                    }
+                    //显示群成员
+                    Rectangle{
+                        id:members
+                        Layout.alignment: Qt.AlignTop
+                        ColumnLayout{
+                            anchors.fill: parent
+                            Label{
+                                text: "群聊成员"
+                                // anchors.topMargin: 100
+                                font.pixelSize: 14
+                                color: "black"
+                                width: parent.width
+                                height: 30
+                            }
+                            Rectangle{
+                                height: 400
+                                // Layout.fillHeight: true
+                                width: 200
+                            ListView{
+                                id:member
+                                model: memberlist
+
+                                // Layout.fillHeight: true
+                                height: parent.height
+                                width: parent.width
+                                delegate: Rectangle{
+                                    height: 40
+                                    width: member.width
+                                    RowLayout{
+                                    anchors.fill: parent
+                                    Image{
+                                        source: model.image1
+                                        Layout.preferredWidth: 15
+                                        Layout.preferredHeight: 15
+                                        // TapHandler{
+                                        //     onTapped: console.log("aaa")
+                                        // }
+                                    }
+                                    Text {
+                                        height: 20
+                                        // width:parent.width
+                                        Layout.fillWidth: true
+                                        text: model.name1
+                                        color: "black"
+                                    }
+                                }
+                                }
+                            }
+                            }
+                        }
+                        ListModel{
+                            id: memberlist
+                            ListElement{image1:""
+                                        name1:"111"}
+                            ListElement{image1:""
+                                        name1:"222"}
+                        }
+
                     }
                 }
 
@@ -165,9 +237,8 @@ FrameLessWindow {
                                 text: "😊 "
                                 onClicked: {
                                     // 实现表情选择的逻辑
-                                    emojiPopup.open()
                                     console.log("表情");
-
+                                    // emojiPopup.open()
                                 }
                                 background: Rectangle {
                                        color: "transparent"  // 设置背景颜色为透明
@@ -182,21 +253,13 @@ FrameLessWindow {
                                     verticalAlignment: Text.AlignVCenter
                                 }
                             }
-                            // 导入 EmojiPopup
-                            EmojiPopup {
-                                id: emojiPopup
-                                onEmojiSelected: {
-                                    messageInput.text += emoji  // 将选中的表情添加到输入框
-                                }
-
-                            }
 
 
 
 
                             // 更多按钮
                             Button {
-                                text: "+"
+                                text: "⊕"
                                 onClicked: {
                                     // 实现更多的逻辑
                                     console.log("更多");
@@ -224,7 +287,6 @@ FrameLessWindow {
                         anchors.bottom: parent.bottom
                         // anchors.leftMargin: 10
                         // anchors.rightMargin: 10
-                        // font.family: "Microsoft YaHei"
                         placeholderText: "输入消息..."
                         placeholderTextColor: "grey"
                         width:40
@@ -241,10 +303,8 @@ FrameLessWindow {
                         enabled: messageInput.text.length > 0  // 根据输入框内容启用或禁用按钮
                         onClicked: {
                             console.log("发送消息: " + messageInput.text)
-                            EchooClient.SendMessage("123",messageInput.text);
-                            messageModel.append({ sender: "我", message: messageInput.text, isMe: true })
+                            EchooClient.SendPrivateMessage(messageInput.text,"123");
                             messageInput.text = ""
-
                         }
                     }
                     Button {

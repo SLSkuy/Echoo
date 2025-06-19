@@ -6,6 +6,8 @@ import QtQuick.Window
 import QtQuick.Controls
 
 FrameLessWindow{
+    property string globalAccountId: ""
+    property string globalNicknametext: ""
     id: startWindow
 
     Rectangle{
