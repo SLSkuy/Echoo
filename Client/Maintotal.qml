@@ -13,7 +13,7 @@ FrameLessWindow {
     width: toolBars.width + titleBar.Layout.preferredWidth
     height: toolBars.height
     visible: true
-    flags: Qt.FramelessWindowHint
+    // flags: Qt.FramelessWindowHint
 
 
     RowLayout {

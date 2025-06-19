@@ -3,18 +3,25 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 FrameLessWindow{
-    property alias username:_username
-    property alias sex:_sex
-    property alias signature:qm_nr
-    property alias region:szd_nr
-    property alias headPortrait:tx
-    id:personpage
+    property alias usernameFriend:_username
+    property alias sexFriend:_sex
+    property alias signatureFriend:qm_nr
+    property alias regionFriend:szd_nr
+    property alias headPortraitFriend:tx
+    property alias friendPersonpage: chatwidget
+
+    id:chatwidget
     width:400
     height:300
 
 
     ColumnLayout{
-        // anchors.fill:parent
+        anchors.fill:parent
+        TopBar{
+            Layout.preferredWidth: parent.width
+            text11.text: "个人主页"
+        }
+
         RowLayout{
             Rectangle {
                 Layout.topMargin:20
@@ -36,8 +43,7 @@ FrameLessWindow{
 
                     Text{
                         id:_username
-                        // text:"香菜ovo"+
-                        text: startWindow.globalNicknametext
+                        text:name.text
                     }
                     Text{
                         id:_sex
@@ -47,13 +53,9 @@ FrameLessWindow{
                 }
                 Text{
                     id:echoo_id
-                    text:"id:"+startWindow.globalAccountId
+                    text:"id:"+friendpersonid
 
                     font.pixelSize: 20
-                }
-                Text{
-                    text:"🐷小猪也苦恼"
-                    font.pixelSize: 15
                 }
             }
         }
@@ -70,10 +72,11 @@ FrameLessWindow{
             }
             Rectangle{
                 Layout.alignment: Qt.AlignVCenter
+                Layout.leftMargin: 61
                 Text{
                     id:qm_nr
                     width:300
-                    text:"            生活不止眼前的苟且，还有远方的苟且"
+                    text:friendsign.text
                     font.pixelSize: 15
                     Layout.alignment: Qt.AlignVCenter
                     Layout.fillWidth: true
@@ -96,9 +99,10 @@ FrameLessWindow{
             }
             Rectangle{
                 Layout.alignment: Qt.AlignVCenter
+                Layout.leftMargin: 42
                 Text{
                     id:szd_nr
-                    text:"        中国重庆市"
+                    text: friendregion
                     font.pixelSize: 15
                     Layout.alignment: Qt.AlignVCenter
                     Layout.fillWidth: true
@@ -111,43 +115,7 @@ FrameLessWindow{
 
 
     }
-    Button{
-        id:bjzl
-        text:"编辑资料"
-        width:150
-        anchors.bottomMargin:10
-        anchors.bottom:parent.bottom
-        anchors.left:parent.left
-        anchors.leftMargin:10
-        MouseArea {
-            id: ma
-            anchors.fill: parent
-            hoverEnabled: true
 
-            property var editprofile: null // 用于存储 personpage 对象的引用
-            property bool isEditProfileVisible: false // 用于跟踪窗口的可见性状态
-
-                onClicked: {
-                    var component = Qt.createComponent("EditProfile.qml");
-                    if (component.status === Component.Ready) {
-                        if (editprofile === null) {
-                            // 如果 personpage 尚未创建，则创建它
-                            editprofile = component.createObject(null, {
-                                flags: Qt.Window | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
-                            });
-                            editprofile.visible = true; // 初始设置为可见
-                            isEditProfileVisible = true;
-                        } else {
-                            // 如果 editprofile 已经存在，切换其可见性
-                            editprofile.visible = !isEditProfileVisible;
-                            isEditProfileVisible = !isEditProfileVisible; // 更新状态
-                        }
-                    }
-                }
-        }
-
-
-    }
     Button{
         id:fsxx
         text:"发送消息"
@@ -157,6 +125,22 @@ FrameLessWindow{
         anchors.right:parent.right
         anchors.rightMargin:10
 
+        //单机“发消息”按钮，弹出聊天框
+        property var chatWidget: null;
+        onClicked: {
+            if(!chatWidget) {
+                var component = Qt.createComponent("ChatWidget.qml");
+                if (component.status === Component.Ready) {
+                    chatWidget = component.createObject(null, {
+                        flags: Qt.Window | Qt.FramelessWindowHint
+                    });
+                }
+            }
+            chatWidget.show();
+            chatWidget.raise(); // 关键：置顶窗口
+            chatWidget.requestActivate(); // 激活窗口
+            // unreadCount.text = "0"; //点击进聊天界面就会让未读消息清零
+        }
 
     }
 

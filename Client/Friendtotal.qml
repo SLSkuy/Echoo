@@ -4,64 +4,48 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-// FrameLessWindow {
-//     property  alias rootWindow: rootWindow
-//     property  alias titleBar : titleBar
-//     id: rootWindow
-//     width: toolBars.width + titleBar.Layout.preferredWidth
-//     height: toolBars.height
-//     visible: true
-//     flags: Qt.FramelessWindowHint
-
-//     RowLayout {
-//         anchors.fill: parent
-
-//         ToolBars {
-//             id: toolBars
-//             // message.texttext.color: "#007FFF"
-//         }
-
-//         Rectangle {
-//             id: friend
-//             Layout.fillWidth: true
-//             Layout.fillHeight: true
-
-//             ColumnLayout {
-//                 anchors.fill: parent
-
-//                 MainpagetitleBar {
-//                     id: titleBar
-//                     Layout.preferredWidth:600
-//                     minimizeButton.onClicked: rootWindow.showMinimized()
-//                 }
-
-//                 ListView {
-//                     id: friendlist
-//                     model: listModel
-//                     implicitWidth: titleBar.width
-//                     implicitHeight: parent.height
-
-//                     delegate:
-//                         Friendlist{
-//                             height:rootWindow.height/15
-//                             Layout.fillWidth: true
-//                             text.text: text1
-//                         }
-
-//                 }
-
-//                 ListModel {
-//                     id: listModel
-//                     ListElement {
-//                         text1:"我的好友"
-//                     }
-//                 }
-//             }
-//         }
-//     }
-// }
 
 Rectangle{
+    ColumnLayout{
+        anchors.fill: parent
+        Rectangle{
+            Layout.preferredWidth: parent.width
+            Layout.preferredHeight: 40
+            color: mouseArea.containsMouse ? "#E6E6E6" : "transparent"
+            Label{
+                id:groupmessage
+                text: " \n  好友通知\n"
+
+                Layout.alignment: Qt.AlignCenter
+                font.pixelSize: 16
+
+            }
+            // 鼠标交互
+            MouseArea {
+                id: mouseArea
+                anchors.fill: parent
+                hoverEnabled: true
+
+                //点击组件就会弹出好友通知界面
+                onClicked:{
+                    var component  = Qt.createComponent("Friendnotification.qml");
+                    if (component.status === Component.Ready) {
+                        var friendnotification = component.createObject(parent);
+                        friendnotification.show();
+                     }
+                }
+        }
+    }
+
+    // 分割线
+    Rectangle {
+        width: parent.width
+        Layout.preferredWidth: parent.width
+        Layout.preferredHeight: 1
+        color: "#E6E6E6"
+    }
+
+    //列出
     ListView {
         id: friendlist
         model: listModel
@@ -82,5 +66,6 @@ Rectangle{
         ListElement {
             text1:"我的好友"
         }
+    }
     }
 }

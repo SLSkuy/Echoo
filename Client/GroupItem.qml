@@ -6,10 +6,11 @@ import QtQuick.Layouts
 
 Rectangle{
     property alias picture: _picture
-    property alias name: _name
+    property alias nameGroup: _name
     property alias personcount: _personcount
+    property alias groupItem: groupItem
+    id: groupItem
 
-    id: root
     // height: 70
     color: mouseArea.containsMouse ? "#E6E6E6" : "transparent"
 
@@ -55,13 +56,22 @@ Rectangle{
         anchors.fill: parent
         hoverEnabled: true
 
-        // onClicked:{
-        //     var component  = Qt.createComponent("ChatWidget.qml");
-        //     if (component.status === Component.Ready) {
-        //         var chatWidget = component.createObject(parent);
-        //         chatWidget.show();
-        //      }
-        // }
+        property var groupchat: null;
+        onClicked: {
+            if(!groupchat) {
+                var component = Qt.createComponent("GroupChat.qml");
+                if (component.status === Component.Ready) {
+                    groupchat = component.createObject(null, {
+                        flags: Qt.Window | Qt.FramelessWindowHint
+                    });
+                }
+            }
+            groupchat.topBar.text11.text = nameGroup.text
+            groupchat.show();
+            groupchat.raise(); // 关键：置顶窗口
+            groupchat.requestActivate(); // 激活窗口
+            // messageItem.unreadCount.text = "0"; //点击进聊天界面就会让未读消息清零
+        }
     }
 
     // 分割线

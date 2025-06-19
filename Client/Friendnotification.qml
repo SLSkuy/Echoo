@@ -5,7 +5,7 @@ import QtQuick.Window
 
 FrameLessWindow {
     id:chatwidget
-    // visible: true
+    visible: true
     width: 500
     height: 600
 
@@ -19,7 +19,7 @@ FrameLessWindow {
             id:topbar
             Layout.alignment: Qt.AlignTop
             Layout.topMargin: 5
-            text11.text:"群通知"
+            text11.text:"好友通知"
             text11.font.pixelSize: 18
         }
 
@@ -62,8 +62,8 @@ FrameLessWindow {
                 }
 
                 RowLayout {
-                    // anchors.fill: parent
-                    spacing: 15
+                    anchors.fill: parent
+                    spacing: 10
 
                     Image {
                         Layout.preferredWidth: 40
@@ -77,14 +77,25 @@ FrameLessWindow {
                             text: model.name1
                             font.bold: true
                         }
-                        RowLayout{
-                            Label {
-                                text: model.aaction1
-                                color: "#666"
+                        Label {
+                            text: model.aaction1
+                            color: "#666"
+                        }
+                    }
+
+                    RowLayout{
+                        Layout.alignment: Qt.AlignRight
+                        spacing:0
+                        Button{
+                            text:"同意"
+                            onClicked: {
+                                //
                             }
-                            Label{
-                                text: "  " + model.groupname
-                                color:"blue"
+                        }
+                        Button{
+                            text: "拒绝"
+                            onClicked: {
+                                //
                             }
                         }
                     }
@@ -96,16 +107,16 @@ FrameLessWindow {
     ListModel{
         id: listModel
         ListElement{
-            image1: "111.png"
+            image1: ""
             name1: "111"
-            aaction1: "加入"
-            groupname: "abc"
+            aaction1: "222"
         }
         ListElement{
-            image1: "111.png"
+            image1: ""
             name1: "111"
-            aaction1: "退出"
-            groupname: "abc"
+            aaction1: "222"
         }
     }
+
+
 }

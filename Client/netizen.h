@@ -3,7 +3,7 @@
 #include <QObject>
 #include <QDateTime>
 #include <QString>
-#include <QList>
+#include <QMap>
 
 class Group;
 class Communicator;
@@ -20,8 +20,8 @@ public:
     // 用户属性获取，用户数据库信息存储
     QString GetNickname() { return m_nickName; };
     QString GetAccount() { return m_account; };
-    QList<Netizen *> GetFriendAccounts() { return m_friends; };
-    QList<Group *> GetGroupAccounts() { return m_groups; };
+    QMap<QString, Netizen *> GetFriends() { return m_friends; };
+    QMap<QString, Group *> GetGroups() { return m_groups; };
     bool IsOnline() { return m_isOnline; };
 
     // 账号功能
@@ -32,15 +32,20 @@ public:
     // 好友管理
     bool AddFriend(Netizen *user);
     bool RemoveFriend(const QString &account);
+    bool HasFriend(const QString &account) { return m_friends.contains(account); }
 
     // 消息功能
-    void SendMessage(Netizen *receiver, Message *msg);
-    void SendGroupMessage(Group *group, Message *msg);
+    void SendMessage(const QString &receiverAccount, const QString &content);
+    void SendGroupMessage(const QString &groupAccount, const QString &content);
 
     // 群组功能
     bool CreateGroup(const QString &name, const QString &owner);
     bool JoinGroup(Group *group);
     bool LeaveGroup(Group *group);
+    bool HasGroup(const QString &account) { return m_groups.contains(account); }
+
+    QString GetIpAddress() { return m_ip; }
+    void SetIpAddress(QString ip) { m_ip = ip; }
 
 signals:
     void messageReceived(Message *msg);
@@ -52,9 +57,13 @@ private:
     QString m_password;
     bool m_isOnline;
 
-    QList<Netizen *> m_friends;
-    QList<Group *> m_groups;
+    QMap<QString, Netizen *> m_friends;
+    QMap<QString, Group *> m_groups;
 
     // p2p服务
     Communicator *_cmc;
+    QString m_ip;
+
+    void MessageProcess(Message *message);
+    void GroupMessageProcess(Group *group, Message *message);
 };

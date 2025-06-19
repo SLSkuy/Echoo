@@ -18,19 +18,30 @@ public:
     Q_INVOKABLE void Register(const QString &nickName, const QString &account, const QString &password);
 
     // 消息功能
-    Q_INVOKABLE void SendMessage(QString &receiverAccount, QString &content);
-    Q_INVOKABLE void SendGroupMessage(QString &groupAccount, QString &content);
+    Q_INVOKABLE void SendMessage(const QString &receiverAccount, const QString &content)
+    {
+        emit triggerMessage(receiverAccount, content);
+    }
+    Q_INVOKABLE void SendGroupMessage(const QString &groupAccount, const QString &content)
+    {
+        emit triggerGroupMessage(groupAccount, content);
+    }
 
 signals:
+    // 消息发送信号
+    void triggerMessage(QString receiverAccount, QString content);
+    void triggerGroupMessage(QString groupAccount, QString content);
+    // 账号处理信号
     void loginSuccess(bool result);
     void registerSuccess(bool result);
+    // 消息处理信号
     void messageReceived(Message *msg);
     void groupMessageReceived(Group *group, Message *msg);
 
 private slots:
     // 消息处理
-    void messageProcess(Message *msg);
-    void groupMessageProcess(Group *group, Message *msg);
+    void MessageProcess(Message *msg);
+    void GroupMessageProcess(Group *group, Message *msg);
 
 private:
     Netizen *_user;

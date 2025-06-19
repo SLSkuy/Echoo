@@ -6,14 +6,19 @@ import QtQuick.Layouts
 
 Rectangle{
     property alias picture: _picture
-    property alias name: _name
+    property alias nameMessage: _name
     property alias lastMessage: _lastMessage
     property alias time: _time
     property alias unreadCount: _unreadCount
+    property alias unreadCountContainer : _unreadCountContainer
+    property alias messageIte: messageItem
 
-    id: root
+    property bool isGroup: false //判断当前ListView的条目为群聊的还是私聊的
+
+    id: messageItem
     // height: 70
     color: mouseArea.containsMouse ? "#E6E6E6" : "transparent"
+
 
     RowLayout {
         anchors.fill: parent
@@ -43,7 +48,7 @@ Rectangle{
                     id:_name
                     color: "black"
                     font.pixelSize: 16
-                    font.bold: root.unreadCount > 0
+                    font.bold: messageItem.unreadCount > 0
                     Layout.fillWidth: true
                     elide: Text.ElideRight
                 }
@@ -51,7 +56,8 @@ Rectangle{
                 // 时间
                 Label {
                     id: _time
-                    text: root.time
+                    Layout.rightMargin: 10
+                    text: messageItem.time
                     font.pixelSize: 12
                     color: "darkgrey"
                 }
@@ -69,16 +75,18 @@ Rectangle{
 
         // 未读消息计数
         Rectangle {
+            id: _unreadCountContainer
             implicitHeight: 20
             implicitWidth: 20
             radius: 10
             color: "red"
             Layout.rightMargin: 10
             Layout.bottomMargin: 5
+            visible: parseInt(messageItem.unreadCount.text) > 0 // 只有当未读消息数大于0时才显示
 
             Label {
                 anchors.centerIn: parent
-                id:_unreadCount
+                id: _unreadCount
                 color: "white"
                 font.pixelSize: 12
             }
@@ -91,14 +99,42 @@ Rectangle{
         anchors.fill: parent
         hoverEnabled: true
 
-        onClicked:{
-            var component  = Qt.createComponent("ChatWidget.qml");
-            if (component.status === Component.Ready) {
-                var chatWidget = component.createObject(parent);
+        //设置初始值为null
+        property var groupchat: null;
+        property var chatWidget: null;
+        onClicked: {
+            if(isGroup){
+                if(!groupchat) {
+                    var component1 = Qt.createComponent("GroupChat.qml");
+                    if (component1.status === Component.Ready) {
+                        groupchat = component1.createObject(null, {
+                            flags: Qt.Window | Qt.FramelessWindowHint
+                        });
+
+                    }
+                }
+                groupchat.topBar.text11.text = nameMessage.text
+                groupchat.show();
+                groupchat.raise(); // 关键：置顶窗口
+                groupchat.requestActivate(); // 激活窗口
+            } else {
+                if(!chatWidget) {
+                    var component2 = Qt.createComponent("ChatWidget.qml");
+                    if (component2.status === Component.Ready) {
+                        chatWidget = component2.createObject(null, {
+                            flags: Qt.Window | Qt.FramelessWindowHint
+                        });
+                    }
+                }
+                chatWidget.topBar.text11.text = nameMessage.text
                 chatWidget.show();
-             }
+                chatWidget.raise();
+                chatWidget.requestActivate();
+            }
+            unreadCount.text = "0"; //点击进聊天界面就会让未读消息清零
         }
     }
+
 
     // 分割线
     Rectangle {

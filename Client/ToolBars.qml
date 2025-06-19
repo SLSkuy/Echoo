@@ -26,6 +26,8 @@ import QtQuick.Window
         property alias email: email
         property alias manage: manage
         property alias message: message
+        property alias myself_tx: _myself
+
 
         ColumnLayout{
             spacing: 10
@@ -51,10 +53,8 @@ import QtQuick.Window
                 Layout.preferredHeight:50
                 Layout.preferredWidth:50
                 Layout.leftMargin:5
-                radius: width/2
-                Text{
-                    text:"  \n  头像"
-                }
+
+
                 MouseArea {
                     id: ma
                     anchors.fill: parent
@@ -83,8 +83,9 @@ import QtQuick.Window
                 }
 
                 Image {
-                    id: myself
-                    // source: "file"
+                    id:_myself
+                    anchors.fill: parent
+                    source: ""
                 }
             }
             Button{

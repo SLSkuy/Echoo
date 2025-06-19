@@ -23,8 +23,12 @@ void EchooClient::Login(const QString &account, const QString &password)
             emit loginSuccess(true);
 
             // 连接对应信号处理
-            connect(_user, &Netizen::messageReceived, this, &EchooClient::messageProcess);
-            connect(_user, &Netizen::groupMessageReceived, this, &EchooClient::groupMessageProcess);
+            // 连接消息处理
+            connect(_user, &Netizen::messageReceived, this, &EchooClient::MessageProcess);
+            connect(_user, &Netizen::groupMessageReceived, this, &EchooClient::GroupMessageProcess);
+            // 连接消息发送
+            connect(this, &EchooClient::triggerMessage, _user, &Netizen::SendMessage);
+            connect(this, &EchooClient::triggerGroupMessage, _user, &Netizen::SendGroupMessage);
         }
     }
     emit loginSuccess(false);
@@ -45,33 +49,12 @@ void EchooClient::Register(const QString &nickName, const QString &account, cons
     emit registerSuccess(true);
 }
 
-void EchooClient::SendMessage(QString &receiverAccount, QString &content)
-{
-    // 从数据库获取发送对象指针
-    Netizen *receiver = DatabaseManager::instance()->GetNetizen(receiverAccount);
-    QDateTime curTime = QDateTime::currentDateTime();
-
-    // 创建消息实体对象,接受者设置为空用于委托检测是否有对应好友
-    Message *msg = new Message(_user, nullptr, content, curTime);
-    _user->SendMessage(receiver, msg);
-}
-
-void EchooClient::SendGroupMessage(QString &groupAccount, QString &content)
-{
-    Group *receiver = DatabaseManager::instance()->GetGroup(groupAccount);
-    QDateTime curTime = QDateTime::currentDateTime();
-
-    // 创建消息实体
-    Message *msg = new Message(_user, nullptr, content, curTime);
-    _user->SendGroupMessage(receiver, msg);
-}
-
-void EchooClient::messageProcess(Message *msg)
+void EchooClient::MessageProcess(Message *msg)
 {
     // TODO
 }
 
-void EchooClient::groupMessageProcess(Group *group, Message *msg)
+void EchooClient::GroupMessageProcess(Group *group, Message *msg)
 {
     // TODO
 }

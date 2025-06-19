@@ -64,6 +64,12 @@ source_group("QML Files" FILES
     Grouptotal.qml
     Maintotal.qml
     QML_FILES Groupnotification.qml
+        QML_FILES GroupChat.qml
+        QML_FILES Groupnotification.qml
+        QML_FILES Friendnotification.qml
+        QML_FILES SelectFriends.qml
+        QML_FILES SelectTitleBar.qml
+        QML_FILES Friendpersonpage.qml
 )
 
 target_compile_features(appEchoo-Client PRIVATE cxx_std_23)

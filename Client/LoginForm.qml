@@ -6,6 +6,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 GridLayout {
+    property alias accountid:accountLine.text
     columns: 1
     columnSpacing: 10
 
@@ -101,4 +102,7 @@ GridLayout {
             EchooClient.Login(accountLine.text,passwordLine.text)
         }
     }
+    onAccountidChanged: {
+            startWindow.globalAccountId = accountid
+        }
 }
