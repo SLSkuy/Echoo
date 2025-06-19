@@ -102,22 +102,37 @@ void Communicator::OnNewTcpConnection()
 
 void Communicator::OnlineMessageProcess(QTcpSocket *socket)
 {
-    // 处理接收到的在线消息
-    QByteArray data = socket->readAll();
-    QJsonDocument doc = QJsonDocument::fromJson(data);
+    QDataStream in(socket);
+    in.setVersion(QDataStream::Qt_6_9);
 
-    // 反序列化获取Message对象
-    Message *message = Message::FromJson(data);
-    if (!doc.isNull() && doc.isObject()) {
-        QJsonObject obj = doc.object();
-        QString type = obj["message_type"].toString();
+    while (socket->bytesAvailable() >= sizeof(quint32)) {
+        quint32 blockSize;
+        in >> blockSize; // 读取长度
 
-        //判断消息类型
-        if (type == "individual") {
-            emit messageReceived(message);
-        } else if (type == "group") {
-            Group *group = qobject_cast<class Group *>(message->GetReceiver());
-            emit groupMessageReceived(group, message);
+        if (socket->bytesAvailable() < blockSize) {
+            break; // 数据不完整，等待下次
+        }
+
+        QByteArray jsonData = socket->read(blockSize);
+        QJsonDocument doc = QJsonDocument::fromJson(jsonData);
+        if (doc.isNull()) {
+            qWarning() << "Invalid JSON:" << jsonData;
+            continue;
+        }
+
+        // 反序列化获取Message对象
+        Message *message = Message::FromJson(jsonData);
+        if (!doc.isNull() && doc.isObject()) {
+            QJsonObject obj = doc.object();
+            QString type = obj["message_type"].toString();
+
+            //判断消息类型
+            if (type == "individual") {
+                emit messageReceived(message);
+            } else if (type == "group") {
+                Group *group = qobject_cast<class Group *>(message->GetReceiver());
+                emit groupMessageReceived(group, message);
+            }
         }
     }
 }
@@ -130,8 +145,11 @@ void Communicator::OfflineMessageProcess(Netizen *user)
     for (QList<Message *>::iterator it = offlines.begin(); it != offlines.end(); ++it) {
         if (auto receiver = qobject_cast<Netizen *>((*it)->GetReceiver())) {
             if (receiver == user) {
+                qDebug() << "Sending offline message to user:" << user->GetAccount()
+                         << "content:" << (*it)->GetMessage();
                 SendMessage(*it);
                 toRemove.append(*it);
+                DatabaseManager::instance()->AddMessage(*it);
             }
         }
     }
@@ -139,9 +157,9 @@ void Communicator::OfflineMessageProcess(Netizen *user)
         if ((*it)->GetReceiver() == user) {
             offlines.removeOne(*it); // 删除已经发送的离线消息
         }
-        // 更新离线消息
-        DatabaseManager::instance()->UpdateOfflineMessages(offlines);
     }
+    // 更新离线消息
+    DatabaseManager::instance()->UpdateOfflineMessages(offlines);
 }
 
 void Communicator::OnlineProcess(QJsonObject &obj)
@@ -228,6 +246,15 @@ void Communicator::SendMessage(Message *message)
     // 检测是否有Socket连接，若无则对方离线
     if (m_sockets.contains(receiverAccount)) {
         QTcpSocket *socket = m_sockets[receiverAccount];
+        QByteArray jsonData = message->ToJson();
+
+        // 添加 4 字节的长度前缀
+        QByteArray block;
+        QDataStream out(&block, QIODevice::WriteOnly);
+        out.setVersion(QDataStream::Qt_6_9);
+        out << (quint32) jsonData.size();                        // 写入长度
+        out.writeRawData(jsonData.constData(), jsonData.size()); // 写入数据
+
         socket->write(message->ToJson());
         // 记录发送的消息
         DatabaseManager::instance()->AddMessage(message);
