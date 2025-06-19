@@ -4,7 +4,6 @@ import QtQuick.Layouts
 
 FrameLessWindow{
     property alias username:_username
-    property alias usernametext:_username.text
     property alias sex:_sex
     property alias signature:qm_nr
     property alias region:szd_nr
