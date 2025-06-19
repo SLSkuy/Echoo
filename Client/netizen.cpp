@@ -90,15 +90,12 @@ void Netizen::MessageProcess(Message *message)
 {
     Logger::Log("Receive message from account " + message->GetSender()->GetAccount() + ": " + message->GetMessage());
 
-    // 检测消息接受对象是否为此对象
-    if (message->GetReceiver() == this) {
-        QString sender = message->GetSender()->GetAccount();
-        QString content = message->GetMessage();
-        QDateTime time = message->GetMessageTime();
+    QString sender = message->GetSender()->GetAccount();
+    QString content = message->GetMessage();
+    QDateTime time = message->GetMessageTime();
 
-        // 触发信号
-        emit messageProcessed(sender, content, time);
-    }
+    // 触发信号
+    emit messageProcessed(sender, content, time);
 }
 
 void Netizen::GroupMessageProcess(Group *group, Message *message) {}
