@@ -43,7 +43,7 @@ bool Netizen::LoginDetection(const QString &password)
     return false;
 }
 
-void Netizen::SendMessage(QString &receiverAccount, QString &content)
+void Netizen::SendMessage(const QString &receiverAccount, const QString &content)
 {
     // 从数据库获取发送对象指针
     Netizen *receiver = DatabaseManager::instance()->GetNetizen(receiverAccount);
@@ -58,7 +58,7 @@ void Netizen::SendMessage(QString &receiverAccount, QString &content)
     }
 }
 
-void Netizen::SendGroupMessage(QString &groupAccount, QString &content)
+void Netizen::SendGroupMessage(const QString &groupAccount, const QString &content)
 {
     Group *receiver = DatabaseManager::instance()->GetGroup(groupAccount);
     QDateTime curTime = QDateTime::currentDateTime();

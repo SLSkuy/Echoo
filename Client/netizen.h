@@ -3,7 +3,7 @@
 #include <QObject>
 #include <QDateTime>
 #include <QString>
-#include <QList>
+#include <QMap>
 
 class Group;
 class Communicator;
@@ -20,8 +20,8 @@ public:
     // 用户属性获取，用户数据库信息存储
     QString GetNickname() { return m_nickName; };
     QString GetAccount() { return m_account; };
-    QList<Netizen *> GetFriendAccounts() { return m_friends; };
-    QList<Group *> GetGroupAccounts() { return m_groups; };
+    QMap<QString, Netizen *> GetFriendAccounts() { return m_friends; };
+    QMap<QString, Group *> GetGroupAccounts() { return m_groups; };
     bool IsOnline() { return m_isOnline; };
 
     // 账号功能
@@ -35,8 +35,8 @@ public:
     bool HasFriend(const QString &account) { return m_friends.contains(account); }
 
     // 消息功能
-    void SendMessage(QString &receiverAccount, QString &content);
-    void SendGroupMessage(QString &groupAccount, QString &content);
+    void SendMessage(const QString &receiverAccount, const QString &content);
+    void SendGroupMessage(const QString &groupAccount, const QString &content);
 
     // 群组功能
     bool CreateGroup(const QString &name, const QString &owner);
@@ -54,8 +54,8 @@ private:
     QString m_password;
     bool m_isOnline;
 
-    QList<Netizen *> m_friends;
-    QList<Group *> m_groups;
+    QMap<QString, Netizen *> m_friends;
+    QMap<QString, Group *> m_groups;
 
     // p2p服务
     Communicator *_cmc;

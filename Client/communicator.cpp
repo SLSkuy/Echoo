@@ -124,7 +124,8 @@ void Communicator::OfflineProcess(QJsonObject &obj)
     }
 }
 
-void Communicator::OnNewTcpConnection()
-{
+void Communicator::OnNewTcpConnection(){}
 
-}
+void Communicator::SendMessage(Message *message) {}
+
+void Communicator::SendGroupMessage(Message *message) {}

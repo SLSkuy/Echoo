@@ -2,7 +2,9 @@
 
 #include <QObject>
 #include <QString>
-#include <QList>
+#include <QMap>
+
+class Netizen;
 
 class Group : public QObject
 {
@@ -17,5 +19,5 @@ private:
     QString m_account;
     QString m_groupName;
     QString m_owner;
-    QList<QString> m_members;
+    QMap<QString, Netizen *> m_members;
 };

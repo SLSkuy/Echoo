@@ -18,11 +18,11 @@ public:
     Q_INVOKABLE void Register(const QString &nickName, const QString &account, const QString &password);
 
     // 消息功能
-    Q_INVOKABLE void SendMessage(QString &receiverAccount, QString &content)
+    Q_INVOKABLE void SendMessage(const QString &receiverAccount, const QString &content)
     {
         emit triggerMessage(receiverAccount, content);
     }
-    Q_INVOKABLE void SendGroupMessage(QString &groupAccount, QString &content)
+    Q_INVOKABLE void SendGroupMessage(const QString &groupAccount, const QString &content)
     {
         emit triggerGroupMessage(groupAccount, content);
     }
