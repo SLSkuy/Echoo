@@ -38,6 +38,7 @@ private:
     quint16 m_tcpPort;
 
     QMap<QString, QTcpSocket *> m_sockets; // 记录当前在线的账号的TcpSocket连接
+    QMap<QTcpSocket *, QByteArray> m_buffers; // TcpSocket缓冲
 
     void OnUdpReadyRead();
     void OnNewTcpConnection();
