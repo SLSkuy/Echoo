@@ -17,6 +17,7 @@ Rectangle{
 
         delegate:
             FriendItem{
+                id:mm
                 height:friendItem.height/13
                 width: parent.width
                 friendheadPortrait.source: headPortrait1
@@ -32,12 +33,21 @@ Rectangle{
                 //         console.log("hhhh")
                 //     }
                 // }
-                friendmouseAreall.onDoubleClicked:{
-                    s1=1;
-                    console.log("jjj");
+                friendmouseAreall.onDoubleClicked: {
+                    if ((mouse.buttons & Qt.LeftButton) && (mouse.modifiers & Qt.ControlModifier)) {
+                        if (mm.isSelected) {
+                            mm.isSelected = false;
+                            console.log("000");
+                            s1=0
+                        } else {
+                            mm.isSelected = true;
+                            console.log("11");
+                            s1=1
+                        }
+                    }
                 }
 
-                isSelected: s1
+                // isSelected: s1
             }
 
     }

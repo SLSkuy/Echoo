@@ -75,10 +75,10 @@ Rectangle {
         anchors.fill: parent
         hoverEnabled: true
         // focus: true
-        onDoubleClicked: {
-                    isSelected = true
-                        // 点击后保持蓝色
-                }
+        // onDoubleClicked: {
+        //             isSelected = true
+        //                 // 点击后保持蓝色
+        //         }
 
         //单击出现好友个主页
         property var friendpersonpage: null;

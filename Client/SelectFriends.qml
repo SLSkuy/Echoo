@@ -19,16 +19,25 @@ FrameLessWindow {
         RowLayout {
             Layout.preferredWidth: 600
             Layout.preferredHeight: 560
+            ColumnLayout{
+                Label{
+                    text:"ctrl+双击左键可自由选择"
+                    font.pixelSize: 10
+                }
 
-            // 左侧好友列表 (fs)
-            Friends {
-                id: fs
-                Layout.preferredWidth: 300
-                Layout.preferredHeight: 560
+                // 左侧好友列表 (fs)
+                Friends {
+                    id: fs
+                    Layout.preferredWidth: 300
+                    Layout.preferredHeight: 520
+                }
             }
+
+
 
             // 右侧已选好友列表
             Rectangle {
+                id:rf
                 Layout.preferredWidth: 300
                 Layout.preferredHeight: 560
                 color: "#f0f0f0"
@@ -56,9 +65,9 @@ FrameLessWindow {
                     delegate: FriendItem {
                         height: 50
                         width: parent.width
-                        headPortrait.source: headPortrait1
-                        name.text: name1
-                        sign.text: sign1
+                        friendheadPortrait.source: headPortrait1
+                        friendname.text: name1
+                        friendsign.text: sign1
                         isSelected: true // 右侧列表中的项默认选中
                     }
                 }
@@ -67,9 +76,27 @@ FrameLessWindow {
 
                 Button {
                     text: "更新已选好友"
+                    anchors.right:rf.right
+                    anchors.rightMargin:10
+
                     onClicked: updateSelectedFriends()
                 }
-
+                RowLayout{
+                    anchors.bottom:rf.bottom
+                    anchors.bottomMargin:10
+                    width: parent.width
+                    Button{
+                        text:"确定"
+                        Layout.bottomMargin:10
+                    }
+                    Button{
+                        text:"取消"
+                        Layout.bottomMargin:10
+                        Layout.alignment: Qt.AlignBottom | Qt.AlignRight
+                        Layout.rightMargin:10
+                        onClicked:_selectfriends.close()
+                    }
+                }
 
             }
 
@@ -82,12 +109,12 @@ FrameLessWindow {
             for (var i = 0; i < fs.friendlistmodel.count; i++) {
                 var item = fs.friendlistmodel.get(i);
                 // item.s1 = 1
-                console.log("Item at index " + i + ": " + item.name1.text);
+                // console.log("Item at index " + i + ": " + item.name1.text);
                 if (item.s1) {
                     listModel.append({
-                        // headPortrait1: item.headPortrait.source,
+                        headPortrait1: item.headPortrait1,
                         name1: item.name1,
-                        sign1: "item.sign.text",
+                        sign1: item.sign1,
                         // color:"black"
                     })
                 }
