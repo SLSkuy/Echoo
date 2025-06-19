@@ -5,6 +5,7 @@ import QtQuick.Window
 
 FrameLessWindow {
     property alias topBar: topbar
+
     id:chatwidget
     visible: true
     width: 800

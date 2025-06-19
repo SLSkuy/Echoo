@@ -2,6 +2,7 @@
 
 #include <QTcpSocket>
 #include <QDateTime>
+#include <QList>
 
 class Message;
 class Netizen;
@@ -17,7 +18,10 @@ public:
     // 账号功能
     Q_INVOKABLE void Login(const QString &account, const QString &password); // 暴露给qml使用
     Q_INVOKABLE void Register(const QString &nickName, const QString &account, const QString &password);
+    Q_INVOKABLE void AddFriend(const QString &account);
+    Q_INVOKABLE QList<QString> GetAllNetizenAccount();
     Q_INVOKABLE QString GetName();
+    Q_INVOKABLE QString GetAccount();
 
     // 消息功能
     Q_INVOKABLE void SendMessage(const QString &receiverAccount, const QString &content)

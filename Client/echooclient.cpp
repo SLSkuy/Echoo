@@ -17,6 +17,16 @@ QString EchooClient::GetName()
     return _user->GetNickname();
 }
 
+QString EchooClient::GetAccount()
+{
+    return _user->GetAccount();
+}
+
+QList<QString> EchooClient::GetAllNetizenAccount()
+{
+    return DatabaseManager::instance()->GetAllNetizenAccount();
+}
+
 void EchooClient::Login(const QString &account, const QString &password)
 {
     Netizen *user = nullptr;
@@ -51,4 +61,12 @@ void EchooClient::Register(const QString &nickName, const QString &account, cons
     _user = newUser; // 设置当前客户端的账号信息
     DatabaseManager::instance()->AddNetizen(newUser);
     emit registerSuccess(true);
+}
+
+void EchooClient::AddFriend(const QString &account)
+{
+    Netizen *user = DatabaseManager::instance()->GetNetizen(account);
+    // 调用双方对象进行双向添加好友
+    user->AddFriend(_user);
+    _user->AddFriend(user);
 }
