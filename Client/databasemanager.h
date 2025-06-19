@@ -2,6 +2,7 @@
 
 #include <QTcpSocket>
 #include <QString>
+#include <QList>
 #include <QMap>
 
 #include "netizen.h"
@@ -15,12 +16,21 @@ public:
     static void destroy();
     DatabaseManager();
 
-    // 账号检测与管理
+    // 用于账号检测与管理
     bool Contains(const QString &account) { return m_netizens.contains(account); };
     bool AddNetizen(Netizen *user);
     bool RemoveNetizen(const QString &account);
     Netizen *GetNetizen(const QString &account) { return m_netizens[account]; };
+    QList<QString> GetAllNetizenAccount() { return m_netizens.keys(); };
+
+    // 群聊检测与管理
     Group *GetGroup(const QString &account);
+
+    // 消息存储与检测
+    void AddMessage(Message *message) { m_messages.append(message); }
+    void AddOfflineMessage(Message *message) { m_offlineMessages.append(message); }
+    QList<Message *> GetOfflineMessages() { return m_offlineMessages; }
+    void UpdateOfflineMessages(QList<Message *> offlineMessages) { m_offlineMessages = offlineMessages; }
 
     // 数据管理
     bool loadFromDatabase();
@@ -32,4 +42,6 @@ private:
     // 缓存管理
     QMap<QString, Group *> m_groups;
     QMap<QString, Netizen *> m_netizens;   // 记录局域网中的所有账号
+    QList<Message *> m_messages;           // 记录所有聊天信息
+    QList<Message *> m_offlineMessages;    // 发送的离线消息，当有用户上线时，监测是否有离线消息，若有则向其发送消息
 };

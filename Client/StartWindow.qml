@@ -8,6 +8,7 @@ import QtQuick.Controls
 FrameLessWindow{
     property string globalAccountId: ""
     property string globalNicknametext: ""
+    property alias startWindow:startWindow
     id: startWindow
 
     Rectangle{

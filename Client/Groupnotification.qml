@@ -96,13 +96,13 @@ FrameLessWindow {
     ListModel{
         id: listModel
         ListElement{
-            image1: "111.png"
+            image1: ""
             name1: "111"
             aaction1: "加入"
             groupname: "abc"
         }
         ListElement{
-            image1: "111.png"
+            image1: ""
             name1: "111"
             aaction1: "退出"
             groupname: "abc"

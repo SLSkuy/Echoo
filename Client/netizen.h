@@ -50,6 +50,8 @@ public:
 signals:
     void messageReceived(Message *msg);
     void groupMessageReceived(Group *group, Message *msg);
+    void messageProcessed(QString account, QString content, QDateTime time);
+    void groupMessageProcessed(QString account, QString content, QDateTime time);
 
 private:
     QString m_nickName;

@@ -61,6 +61,7 @@ FrameLessWindow {
                             text:"加好友"
                             onClicked: {
                                 //TODO
+                                enabled = false
                             }
                         }
                     }

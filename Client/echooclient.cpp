@@ -12,6 +12,21 @@ EchooClient::~EchooClient()
     delete _user;
 }
 
+QString EchooClient::GetName()
+{
+    return _user->GetNickname();
+}
+
+QString EchooClient::GetAccount()
+{
+    return _user->GetAccount();
+}
+
+QList<QString> EchooClient::GetAllNetizenAccount()
+{
+    return DatabaseManager::instance()->GetAllNetizenAccount();
+}
+
 void EchooClient::Login(const QString &account, const QString &password)
 {
     Netizen *user = nullptr;
@@ -22,13 +37,12 @@ void EchooClient::Login(const QString &account, const QString &password)
             _user = user;
             emit loginSuccess(true);
 
-            // 连接对应信号处理
-            // 连接消息处理
-            connect(_user, &Netizen::messageReceived, this, &EchooClient::MessageProcess);
-            connect(_user, &Netizen::groupMessageReceived, this, &EchooClient::GroupMessageProcess);
             // 连接消息发送
             connect(this, &EchooClient::triggerMessage, _user, &Netizen::SendMessage);
             connect(this, &EchooClient::triggerGroupMessage, _user, &Netizen::SendGroupMessage);
+            // 连接消息处理
+            connect(_user, &Netizen::messageProcessed, this, &EchooClient::processedMessageReceived);
+            connect(_user, &Netizen::groupMessageProcessed, this, &EchooClient::processedGroupMessageReceived);
         }
     }
     emit loginSuccess(false);
@@ -49,12 +63,10 @@ void EchooClient::Register(const QString &nickName, const QString &account, cons
     emit registerSuccess(true);
 }
 
-void EchooClient::MessageProcess(Message *msg)
+void EchooClient::AddFriend(const QString &account)
 {
-    // TODO
-}
-
-void EchooClient::GroupMessageProcess(Group *group, Message *msg)
-{
-    // TODO
+    Netizen *user = DatabaseManager::instance()->GetNetizen(account);
+    // 调用双方对象进行双向添加好友
+    user->AddFriend(_user);
+    _user->AddFriend(user);
 }
