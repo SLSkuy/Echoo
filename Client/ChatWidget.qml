@@ -1,5 +1,5 @@
 import QtQuick 2.15
-import QtQuick.Controls
+import QtQuick.Controls 2.15
 import QtQuick.Layouts
 import QtQuick.Window
 
@@ -27,8 +27,8 @@ FrameLessWindow {
             id:toolbar
             // anchors.topMargin:10
             background: Rectangle {
-                        color: "white"  // 设置背景颜色为白色
-                    }
+                color: "white"  // 设置背景颜色为白色
+            }
             anchors.right:parent.right
             // anchors.bottomMargin:80
             RowLayout {
@@ -41,9 +41,19 @@ FrameLessWindow {
                 Button {
                     // text:"add"
                     text: "🤝"
+                    ToolTip {
+                        id: buttonTooltip
+                        text: "发起群聊"
+                        visible: parent.hovered
+                        delay: 500 // 悬停500毫秒后显示
+                    }
+
+                    // 启用悬停检测
+                    hoverEnabled: true
                     onClicked: {
                         // 实现发起群聊的逻辑
                         console.log("发起群聊");
+
                         var component  = Qt.createComponent("SelectFriends.qml");
                         if (component.status === Component.Ready) {
                             var selectfirends = component.createObject(parent);
@@ -52,10 +62,10 @@ FrameLessWindow {
                         }
                     }
                     background: Rectangle {
-                           color: "white"  // 设置背景颜色为白色
-                           border.color: "white"  // 设置边框颜色为白色
-                           border.width: 2  // 设置边框宽度（可选，透明边框时宽度不影响视觉效果）
-                       }
+                        color: "white"  // 设置背景颜色为白色
+                        border.color: "white"  // 设置边框颜色为白色
+                        border.width: 2  // 设置边框宽度（可选，透明边框时宽度不影响视觉效果）
+                    }
                     contentItem: Text {
                         text: parent.text
                         color: parent.hovered ? "red" : "black"  // 悬停时文本变为红色
@@ -66,19 +76,29 @@ FrameLessWindow {
 
 
 
-                // 更多按钮
+                // 更多按钮（删除好友）
                 Button {
                     // text:"more"
-                    text: "···"
+                    text: "\u{1F5D1}"
+                    ToolTip {
+                        id: buttonTooltip1
+                        text: "删除好友"
+                        visible: parent.hovered
+                        delay: 500 // 悬停500毫秒后显示
+                    }
+
+                    // 启用悬停检测
+                    hoverEnabled: true
                     onClicked: {
                         // 实现更多的逻辑
-                        console.log("更多");
+                        console.log("删除好友");
+
                     }
                     background: Rectangle {
-                           color: "white"  // 设置背景颜色为白色
-                           border.color: "white"  // 设置边框颜色为白色
-                           border.width: 2  // 设置边框宽度（可选，透明边框时宽度不影响视觉效果）
-                       }
+                        color: "white"  // 设置背景颜色为白色
+                        border.color: "white"  // 设置边框颜色为白色
+                        border.width: 2  // 设置边框宽度（可选，透明边框时宽度不影响视觉效果）
+                    }
                     contentItem: Text {
                         text: parent.text
                         color: parent.hovered ? "red" : "black"  // 悬停时文本变为红色
@@ -90,11 +110,11 @@ FrameLessWindow {
         }
 
         Rectangle {
-                    height: 1  // 分隔线高度
-                    width: parent.width  // 分隔线宽度
-                    color: "gray"  // 分隔线颜色
-                    Layout.fillWidth: true
-                }
+            height: 1  // 分隔线高度
+            width: parent.width  // 分隔线宽度
+            color: "gray"  // 分隔线颜色
+            Layout.fillWidth: true
+        }
         // 聊天区域
         Rectangle {
             width: parent.width
@@ -137,12 +157,12 @@ FrameLessWindow {
                                 color: isMe ? "black" : "black"
                             }
                             Text {
-                                        id: timeText
-                                        text: Qt.formatDateTime(new Date(), "hh:mm")
-                                        color: "gray"
-                                        font.pixelSize: 10
-                                        horizontalAlignment: Text.AlignRight
-                                    }
+                                id: timeText
+                                text: Qt.formatDateTime(new Date(), "hh:mm")
+                                color: "gray"
+                                font.pixelSize: 10
+                                horizontalAlignment: Text.AlignRight
+                            }
                         }
                     }
                 }
@@ -170,10 +190,10 @@ FrameLessWindow {
 
                                 }
                                 background: Rectangle {
-                                       color: "transparent"  // 设置背景颜色为透明
-                                       border.color: "transparent"  // 设置边框颜色为透明
-                                       border.width: 2  // 设置边框宽度（可选，透明边框时宽度不影响视觉效果）
-                                   }
+                                    color: "transparent"  // 设置背景颜色为透明
+                                    border.color: "transparent"  // 设置边框颜色为透明
+                                    border.width: 2  // 设置边框宽度（可选，透明边框时宽度不影响视觉效果）
+                                }
                                 contentItem: Text {
                                     text: parent.text
                                     color: parent.hovered ? "red" : "black"  // 悬停时文本变为蓝色
@@ -202,10 +222,10 @@ FrameLessWindow {
                                     console.log("更多");
                                 }
                                 background: Rectangle {
-                                       color: "transparent"  // 设置背景颜色为透明
-                                       border.color: "transparent"  // 设置边框颜色为透明
-                                       border.width: 2  // 设置边框宽度（可选，透明边框时宽度不影响视觉效果）
-                                   }
+                                    color: "transparent"  // 设置背景颜色为透明
+                                    border.color: "transparent"  // 设置边框颜色为透明
+                                    border.width: 2  // 设置边框宽度（可选，透明边框时宽度不影响视觉效果）
+                                }
                                 contentItem: Text {
                                     text: parent.text
                                     color: parent.hovered ? "red" : "black"  // 悬停时文本变为蓝色
