@@ -12,6 +12,11 @@ EchooClient::~EchooClient()
     delete _user;
 }
 
+QString EchooClient::GetName()
+{
+    return _user->GetNickname();
+}
+
 void EchooClient::Login(const QString &account, const QString &password)
 {
     Netizen *user = nullptr;

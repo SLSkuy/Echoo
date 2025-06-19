@@ -17,6 +17,7 @@ public:
     // 账号功能
     Q_INVOKABLE void Login(const QString &account, const QString &password); // 暴露给qml使用
     Q_INVOKABLE void Register(const QString &nickName, const QString &account, const QString &password);
+    Q_INVOKABLE QString GetName();
 
     // 消息功能
     Q_INVOKABLE void SendMessage(const QString &receiverAccount, const QString &content)
