@@ -36,6 +36,10 @@ qt_add_qml_module(appEchoo-Client
         QML_FILES Maintotal.qml
         QML_FILES GroupItem.qml
         QML_FILES Grouptotal.qml
+        QML_FILES SelectFriends.qml
+        QML_FILES SelectTitleBar.qml
+        QML_FILES Friendpersonpage.qml
+        QML_FILES GroupChat.qml
         SOURCES netizen.h netizen.cpp
         SOURCES group.h group.cpp
         SOURCES databasemanager.h databasemanager.cpp

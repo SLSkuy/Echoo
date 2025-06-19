@@ -262,7 +262,7 @@ FrameLessWindow {
                 Layout.margins: 10 // 边距
                 onClicked:{
                     if(nicknameField.text.length>0)
-                        username.text=nicknameField.text
+                        startWindow.globalNicknametext=nicknameField.text
                     if(signatureField.text.length>0)
                         signature.text="            "+signatureField.text
                     if(genderCombo.currentText=="男"){
