@@ -104,6 +104,9 @@ void Communicator::OnNewTcpConnection()
                 QJsonObject obj = doc.object();
                 QString type = obj["message_type"].toString();
 
+                Logger::Log("Receiver message form " + message->GetSender()->GetAccount() + ": "
+                            + message->GetMessage());
+
                 //判断消息类型
                 if (type == "individual") {
                     emit messageReceived(message);

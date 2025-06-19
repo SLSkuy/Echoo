@@ -25,6 +25,9 @@ DatabaseManager::DatabaseManager()
     AddNetizen(newUser);
     Netizen *newUser2 = new Netizen("Yumikaze", "0721", "0721");
     AddNetizen(newUser2);
+
+    newUser2->AddFriend(newUser);
+    newUser->AddFriend(newUser2);
 }
 
 bool DatabaseManager::AddNetizen(Netizen *user)

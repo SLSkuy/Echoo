@@ -74,6 +74,18 @@ void Netizen::SendGroupMessage(const QString &groupAccount, const QString &conte
     }
 }
 
+bool Netizen::AddFriend(Netizen *user)
+{
+    if (HasFriend(user->GetAccount())) {
+        Logger::Warning(user->GetAccount() + " is already your friend.");
+        return false;
+    } else {
+        Logger::Log("Add friend " + user->GetAccount());
+        m_friends.insert(user->GetAccount(), user);
+        return true;
+    }
+}
+
 void Netizen::MessageProcess(Message *message) {}
 
 void Netizen::GroupMessageProcess(Group *group, Message *message) {}

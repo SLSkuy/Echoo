@@ -20,8 +20,8 @@ public:
     // 用户属性获取，用户数据库信息存储
     QString GetNickname() { return m_nickName; };
     QString GetAccount() { return m_account; };
-    QMap<QString, Netizen *> GetFriendAccounts() { return m_friends; };
-    QMap<QString, Group *> GetGroupAccounts() { return m_groups; };
+    QMap<QString, Netizen *> GetFriends() { return m_friends; };
+    QMap<QString, Group *> GetGroups() { return m_groups; };
     bool IsOnline() { return m_isOnline; };
 
     // 账号功能
