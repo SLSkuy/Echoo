@@ -86,6 +86,9 @@ bool Netizen::AddFriend(Netizen *user)
     }
 }
 
-void Netizen::MessageProcess(Message *message) {}
+void Netizen::MessageProcess(Message *message)
+{
+    Logger::Log("Receive message from account " + message->GetSender()->GetAccount() + ": " + message->GetMessage());
+}
 
 void Netizen::GroupMessageProcess(Group *group, Message *message) {}

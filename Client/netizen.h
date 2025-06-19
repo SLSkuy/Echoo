@@ -45,6 +45,7 @@ public:
     bool HasGroup(const QString &account) { return m_groups.contains(account); }
 
     QString GetIpAddress() { return m_ip; }
+    void SetIpAddress(QString ip) { m_ip = ip; }
 
 signals:
     void messageReceived(Message *msg);

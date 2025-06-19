@@ -28,15 +28,16 @@ signals:
 
 private:
     Netizen *_netizen;
-    QUdpSocket *_udpSocket;
-    QTcpServer *_tcpServer;
+    QUdpSocket *_udpSocket; // 用于广播通信
+    QTcpServer *_tcpServer; // 用于接收其他客户端程序的连接
     quint16 m_udpPort;
     quint16 m_tcpPort;
 
     QMap<QString, QTcpSocket *> m_sockets; // 记录当前在线的账号的TcpSocket连接
 
     void OnUdpReadyRead();
+    void OnNewTcpConnection();
     void OnlineProcess(QJsonObject &obj);
     void OfflineProcess(QJsonObject &obj);
-    void OnNewTcpConnection();
+    void ConnectProcess(const QString &account, const QString &ip);
 };

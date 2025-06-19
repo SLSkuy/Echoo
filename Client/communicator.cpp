@@ -44,6 +44,7 @@ Communicator::~Communicator()
 
 QString Communicator::GetLocalIP()
 {
+    // 返回本机IP
     foreach (const QHostAddress &address, QNetworkInterface::allAddresses()) {
         if (address.protocol() == QAbstractSocket::IPv4Protocol && address != QHostAddress(QHostAddress::LocalHost)) {
             return address.toString();
@@ -93,6 +94,12 @@ void Communicator::OnNewTcpConnection()
     // 读取连接队列中所有的Socket
     while (_tcpServer->hasPendingConnections()) {
         QTcpSocket *socket = _tcpServer->nextPendingConnection();
+
+        // 存储socket连接
+        QString account = QJsonDocument::fromJson(socket->readAll()).object()["sender_account"].toString();
+        m_sockets[account] = socket;
+
+        // 连接信号
         connect(socket, &QTcpSocket::readyRead, this, [this, socket]() {
             // 处理接收到的消息
             QByteArray data = socket->readAll();
@@ -103,9 +110,6 @@ void Communicator::OnNewTcpConnection()
             if (!doc.isNull() && doc.isObject()) {
                 QJsonObject obj = doc.object();
                 QString type = obj["message_type"].toString();
-
-                Logger::Log("Receiver message form " + message->GetSender()->GetAccount() + ": "
-                            + message->GetMessage());
 
                 //判断消息类型
                 if (type == "individual") {
@@ -132,98 +136,77 @@ void Communicator::OnlineProcess(QJsonObject &obj)
         if (!db->GetNetizen(account)->IsOnline()) {
             // 检测用户是否在线，若为否则标志为在线，并告诉对方自己也在线
             db->GetNetizen(account)->SetOnline(true);
+            db->GetNetizen(account)->SetIpAddress(ip);
 
-            // 建立TCP连接
-            if (!m_sockets.contains(account)) {
-                QTcpSocket *socket = new QTcpSocket(this);
-                socket->connectToHost(ip, m_tcpPort);
-                connect(socket, &QTcpSocket::connected, this, [this, account]() {
-                    // 测试信息
-                    Logger::Log("Connected to " + account);
-                });
-                connect(socket, &QTcpSocket::disconnected, this, [this, account]() {
-                    // 测试信息
-                    m_sockets.remove(account);
-                    Logger::Log("Disconnected from " + account);
-                });
-                m_sockets[account] = socket;
-            }
-
-            // 回应广播自己在线
-            QJsonObject response;
-            response["nickName"] = _netizen->GetNickname();
-            response["account"] = _netizen->GetAccount();
-            response["online"] = true;
-            response["ip"] = _netizen->GetIpAddress();
-            BroadcastPresence(response);
-
+            ConnectProcess(account, ip);
             Logger::Log(account + " online.");
         }
     } else {
         // 不存在该用户，则添加
         Netizen *newUser = new Netizen(nickName, account, NULL, nullptr);
+        newUser->SetIpAddress(ip);
         newUser->SetOnline(true);
         db->AddNetizen(newUser);
 
-        // 建立TCP连接
-        if (!m_sockets.contains(account)) {
-            QTcpSocket *socket = new QTcpSocket(this);
-            socket->connectToHost(ip, m_tcpPort);
-            connect(socket, &QTcpSocket::connected, this, [this, account]() {
-                // 测试信息
-                Logger::Log("Connected to " + account);
-            });
-            connect(socket, &QTcpSocket::disconnected, this, [this, account]() {
-                // 测试信息
-                m_sockets.remove(account);
-                Logger::Log("Disconnected from " + account);
-            });
-            m_sockets[account] = socket;
-        }
-
-        // 广播回应自己也在线，以此确保双方都确定对方在线
-        QJsonObject response;
-        response["nickName"] = _netizen->GetNickname();
-        response["account"] = _netizen->GetAccount();
-        response["online"] = true;
-        response["ip"] = _netizen->GetIpAddress();
-        BroadcastPresence(response);
-
+        ConnectProcess(account, ip);
         Logger::Log(account + " online.");
     }
 }
 
 void Communicator::OfflineProcess(QJsonObject &obj)
 {
+    // 处理其他客户端传来的离线消息
     QString account = obj["account"].toString();
     if (DatabaseManager::instance()->Contains(account)) {
         auto netizen = DatabaseManager::instance()->GetNetizen(account);
         if (netizen->IsOnline()) {
             netizen->SetOnline(false);
+            // 删除socket连接
+            m_sockets[account]->deleteLater();
+            m_sockets.remove(account);
             Logger::Log(account + " went offline.");
         }
     }
 }
 
+void Communicator::ConnectProcess(const QString &account, const QString &ip)
+{
+    // 建立TCP连接
+    if (!m_sockets.contains(account)) {
+        QTcpSocket *socket = new QTcpSocket(this);
+        socket->connectToHost(ip, m_tcpPort);
+        connect(socket, &QTcpSocket::connected, this, [this, account]() {
+            // 测试信息
+            Logger::Log("Connected to " + account);
+        });
+        connect(socket, &QTcpSocket::disconnected, this, [this, account]() {
+            // 测试信息
+            m_sockets.remove(account);
+            Logger::Log("Disconnected from " + account);
+        });
+        m_sockets[account] = socket;
+    }
+
+    // 广播回应自己也在线，以此确保双向连接
+    QJsonObject response;
+    response["nickName"] = _netizen->GetNickname();
+    response["account"] = _netizen->GetAccount();
+    response["online"] = true;
+    response["ip"] = _netizen->GetIpAddress();
+    BroadcastPresence(response);
+}
+
 void Communicator::SendMessage(Message *message)
 {
     QString receiverAccount = qobject_cast<Netizen *>(message->GetReceiver())->GetAccount();
+    // 检测是否有Socket连接，若无则对方离线
     if (m_sockets.contains(receiverAccount)) {
-        // 如果已有连接，直接发送
         QTcpSocket *socket = m_sockets[receiverAccount];
         socket->write(message->ToJson());
     } else {
-        // 建立新连接
-        QTcpSocket *socket = new QTcpSocket(this);
-        connect(socket, &QTcpSocket::connected, this, [socket, message]() { socket->write(message->ToJson()); });
-        connect(socket, &QTcpSocket::disconnected, socket, &QTcpSocket::deleteLater);
-
-        // 从数据库获取接收者的IP地址（这里需要你的数据库支持存储IP）
-        QString ip = DatabaseManager::instance()->GetNetizen(receiverAccount)->GetIpAddress();
-        socket->connectToHost(ip, m_tcpPort);
-
-        // 添加到连接映射
-        m_sockets[receiverAccount] = socket;
+        // TODO
+        // 进行离线消息处理
+        Logger::Warning(receiverAccount + " not online.");
     }
 }
 
