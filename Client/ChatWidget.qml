@@ -142,7 +142,7 @@ FrameLessWindow {
                         delegate: Rectangle {
                             width: parent.width/2
                             height: messageText.implicitHeight + 20
-                            color: isMe ? "#dcf8c6" : "white"
+                            color: isMe ? "#dcf8c6" : "lightblue"
                             radius: 5
 
                             anchors.right: isMe ? parent.right : undefined
@@ -156,13 +156,24 @@ FrameLessWindow {
                                 wrapMode: Text.Wrap
                                 color: isMe ? "black" : "black"
                             }
-                            Text {
+
+                            Label{
                                 id: timeText
-                                text: Qt.formatDateTime(new Date(), "hh:mm")
+                                text: isMe ? (Qt.formatDateTime(new Date(), "hh:mm")+"  "+startWindow.globalNicknametext):Qt.formatDateTime(new Date(), "hh:mm")+" "+nameMessage.text
+                                // text: Qt.formatDateTime(new Date(), "hh:mm")+"  "+startWindow.globalNicknametext
                                 color: "gray"
                                 font.pixelSize: 10
-                                horizontalAlignment: Text.AlignRight
+                                horizontalAlignment: isMe ?Text.AlignRight:Text.AlignLeft
                             }
+                            // Text{
+                            //     id:messagesender
+                            //     text:"lll"
+                            //     font.pixelSize: 10
+                            //     height: timeText.height
+                            //     anchors.bottom: messageText.bottom
+                            //     anchors.left: timeText.right
+
+                            // }
                         }
                     }
                 }
