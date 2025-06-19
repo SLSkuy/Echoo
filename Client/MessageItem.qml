@@ -11,10 +11,11 @@ Rectangle{
     property alias time: _time
     property alias unreadCount: _unreadCount
     property alias unreadCountContainer : _unreadCountContainer
+    property alias messageIte: messageItem
 
     property bool isGroup: false //判断当前ListView的条目为群聊的还是私聊的
 
-    id: root
+    id: messageItem
     // height: 70
     color: mouseArea.containsMouse ? "#E6E6E6" : "transparent"
 
@@ -47,7 +48,7 @@ Rectangle{
                     id:_name
                     color: "black"
                     font.pixelSize: 16
-                    font.bold: root.unreadCount > 0
+                    font.bold: messageItem.unreadCount > 0
                     Layout.fillWidth: true
                     elide: Text.ElideRight
                 }
@@ -56,7 +57,7 @@ Rectangle{
                 Label {
                     id: _time
                     Layout.rightMargin: 10
-                    text: root.time
+                    text: messageItem.time
                     font.pixelSize: 12
                     color: "darkgrey"
                 }
@@ -81,7 +82,7 @@ Rectangle{
             color: "red"
             Layout.rightMargin: 10
             Layout.bottomMargin: 5
-            visible: parseInt(root.unreadCount.text) > 0 // 只有当未读消息数大于0时才显示
+            visible: parseInt(messageItem.unreadCount.text) > 0 // 只有当未读消息数大于0时才显示
 
             Label {
                 anchors.centerIn: parent
@@ -107,10 +108,12 @@ Rectangle{
                     var component1 = Qt.createComponent("GroupChat.qml");
                     if (component1.status === Component.Ready) {
                         groupchat = component1.createObject(null, {
-                            flags: Qt.Window | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
+                            flags: Qt.Window | Qt.FramelessWindowHint
                         });
+
                     }
                 }
+                groupchat.topBar.text11.text = nameMessage.text
                 groupchat.show();
                 groupchat.raise(); // 关键：置顶窗口
                 groupchat.requestActivate(); // 激活窗口
@@ -119,10 +122,11 @@ Rectangle{
                     var component2 = Qt.createComponent("ChatWidget.qml");
                     if (component2.status === Component.Ready) {
                         chatWidget = component2.createObject(null, {
-                            flags: Qt.Window | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
+                            flags: Qt.Window | Qt.FramelessWindowHint
                         });
                     }
                 }
+                chatWidget.topBar.text11.text = nameMessage.text
                 chatWidget.show();
                 chatWidget.raise();
                 chatWidget.requestActivate();

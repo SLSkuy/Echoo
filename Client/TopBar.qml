@@ -6,6 +6,7 @@ import QtQuick.Window
 //titlebar
 Rectangle {
     property alias text11: widgettext
+    // property alias topBar: titleBar
 
         id: titleBar
         width: parent.width
@@ -19,7 +20,7 @@ Rectangle {
             // 窗口标题
             Text {
                 id:widgettext
-                text: nameMessage.text
+                // text: nameMessage.text
                 color: "black"
                 font.pixelSize: 14
                 Layout.leftMargin: 10

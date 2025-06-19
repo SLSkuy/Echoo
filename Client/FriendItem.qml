@@ -87,7 +87,7 @@ Rectangle {
                 var component = Qt.createComponent("Friendpersonpage.qml");
                 if (component.status === Component.Ready) {
                     friendpersonpage = component.createObject(null, {
-                            flags: Qt.Window | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
+                            flags: Qt.Window | Qt.FramelessWindowHint
                     });
                 }
             }

@@ -4,6 +4,7 @@ import QtQuick.Layouts
 import QtQuick.Window
 
 Window {
+    property alias topBar: topbar
     id:chatwidget
     visible: true
     width: 800

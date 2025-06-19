@@ -5,6 +5,8 @@ import QtQuick.Window
 
 Window {
     // property alias chatwidget: groupChat
+    property alias topBar: topbar
+    // property alias text22: text11.text
 
     id:chatwidget
     visible: true
@@ -40,6 +42,7 @@ Window {
         //titlebar
         TopBar{
             id:topbar
+            text11.text: ""
 
         }
         // 顶部工具栏

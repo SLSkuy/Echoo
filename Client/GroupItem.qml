@@ -8,8 +8,9 @@ Rectangle{
     property alias picture: _picture
     property alias nameGroup: _name
     property alias personcount: _personcount
+    property alias groupItem: groupItem
+    id: groupItem
 
-    id: root
     // height: 70
     color: mouseArea.containsMouse ? "#E6E6E6" : "transparent"
 
@@ -60,15 +61,16 @@ Rectangle{
             if(!groupchat) {
                 var component = Qt.createComponent("GroupChat.qml");
                 if (component.status === Component.Ready) {
-                    groupchat = component.createObject(root, {
-                        "flags": Qt.Window // 确保是独立窗口
+                    groupchat = component.createObject(null, {
+                        flags: Qt.Window | Qt.FramelessWindowHint
                     });
                 }
             }
+            groupchat.topBar.text11.text = nameGroup.text
             groupchat.show();
             groupchat.raise(); // 关键：置顶窗口
             groupchat.requestActivate(); // 激活窗口
-            // unreadCount.text = "0"; //点击进聊天界面就会让未读消息清零
+            // messageItem.unreadCount.text = "0"; //点击进聊天界面就会让未读消息清零
         }
     }
 

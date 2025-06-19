@@ -69,11 +69,10 @@ FrameLessWindow{
             }
             Rectangle{
                 Layout.alignment: Qt.AlignVCenter
-                Layout.leftMargin: 61
                 Text{
                     id:qm_nr
                     width:300
-                    text:"生活不止眼前的苟且，还有远方的苟且"
+                    text:"            生活不止眼前的苟且，还有远方的苟且"
                     font.pixelSize: 15
                     Layout.alignment: Qt.AlignVCenter
                     Layout.fillWidth: true
@@ -96,10 +95,9 @@ FrameLessWindow{
             }
             Rectangle{
                 Layout.alignment: Qt.AlignVCenter
-                Layout.leftMargin: 42
                 Text{
                     id:szd_nr
-                    text:"中国重庆市"
+                    text:"        中国重庆市"
                     font.pixelSize: 15
                     Layout.alignment: Qt.AlignVCenter
                     Layout.fillWidth: true
