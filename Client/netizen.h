@@ -32,15 +32,17 @@ public:
     // 好友管理
     bool AddFriend(Netizen *user);
     bool RemoveFriend(const QString &account);
+    bool HasFriend(const QString &account) { return m_friends.contains(account); }
 
     // 消息功能
-    void SendMessage(Netizen *receiver, Message *msg);
-    void SendGroupMessage(Group *group, Message *msg);
+    void SendMessage(QString &receiverAccount, QString &content);
+    void SendGroupMessage(QString &groupAccount, QString &content);
 
     // 群组功能
     bool CreateGroup(const QString &name, const QString &owner);
     bool JoinGroup(Group *group);
     bool LeaveGroup(Group *group);
+    bool HasGroup(const QString &account) { return m_groups.contains(account); }
 
 signals:
     void messageReceived(Message *msg);

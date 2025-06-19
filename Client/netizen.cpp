@@ -1,7 +1,10 @@
 #include <QJsonObject>
 
+#include "databasemanager.h"
 #include "communicator.h"
+#include "message.h"
 #include "netizen.h"
+#include "logger.h"
 
 Netizen::Netizen(QObject *parent) : QObject(parent) {}
 
@@ -21,7 +24,7 @@ Netizen::~Netizen()
 bool Netizen::LoginDetection(const QString &password)
 {
     if (password == m_password) {
-        // 连接信号
+        // 连接p2p服务器
         _cmc = new Communicator(this);
         connect(_cmc, &Communicator::messageReceived, this, &Netizen::messageReceived);
         connect(_cmc, &Communicator::groupMessageReceived, this, &Netizen::groupMessageReceived);
@@ -40,6 +43,31 @@ bool Netizen::LoginDetection(const QString &password)
     return false;
 }
 
-void Netizen::SendMessage(Netizen *receiver, Message *msg) {}
+void Netizen::SendMessage(QString &receiverAccount, QString &content)
+{
+    // 从数据库获取发送对象指针
+    Netizen *receiver = DatabaseManager::instance()->GetNetizen(receiverAccount);
+    QDateTime curTime = QDateTime::currentDateTime();
 
-void Netizen::SendGroupMessage(Group *group, Message *msg) {}
+    if (HasFriend(receiverAccount)) {
+        // 创建消息实体对象,接受者设置为空用于委托检测是否有对应好友
+        Message *msg = new Message(this, receiver, content, curTime);
+        _cmc->SendMessage(msg);
+    } else {
+        Logger::Warning(receiverAccount + " is not " + m_account + "'s friend.");
+    }
+}
+
+void Netizen::SendGroupMessage(QString &groupAccount, QString &content)
+{
+    Group *receiver = DatabaseManager::instance()->GetGroup(groupAccount);
+    QDateTime curTime = QDateTime::currentDateTime();
+
+    if (HasGroup(groupAccount)) {
+        // 创建消息实体
+        Message *msg = new Message(this, receiver, content, curTime);
+        _cmc->SendGroupMessage(msg);
+    } else {
+        Logger::Warning(m_account + " not in group " + groupAccount);
+    }
+}
