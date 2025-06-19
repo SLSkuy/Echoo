@@ -19,9 +19,11 @@ Rectangle{
             FriendItem{
                 height:friendItem.height/13
                 width: parent.width
-                headPortrait.source: headPortrait1
-                name.text: name1
-                sign.text: sign1
+                friendheadPortrait.source: headPortrait1
+                friendname.text: name1
+                friendsign.text: sign1
+                friendpersonid: id1
+                friendregion: region1
 
                 // TapHandler{
                 //     onDoubleTapped:{
@@ -30,7 +32,7 @@ Rectangle{
                 //         console.log("hhhh")
                 //     }
                 // }
-                mouseAreall.onDoubleClicked:{
+                friendmouseAreall.onDoubleClicked:{
                     s1=1;
                     console.log("jjj");
                 }
@@ -47,12 +49,16 @@ Rectangle{
             name1: "李四"
             sign1: "abc"
             s1:0
+            id1:"111"
+            region1:"重庆市"
         }
         ListElement {
             headPortrait1: "qrc:/resources/LoginImage.png"
             name1: "张三"
             sign1: "321"
             s1:0
+            id1: "222"
+            region1: "其他"
         }
     }
 }

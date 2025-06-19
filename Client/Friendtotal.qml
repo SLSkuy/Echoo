@@ -15,10 +15,7 @@ Rectangle{
             Label{
                 id:groupmessage
                 text: " \n  好友通知\n"
-                // Layout.preferredHeight: 30
-                // Layout.preferredWidth: parent.width
-                // Layout.topMargin: 15
-                // Layout.leftMargin: 15
+
                 Layout.alignment: Qt.AlignCenter
                 font.pixelSize: 16
 

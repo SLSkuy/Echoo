@@ -24,10 +24,12 @@ Rectangle {
         }
 
 
-    property alias headPortrait : headPortrait
-    property alias name : name
-    property alias sign : sign
-        property alias mouseAreall: mouseArea
+    property alias friendheadPortrait : headPortrait
+    property alias friendname : name
+    property alias friendsign : sign
+    property alias friendmouseAreall: mouseArea
+    property string friendpersonid: " "
+    property string friendregion: " "
 
     RowLayout{
         id: row
@@ -78,6 +80,21 @@ Rectangle {
                         // 点击后保持蓝色
                 }
 
+        //单击出现好友个主页
+        property var friendpersonpage: null;
+        onClicked: {
+            if(!friendpersonpage) {
+                var component = Qt.createComponent("Friendpersonpage.qml");
+                if (component.status === Component.Ready) {
+                    friendpersonpage = component.createObject(null, {
+                            flags: Qt.Window | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
+                    });
+                }
+            }
+            friendpersonpage.show();
+            friendpersonpage.raise(); // 关键：置顶窗口
+            friendpersonpage.requestActivate(); // 激活窗口
+        }
 
     }
 

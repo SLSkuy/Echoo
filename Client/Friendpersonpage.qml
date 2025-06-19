@@ -8,12 +8,20 @@ FrameLessWindow{
     property alias signatureFriend:qm_nr
     property alias regionFriend:szd_nr
     property alias headPortraitFriend:tx
-    id:personpage
+    property alias friendPersonpage: chatwidget
+
+    id:chatwidget
     width:400
     height:300
 
 
     ColumnLayout{
+        anchors.fill:parent
+        TopBar{
+            Layout.preferredWidth: parent.width
+            text11.text: "个人主页"
+        }
+
         RowLayout{
             Rectangle {
                 Layout.topMargin:20
@@ -45,7 +53,7 @@ FrameLessWindow{
                 }
                 Text{
                     id:echoo_id
-                    text:"id:"+startWindow.globalAccountId
+                    text:"id:"+friendpersonid
 
                     font.pixelSize: 20
                 }
@@ -64,10 +72,11 @@ FrameLessWindow{
             }
             Rectangle{
                 Layout.alignment: Qt.AlignVCenter
+                Layout.leftMargin: 61
                 Text{
                     id:qm_nr
                     width:300
-                    text:"            生活不止眼前的苟且，还有远方的苟且"
+                    text:friendsign.text
                     font.pixelSize: 15
                     Layout.alignment: Qt.AlignVCenter
                     Layout.fillWidth: true
@@ -90,9 +99,10 @@ FrameLessWindow{
             }
             Rectangle{
                 Layout.alignment: Qt.AlignVCenter
+                Layout.leftMargin: 42
                 Text{
                     id:szd_nr
-                    text:"        中国重庆市"
+                    text: friendregion
                     font.pixelSize: 15
                     Layout.alignment: Qt.AlignVCenter
                     Layout.fillWidth: true
@@ -114,6 +124,8 @@ FrameLessWindow{
         anchors.bottomMargin:10
         anchors.right:parent.right
         anchors.rightMargin:10
+
+        //单机“发消息”按钮，弹出聊天框
         property var chatWidget: null;
         onClicked: {
             if(!chatWidget) {

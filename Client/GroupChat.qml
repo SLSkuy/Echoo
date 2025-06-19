@@ -4,6 +4,8 @@ import QtQuick.Layouts
 import QtQuick.Window
 
 Window {
+    // property alias chatwidget: groupChat
+
     id:chatwidget
     visible: true
     width: 800

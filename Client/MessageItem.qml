@@ -106,8 +106,8 @@ Rectangle{
                 if(!groupchat) {
                     var component1 = Qt.createComponent("GroupChat.qml");
                     if (component1.status === Component.Ready) {
-                        groupchat = component1.createObject(root, {
-                            "flags": Qt.Window // 确保是独立窗口
+                        groupchat = component1.createObject(null, {
+                            flags: Qt.Window | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
                         });
                     }
                 }
@@ -118,8 +118,8 @@ Rectangle{
                 if(!chatWidget) {
                     var component2 = Qt.createComponent("ChatWidget.qml");
                     if (component2.status === Component.Ready) {
-                        chatWidget = component2.createObject(root, {
-                            "flags": Qt.Window
+                        chatWidget = component2.createObject(null, {
+                            flags: Qt.Window | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
                         });
                     }
                 }
