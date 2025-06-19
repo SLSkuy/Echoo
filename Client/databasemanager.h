@@ -27,6 +27,9 @@ public:
 
     // 消息存储与检测
     void AddMessage(Message *message) { m_messages.append(message); }
+    void AddOfflineMessage(Message *message) { m_offlineMessages.append(message); }
+    QList<Message *> GetOfflineMessages() { return m_offlineMessages; }
+    void UpdateOfflineMessages(QList<Message *> offlineMessages) { m_offlineMessages = offlineMessages; }
 
     // 数据管理
     bool loadFromDatabase();

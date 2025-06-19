@@ -94,33 +94,53 @@ void Communicator::OnNewTcpConnection()
     // 读取连接队列中所有的Socket
     while (_tcpServer->hasPendingConnections()) {
         QTcpSocket *socket = _tcpServer->nextPendingConnection();
-
-        // 存储socket连接
-        QString account = QJsonDocument::fromJson(socket->readAll()).object()["sender_account"].toString();
-        m_sockets[account] = socket;
-
         // 连接信号
-        connect(socket, &QTcpSocket::readyRead, this, [this, socket]() {
-            // 处理接收到的消息
-            QByteArray data = socket->readAll();
-            QJsonDocument doc = QJsonDocument::fromJson(data);
-
-            // 反序列化获取Message对象
-            Message *message = Message::FromJson(data);
-            if (!doc.isNull() && doc.isObject()) {
-                QJsonObject obj = doc.object();
-                QString type = obj["message_type"].toString();
-
-                //判断消息类型
-                if (type == "individual") {
-                    emit messageReceived(message);
-                } else if (type == "group") {
-                    Group *group = qobject_cast<class Group *>(message->GetReceiver());
-                    emit groupMessageReceived(group, message);
-                }
-            }
-        });
+        connect(socket, &QTcpSocket::readyRead, this, [socket, this]() { OnlineMessageProcess(socket); });
         connect(socket, &QTcpSocket::disconnected, socket, &QTcpSocket::deleteLater);
+    }
+}
+
+void Communicator::OnlineMessageProcess(QTcpSocket *socket)
+{
+    // 处理接收到的在线消息
+    QByteArray data = socket->readAll();
+    QJsonDocument doc = QJsonDocument::fromJson(data);
+
+    // 反序列化获取Message对象
+    Message *message = Message::FromJson(data);
+    if (!doc.isNull() && doc.isObject()) {
+        QJsonObject obj = doc.object();
+        QString type = obj["message_type"].toString();
+
+        //判断消息类型
+        if (type == "individual") {
+            emit messageReceived(message);
+        } else if (type == "group") {
+            Group *group = qobject_cast<class Group *>(message->GetReceiver());
+            emit groupMessageReceived(group, message);
+        }
+    }
+}
+
+void Communicator::OfflineMessageProcess(Netizen *user)
+{
+    // 获取所有离线消息
+    QList<Message *> offlines = DatabaseManager::instance()->GetOfflineMessages();
+    QList<Message *> toRemove; // 记录已经发送的离线消息
+    for (QList<Message *>::iterator it = offlines.begin(); it != offlines.end(); ++it) {
+        if (auto receiver = qobject_cast<Netizen *>((*it)->GetReceiver())) {
+            if (receiver == user) {
+                SendMessage(*it);
+                toRemove.append(*it);
+            }
+        }
+    }
+    for (QList<Message *>::iterator it = toRemove.begin(); it != toRemove.end(); ++it) {
+        if ((*it)->GetReceiver() == user) {
+            offlines.removeOne(*it); // 删除已经发送的离线消息
+        }
+        // 更新离线消息
+        DatabaseManager::instance()->UpdateOfflineMessages(offlines);
     }
 }
 
@@ -139,6 +159,9 @@ void Communicator::OnlineProcess(QJsonObject &obj)
             db->GetNetizen(account)->SetIpAddress(ip);
 
             ConnectProcess(account, ip);
+
+            // 处理有关对应用户的离线消息
+            OfflineMessageProcess(db->GetNetizen(account));
             Logger::Log(account + " online.");
         }
     } else {
@@ -161,6 +184,7 @@ void Communicator::OfflineProcess(QJsonObject &obj)
         auto netizen = DatabaseManager::instance()->GetNetizen(account);
         if (netizen->IsOnline()) {
             netizen->SetOnline(false);
+
             // 删除socket连接
             m_sockets[account]->deleteLater();
             m_sockets.remove(account);
@@ -184,6 +208,8 @@ void Communicator::ConnectProcess(const QString &account, const QString &ip)
             m_sockets.remove(account);
             Logger::Log("Disconnected from " + account);
         });
+
+        // 记录TcpSocket在线
         m_sockets[account] = socket;
     }
 
@@ -203,10 +229,11 @@ void Communicator::SendMessage(Message *message)
     if (m_sockets.contains(receiverAccount)) {
         QTcpSocket *socket = m_sockets[receiverAccount];
         socket->write(message->ToJson());
+        // 记录发送的消息
+        DatabaseManager::instance()->AddMessage(message);
     } else {
-        // TODO
         // 进行离线消息处理
-        Logger::Warning(receiverAccount + " not online.");
+        DatabaseManager::instance()->AddOfflineMessage(message);
     }
 }
 
