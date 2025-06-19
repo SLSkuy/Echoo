@@ -1,87 +1,60 @@
-#include <QJsonDocument>
-#include <QJsonObject>
-
+#include "databasemanager.h"
 #include "echooclient.h"
+#include "message.h"
+#include "netizen.h"
+#include "logger.h"
+#include "group.h"
 
-EchooClient::EchooClient(QObject* parent) : QObject(parent), _socket(new QTcpSocket)
-{
-    connect(_socket, &QTcpSocket::connected, this, &EchooClient::onConnected);
-    connect(_socket, &QTcpSocket::disconnected, this, &EchooClient::onDisconnected);
-    connect(_socket, &QTcpSocket::readyRead, this, &EchooClient::onReadyRead);
-
-    _socket->connectToHost("127.0.0.1", 9382);
-}
+EchooClient::EchooClient(QObject *parent) : QObject(parent){}
 
 EchooClient::~EchooClient()
 {
-    delete _socket;
+    delete _user;
 }
 
-void EchooClient::onConnected()
+void EchooClient::Login(const QString &account, const QString &password)
 {
-    // 与服务端构建连接时触发
-    qDebug() << "Server connected";
-}
+    Netizen *user = nullptr;
+    if (DatabaseManager::instance()->Contains(account)) {
+        user = DatabaseManager::instance()->GetNetizen(account);
+        if (user->LoginDetection(password)) {
+            // 设置当前用户的Netizen为从数据管理层获取到的Netizen对象
+            _user = user;
+            emit loginSuccess(true);
 
-void EchooClient::onDisconnected()
-{
-    // 与服务端断开连接时触发
-    qDebug() << "Disconnected";
-}
-
-void EchooClient::onReadyRead()
-{
-    QByteArray data = _socket->readAll();
-    QJsonParseError err;
-
-    QJsonDocument doc = QJsonDocument::fromJson(data, &err);
-    QJsonObject obj = doc.object();
-
-    // 获取到服务端发送来的消息时触发
-    qDebug() << "Receive message form server: " + obj["content"].toString();
-    QString type = obj["type"].toString();
-    bool result = obj["success"].toBool();
-
-    if (type == "login") {
-        emit loginSuccess(result);
-    } else if (type == "register") {
-        emit registerSuccess(result);
-    } else if (type == "privateMsg") {
-        emit receiveMsg(obj["content"].toString());
+            // 连接对应信号处理
+            // 连接消息处理
+            connect(_user, &Netizen::messageReceived, this, &EchooClient::MessageProcess);
+            connect(_user, &Netizen::groupMessageReceived, this, &EchooClient::GroupMessageProcess);
+            // 连接消息发送
+            connect(this, &EchooClient::triggerMessage, _user, &Netizen::SendMessage);
+            connect(this, &EchooClient::triggerGroupMessage, _user, &Netizen::SendGroupMessage);
+        }
     }
+    emit loginSuccess(false);
 }
 
-void EchooClient::Login(QString account, QString password)
+void EchooClient::Register(const QString &nickName, const QString &account, const QString &password)
 {
-    QJsonObject obj;
-    obj["type"] = "login";
-    obj["account"] = account;
-    obj["password"] = password;
+    if (DatabaseManager::instance()->Contains(account)) {
+        // 如果数据库中已存在则返回注册失败
+        emit registerSuccess(false);
+        Logger::Error("Account " + account + " already exist.");
+        return;
+    }
 
-    QJsonDocument doc(obj);
-    _socket->write(doc.toJson());
+    Netizen *newUser = new Netizen(nickName, account, password);
+    _user = newUser; // 设置当前客户端的账号信息
+    DatabaseManager::instance()->AddNetizen(newUser);
+    emit registerSuccess(true);
 }
 
-void EchooClient::Register(QString nickName, QString account, QString password)
+void EchooClient::MessageProcess(Message *msg)
 {
-    QJsonObject obj;
-    obj["type"] = "register";
-    obj["nickName"] = nickName;
-    obj["account"] = account;
-    obj["password"] = password;
-
-    QJsonDocument doc(obj);
-    _socket->write(doc.toJson());
+    // TODO
 }
 
-void EchooClient::SendPrivateMessage(QString content, QString toAccount)
+void EchooClient::GroupMessageProcess(Group *group, Message *msg)
 {
-    QJsonObject obj;
-    obj["type"] = "privateMsg";
-    obj["from"] = this->m_account;
-    obj["to"] = toAccount;
-    obj["content"] = content;
-
-    QJsonDocument doc(obj);
-    _socket->write(doc.toJson());
+    // TODO
 }
