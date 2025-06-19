@@ -22,12 +22,13 @@ void EchooClient::Login(const QString &account, const QString &password)
             _user = user;
             emit loginSuccess(true);
 
+            // 连接对应信号处理
+            // 连接消息处理
+            connect(_user, &Netizen::messageReceived, this, &EchooClient::MessageProcess);
+            connect(_user, &Netizen::groupMessageReceived, this, &EchooClient::GroupMessageProcess);
             // 连接消息发送
             connect(this, &EchooClient::triggerMessage, _user, &Netizen::SendMessage);
             connect(this, &EchooClient::triggerGroupMessage, _user, &Netizen::SendGroupMessage);
-            // 连接消息处理
-            connect(_user, &Netizen::messageProcessed, this, &EchooClient::processedMessageReceived);
-            connect(_user, &Netizen::groupMessageProcessed, this, &EchooClient::processedGroupMessageReceived);
         }
     }
     emit loginSuccess(false);
@@ -46,4 +47,14 @@ void EchooClient::Register(const QString &nickName, const QString &account, cons
     _user = newUser; // 设置当前客户端的账号信息
     DatabaseManager::instance()->AddNetizen(newUser);
     emit registerSuccess(true);
+}
+
+void EchooClient::MessageProcess(Message *msg)
+{
+    // TODO
+}
+
+void EchooClient::GroupMessageProcess(Group *group, Message *msg)
+{
+    // TODO
 }
