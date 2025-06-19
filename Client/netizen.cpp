@@ -26,8 +26,9 @@ bool Netizen::LoginDetection(const QString &password)
     if (password == m_password) {
         // 连接p2p服务器
         _cmc = new Communicator(this);
-        connect(_cmc, &Communicator::messageReceived, this, &Netizen::messageReceived);
-        connect(_cmc, &Communicator::groupMessageReceived, this, &Netizen::groupMessageReceived);
+        m_ip = _cmc->GetLocalIP();
+        connect(_cmc, &Communicator::messageReceived, this, &Netizen::MessageProcess);
+        connect(_cmc, &Communicator::groupMessageReceived, this, &Netizen::GroupMessageProcess);
 
         // 设置在线信息
         m_isOnline = true;
@@ -37,6 +38,7 @@ bool Netizen::LoginDetection(const QString &password)
         obj["nickName"] = m_nickName;
         obj["account"] = m_account;
         obj["online"] = true;
+        obj["ip"] = GetIpAddress();
         _cmc->BroadcastPresence(obj);
         return true;
     }
@@ -71,3 +73,7 @@ void Netizen::SendGroupMessage(const QString &groupAccount, const QString &conte
         Logger::Warning(m_account + " not in group " + groupAccount);
     }
 }
+
+void Netizen::MessageProcess(Message *message) {}
+
+void Netizen::GroupMessageProcess(Group *group, Message *message) {}

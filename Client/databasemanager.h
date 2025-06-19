@@ -32,5 +32,4 @@ private:
     // 缓存管理
     QMap<QString, Group *> m_groups;
     QMap<QString, Netizen *> m_netizens;   // 记录局域网中的所有账号
-    QMap<QString, QTcpSocket *> m_sockets; // 记录当前在线的账号的TcpSocket连接
 };

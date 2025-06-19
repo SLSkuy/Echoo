@@ -17,9 +17,11 @@ public:
             const QDateTime &timestamp,
             QObject *parent = nullptr);
 
+    QObject *GetReceiver() { return m_receiver; }
+
     // 使用Json作为消息传输媒介
     QByteArray ToJson();
-    Message *FromJson(const QByteArray &data);
+    static Message *FromJson(const QByteArray &data);
 
 private:
     Netizen *m_sender;

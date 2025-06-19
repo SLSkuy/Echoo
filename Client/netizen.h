@@ -44,6 +44,8 @@ public:
     bool LeaveGroup(Group *group);
     bool HasGroup(const QString &account) { return m_groups.contains(account); }
 
+    QString GetIpAddress() { return m_ip; }
+
 signals:
     void messageReceived(Message *msg);
     void groupMessageReceived(Group *group, Message *msg);
@@ -59,4 +61,8 @@ private:
 
     // p2p服务
     Communicator *_cmc;
+    QString m_ip;
+
+    void MessageProcess(Message *message);
+    void GroupMessageProcess(Group *group, Message *message);
 };
