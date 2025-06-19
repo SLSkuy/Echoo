@@ -64,9 +64,26 @@ Window {
                 Button {
                     // text:"add"
                     text: "🤝"
+
+                    ToolTip {
+                        id: buttonTooltip
+                        text: "发起群聊"
+                        visible: parent.hovered
+                        delay: 500 // 悬停500毫秒后显示
+                    }
+
+                    // 启用悬停检测
+                    hoverEnabled: true
                     onClicked: {
                         // 实现发起群聊的逻辑
-                        console.log("发起群聊");
+                        console.log("邀请入群");
+
+                        var component  = Qt.createComponent("SelectFriends.qml");
+                        if (component.status === Component.Ready) {
+                            var selectfirends = component.createObject(parent);
+                            selectfirends.show();
+
+                        }
                     }
                     background: Rectangle {
                            color: "white"  // 设置背景颜色为白色
