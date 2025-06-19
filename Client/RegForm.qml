@@ -6,6 +6,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 GridLayout {
+    property alias nicknametext:nickNameLine.text
     columns: 1
     columnSpacing: 10
 
@@ -124,4 +125,7 @@ GridLayout {
             EchooClient.Register(nickNameLine.text,accountLine.text,passwordLine.text)
         }
     }
+    onNicknametextChanged: {
+            startWindow.globalNicknametext = nicknametext
+        }
 }

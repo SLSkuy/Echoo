@@ -36,7 +36,8 @@ FrameLessWindow{
 
                     Text{
                         id:_username
-                        text:"香菜ovo"
+                        // text:"香菜ovo"+
+                        text: startWindow.globalNicknametext
                     }
                     Text{
                         id:_sex
