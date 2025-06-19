@@ -15,12 +15,16 @@ class Communicator : public QObject
 public:
     Communicator(Netizen *netizen);
     ~Communicator();
+    // UDP广播通信
     void BroadcastPresence(QJsonObject &obj);
     QString GetLocalIP();
 
-    // 消息传输
+    // 消息传输与处理
     void SendMessage(Message *message);
     void SendGroupMessage(Message *message);
+    void OnlineMessageProcess(QTcpSocket *socket);
+    void extracted(Netizen *&user, QList<Message *> &offlines, QList<Message *> &toRemove);
+    void OfflineMessageProcess(Netizen *user);
 
 signals:
     void messageReceived(Message *message);
@@ -34,6 +38,7 @@ private:
     quint16 m_tcpPort;
 
     QMap<QString, QTcpSocket *> m_sockets; // 记录当前在线的账号的TcpSocket连接
+    QMap<QTcpSocket *, QByteArray> m_buffers; // TcpSocket缓冲
 
     void OnUdpReadyRead();
     void OnNewTcpConnection();

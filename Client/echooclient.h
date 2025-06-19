@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QTcpSocket>
+#include <QDateTime>
 
 class Message;
 class Netizen;
@@ -35,13 +36,8 @@ signals:
     void loginSuccess(bool result);
     void registerSuccess(bool result);
     // 消息处理信号
-    void messageReceived(Message *msg);
-    void groupMessageReceived(Group *group, Message *msg);
-
-private slots:
-    // 消息处理
-    void MessageProcess(Message *msg);
-    void GroupMessageProcess(Group *group, Message *msg);
+    void processedMessageReceived(QString account, QString content, QDateTime time);
+    void processedGroupMessageReceived(QString account, QString content, QDateTime time);
 
 private:
     Netizen *_user;

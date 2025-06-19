@@ -14,6 +14,7 @@ public:
 
     QString GetGroupName() { return m_groupName; }
     QString GetGroupAccount() { return m_account; }
+    QString GetGroupOwner() { return m_owner; }
 
 private:
     QString m_account;
