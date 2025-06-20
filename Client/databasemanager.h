@@ -4,6 +4,7 @@
 #include <QString>
 #include <QList>
 #include <QMap>
+#include <QSqlDatabase>
 
 #include "message.h"
 #include "netizen.h"
@@ -16,6 +17,7 @@ public:
     static DatabaseManager *instance();
     static void destroy();
     DatabaseManager();
+    ~DatabaseManager();
 
     // 用于账号检测与管理
     bool Contains(const QString &account) { return m_netizens.contains(account); };
@@ -27,7 +29,7 @@ public:
     // 群聊检测与管理
     bool AddGroup(Group *group);
     bool RemoveGroup(const QString &account);
-    Group *GetGroup(const QString &account);
+    Group *GetGroup(const QString &account) { return nullptr; }
 
     // 消息存储与检测
     void AddMessage(QString &account, Message *message);
@@ -39,10 +41,13 @@ public:
     // 数据管理
     bool loadFromDatabase();
     bool saveToDatabase();
+    bool initDatabase();
 
 private:
     // 单例访问指针
     static DatabaseManager *m_instance;
+    // 数据库连接
+    QSqlDatabase m_db;
     // 缓存管理
     QMap<QString, Group *> m_groups;       // 记录所有的群聊信息
     QMap<QString, Netizen *> m_netizens;   // 记录局域网中的所有账号

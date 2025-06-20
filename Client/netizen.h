@@ -38,6 +38,9 @@ public:
     // 好友管理
     bool AddFriend(Netizen *user);
     bool RemoveFriend(const QString &account);
+    void RemoveFriendRequest(const QString &account);
+    void AddFriendRequest(const QString &account);
+    void AddFriendResponse(const QString &account, const bool result);
     bool HasFriend(const QString &account) { return m_friends.contains(account); }
 
     // 消息功能
@@ -53,6 +56,8 @@ public:
 signals:
     void messageReceived(Message *msg);
     void groupMessageReceived(Group *group, Message *msg);
+    void receivedFriendRequest(Netizen *);
+    void receivedFriendResponse(Netizen *, const bool result);
     void nicknameChanged();
     void onlineChanged();
     void ipChanged();
@@ -69,4 +74,6 @@ private:
     // p2p服务
     Communicator *_cmc;
     QString m_ip;
+
+    void CommandProcess(Message *msg);
 };

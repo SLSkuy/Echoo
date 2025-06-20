@@ -13,11 +13,18 @@ class Message : public QObject
     Q_PROPERTY(Netizen* sender READ GetSender NOTIFY senderChanged FINAL)
     Q_PROPERTY(QObject* receiver READ GetReceiver NOTIFY receiverChanged)
 public:
-    enum ReceiverType { Individual, Group };
+    enum ReceiverType { Individual, GroupMsg };
+    enum MessageType { Text, Command };
     Q_ENUM(ReceiverType)
 
     explicit Message(QObject *parent = nullptr);
-    Message(Netizen *sender,QObject *receiver,const QString &content,const QDateTime &timestamp,QObject *parent = nullptr);
+    Message(Netizen *sender,
+            QObject *receiver,
+            const QString &content,
+            const QDateTime &timestamp,
+            ReceiverType rType = Individual,
+            MessageType mType = Text,
+            QObject *parent = nullptr);
 
     QString GetMessage() { return m_content; }
     QObject *GetReceiver() { return m_receiver; }
@@ -40,4 +47,6 @@ private:
     QObject *m_receiver = nullptr; // 可以是Netizen或Group
     QString m_content;
     QDateTime m_timestamp;
+    ReceiverType m_receiverType = Individual;
+    MessageType m_messageType = Text;
 };

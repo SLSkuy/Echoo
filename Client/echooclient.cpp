@@ -6,10 +6,7 @@
 
 EchooClient::EchooClient(QObject *parent) : QObject(parent){}
 
-EchooClient::~EchooClient()
-{
-    delete _user;
-}
+EchooClient::~EchooClient(){}
 
 void EchooClient::Login(const QString &account, const QString &password)
 {
@@ -27,6 +24,8 @@ void EchooClient::Login(const QString &account, const QString &password)
             // 连接消息接收
             connect(_user, &Netizen::messageReceived, this, &EchooClient::messageReceived);
             connect(_user, &Netizen::groupMessageReceived, this, &EchooClient::groupMessageReceived);
+            connect(_user, &Netizen::receivedFriendRequest, this, &EchooClient::receivedFriendRequest);
+            connect(_user, &Netizen::receivedFriendResponse, this, &EchooClient::receivedFriendResponse);
         }
     }
     emit loginSuccess(false);
@@ -47,14 +46,6 @@ void EchooClient::Register(const QString &nickName, const QString &account, cons
     emit registerSuccess(true);
 }
 
-void EchooClient::AddFriend(const QString &account)
-{
-    Netizen *user = DatabaseManager::instance()->GetNetizen(account);
-    // 调用双方对象进行双向添加好友
-    user->AddFriend(_user);
-    _user->AddFriend(user);
-}
-
 QVariantList EchooClient::GetMessageList(const QString &account)
 {
     QList<Message *> msgs = DatabaseManager::instance()->GetHistroyMessages(account);
@@ -73,4 +64,19 @@ QVariantList EchooClient::GetNetizenList()
         list.append(QVariant::fromValue(*it));
     }
     return list;
+}
+
+void EchooClient::AddFriendRequest(const QString &account)
+{
+    _user->AddFriendRequest(account);
+}
+
+void EchooClient::AddFriendResponse(const QString &account, const bool result)
+{
+    _user->AddFriendResponse(account, result);
+}
+
+void EchooClient::RemoveFriend(const QString &account)
+{
+    _user->RemoveFriendRequest(account);
 }

@@ -131,6 +131,8 @@ void Communicator::OnlineMessageProcess(QTcpSocket *socket)
             } else if (type == "group") {
                 Group *group = qobject_cast<Group *>(message->GetReceiver());
                 emit groupMessageReceived(group, message);
+            } else if (type == "command") {
+                emit commandReceived(message);
             }
         }
     }
