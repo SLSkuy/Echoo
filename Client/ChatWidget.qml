@@ -98,8 +98,21 @@ FrameLessWindow {
                         // 实现更多的逻辑
                         console.log("删除好友");
                         // EchooClient.RemoveFriend(account)
-                        // EchooClient.RemoveFriendRequest(account);
-                    }
+                        // console.log(messageItem[1].account1)i < mainWindow.messageListModel.count
+                        for (var i = 0; i < messagetotal.messagelistModel.count; i++) {
+                            var item = messagetotal.messagelistModel.get(i);
+                            if (item.account1 === chatwidget.account) {
+                                messagetotal.messagelistModel.remove(i);
+                                break;
+                            }
+                        }
+
+                        chatwidget.close();
+
+
+
+                        }
+
                     background: Rectangle {
                         color: "white"  // 设置背景颜色为白色
                         border.color: "white"  // 设置边框颜色为白色

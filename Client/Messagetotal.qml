@@ -7,7 +7,9 @@ import QtQuick.Layouts
 Rectangle{
     // property alias isGroup: _isGroup
     property alias messageItem : messageItem
-
+    property alias messagelistModel: listModel
+    property alias messagetotal: _messagetotal
+    id:_messagetotal
     ListView {
             id: messageItem
             anchors.fill: parent
