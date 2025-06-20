@@ -126,7 +126,7 @@ void Netizen::RemoveFriendRequest(const QString &account)
     RemoveFriend(account);
     user->RemoveFriend(m_account);
 
-    Message *msg = new Message(this, user, "removeFriend", time, Message::Individual, Message::Command);
+    Message *msg = new Message(this, user, "removeFriend", time, Message::Command);
     _cmc->SendMessage(msg);
 }
 
@@ -136,7 +136,7 @@ void Netizen::AddFriendRequest(const QString &account)
     Netizen *user = DatabaseManager::instance()->GetNetizen(account);
     QDateTime time = QDateTime::currentDateTime();
 
-    Message *msg = new Message(this, user, "addFriend", time, Message::Individual, Message::Command);
+    Message *msg = new Message(this, user, "addFriend", time, Message::Command);
     _cmc->SendMessage(msg);
 }
 
@@ -154,7 +154,7 @@ void Netizen::AddFriendResponse(const QString &account, const bool result)
     }
 
     QString response = (result == true) ? "acceptFriend" : "rejectFriend";
-    Message *msg = new Message(this, user, response, time, Message::Individual, Message::Command);
+    Message *msg = new Message(this, user, response, time, Message::Command);
     _cmc->SendMessage(msg);
 }
 
