@@ -157,3 +157,23 @@ void Netizen::AddFriendResponse(const QString &account, const bool result)
     Message *msg = new Message(this, user, response, time, Message::Individual, Message::Command);
     _cmc->SendMessage(msg);
 }
+
+QVariantList Netizen::GetFriends()
+{
+    QList<Netizen *> friends = m_friends.values();
+    QVariantList list;
+    for (auto it = friends.begin(); it != friends.end(); it++) {
+        list.append(QVariant::fromValue(*it));
+    }
+    return list;
+}
+
+QVariantList Netizen::GetGroups()
+{
+    QList<Group *> groups = m_groups.values();
+    QVariantList list;
+    for (auto it = groups.begin(); it != groups.end(); it++) {
+        list.append(QVariant::fromValue(*it));
+    }
+    return list;
+};

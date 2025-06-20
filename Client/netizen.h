@@ -30,8 +30,8 @@ public:
     bool IsOnline() const { return m_isOnline; }
 
     // 账号功能
-    QMap<QString, Netizen *> GetFriends() { return m_friends; };
-    QMap<QString, Group *> GetGroups() { return m_groups; };
+    Q_INVOKABLE QVariantList GetFriends();
+    Q_INVOKABLE QVariantList GetGroups();
     bool LoginDetection(const QString &password);
     void Logout() { m_isOnline = false; };
 
