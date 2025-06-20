@@ -70,6 +70,7 @@ source_group("QML Files" FILES
     GroupItem.qml
     Grouptotal.qml
     Maintotal.qml
+    QML_FILES Groupnotification.qml
         QML_FILES GroupChat.qml
         QML_FILES Groupnotification.qml
         QML_FILES Friendnotification.qml
