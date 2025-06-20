@@ -92,6 +92,7 @@ FrameLessWindow {
                             id: accepet
                             text:"同意"
                             onClicked: {
+                                console.log(friendaccount)
                                 EchooClient.AddFriendResponse(friendaccount,true);
                                 enabled = false
                                 reject.enabled = false
