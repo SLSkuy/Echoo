@@ -55,7 +55,7 @@ import QtQuick.Window
                 Layout.leftMargin:5
 
 
-                MouseArea {
+                Button {
                     //TODO
                     id: ma
                     anchors.fill: parent

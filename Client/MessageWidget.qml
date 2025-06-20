@@ -6,15 +6,16 @@ ListView {
     id: listView
     spacing: 5
 
-    // 定义属性以便外部可以设置
+
     property alias model: listView.model
     property color myMessageColor: "#dcf8c6"
     property color otherMessageColor: "lightblue"
     property string myNickname: ""
 
     delegate: Rectangle {
-        width: parent.width/2
-        height: messageText.implicitHeight + 20
+        width: messageText.implicitWidth+20
+        // height: messageText.implicitHeight + 20
+        height: Math.max(messageText.implicitHeight, imagemessage.height) + 10
         color: isMe ? myMessageColor : otherMessageColor
         radius: 5
 
@@ -42,6 +43,17 @@ ListView {
             anchors.left: isMe ? undefined : parent.left
             anchors.margins: 0
             visible: text !== ""
+        }
+        Image {
+            id: imagemessage
+            height:40
+            width: 40
+            anchors.top:parent.top
+            anchors.topMargin: 10
+            anchors.right: isMe ? parent.right : undefined
+            anchors.left: isMe ? undefined : parent.left
+            // messageText.height:30
+            // source: "qrc:/resources/LoginImage.png"
         }
     }
 }

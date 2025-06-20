@@ -11,7 +11,11 @@ FrameLessWindow {
     width: 800
     height: 600
     title: "QQ聊天窗口"
+    Component.onCompleted: {
+        var n=EchooClient.GetThisInfo();
 
+        startWindow.globalNicknametext=n.nickname
+    }
 
     // 主布局
     Column {
@@ -93,7 +97,8 @@ FrameLessWindow {
                     onClicked: {
                         // 实现更多的逻辑
                         console.log("删除好友");
-
+                        // EchooClient.RemoveFriend(account)
+                        // EchooClient.RemoveFriendRequest(account);
                     }
                     background: Rectangle {
                         color: "white"  // 设置背景颜色为白色

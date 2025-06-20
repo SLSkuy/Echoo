@@ -12,7 +12,11 @@ FrameLessWindow{
     id:personpage
     width:400
     height:300
-
+    Component.onCompleted: {
+        var n=EchooClient.GetThisInfo();
+        _username.text=n.nickname
+        startWindow.globalNicknametext=n.nickname
+    }
 
     ColumnLayout{
         // anchors.fill:parent
@@ -38,7 +42,10 @@ FrameLessWindow{
                     Text{
                         id:_username
                         // text:"香菜ovo"+
-                        text: startWindow.globalNicknametext
+                        // text: startWindow.globalNicknametext
+                        // text:n.nickname
+
+
                     }
                     Text{
                         id:_sex
@@ -120,32 +127,30 @@ FrameLessWindow{
         anchors.bottom:parent.bottom
         anchors.left:parent.left
         anchors.leftMargin:10
-        MouseArea {
-            //TODO
-            id: ma
-            anchors.fill: parent
-            hoverEnabled: true
 
-            property var editprofile: null // 用于存储 personpage 对象的引用
-            property bool isEditProfileVisible: false // 用于跟踪窗口的可见性状态
 
-                onClicked: {
-                    var component = Qt.createComponent("EditProfile.qml");
-                    if (component.status === Component.Ready) {
-                        if (editprofile === null) {
-                            // 如果 personpage 尚未创建，则创建它
-                            editprofile = component.createObject(null, {
-                                flags: Qt.Window | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
-                            });
-                            editprofile.visible = true; // 初始设置为可见
-                            isEditProfileVisible = true;
-                        } else {
-                            // 如果 editprofile 已经存在，切换其可见性
-                            editprofile.visible = !isEditProfileVisible;
-                            isEditProfileVisible = !isEditProfileVisible; // 更新状态
-                        }
-                    }
+
+
+        property var editprofile: null // 用于存储 personpage 对象的引用
+        property bool isEditProfileVisible: false // 用于跟踪窗口的可见性状态
+
+        onClicked: {
+            var component = Qt.createComponent("EditProfile.qml");
+            if (component.status === Component.Ready) {
+                if (editprofile === null) {
+                    // 如果 personpage 尚未创建，则创建它
+                    editprofile = component.createObject(null, {
+                                                             flags: Qt.Window | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
+                                                         });
+                    editprofile.visible = true; // 初始设置为可见
+                    isEditProfileVisible = true;
+                } else {
+                    // 如果 editprofile 已经存在，切换其可见性
+                    editprofile.visible = !isEditProfileVisible;
+                    isEditProfileVisible = !isEditProfileVisible; // 更新状态
                 }
+            }
+
         }
 
 

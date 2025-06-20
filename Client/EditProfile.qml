@@ -25,6 +25,16 @@ FrameLessWindow {
             id: tx
             width: 400
             height: 100
+            Button{
+                width: 80
+                height: 80
+                anchors.topMargin: 20
+                anchors.centerIn: parent
+
+                onClicked:{
+                   fileDialog.open()
+                }
+            }
             Image {
                 id:_image
                 width: 80
@@ -33,13 +43,7 @@ FrameLessWindow {
                 anchors.centerIn: parent
                 source:"qrc:/resources/LoginImage.png"
             }
-            MouseArea{
-                //TODO
-                anchors.fill:parent
-                onClicked:{
-                   fileDialog.open()
-                }
-            }
+
             FileDialog {
                     id: fileDialog
                     title: "Select an Image"

@@ -75,7 +75,7 @@ source_group("QML Files" FILES
     QML_FILES Groupnotification.qml
     Addfriend.qml
         QML_FILES GroupChat.qml
-        QML_FILES MessageWidegt.qml
+        QML_FILES MessageWidget.qml
         QML_FILES Groupnotification.qml
         QML_FILES Friendnotification.qml
         QML_FILES SelectFriends.qml
