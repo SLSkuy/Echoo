@@ -63,6 +63,7 @@ Rectangle {
                     clip: true
                     // anchors.bottomMargin: 5
                     // anchors.left: headPortrait.right
+                    visible: false
                 }
             }
         }

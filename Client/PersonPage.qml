@@ -163,6 +163,7 @@ FrameLessWindow{
         anchors.bottomMargin:10
         anchors.right:parent.right
         anchors.rightMargin:10
+        enabled: false
 
 
     }

@@ -10,7 +10,6 @@ Message::Message(Netizen *sender,
                  QObject *receiver,
                  const QString &content,
                  const QDateTime &timestamp,
-                 ReceiverType rType,
                  MessageType mType,
                  QObject *parent)
     : QObject(parent)
@@ -18,7 +17,6 @@ Message::Message(Netizen *sender,
     , m_receiver(receiver)
     , m_content(content)
     , m_timestamp(timestamp)
-    , m_receiverType(rType)
     , m_messageType(mType)
 {}
 
@@ -30,11 +28,9 @@ QByteArray Message::ToJson()
     if (auto user = qobject_cast<Netizen *>(m_receiver)) {
         json["message_type"] = "individual";
         json["receiver_account"] = user->GetAccount();
-        m_receiverType = Individual;
     } else if (auto group = qobject_cast<class Group *>(m_receiver)) {
         json["message_type"] = "group";
         json["receiver_account"] = group->GetGroupAccount();
-        m_receiverType = GroupMsg;
     } else {
         // 错误的消息类型，返回空
         json["message_type"] = "unknown";
@@ -44,7 +40,6 @@ QByteArray Message::ToJson()
 
     // 设置消息类型
     if (m_messageType == Command) {
-        m_receiverType = Individual;
         json["message_type"] = "command";
     }
 
@@ -84,7 +79,7 @@ Message* Message::FromJson(const QByteArray &jsonData)
         receiver = DatabaseManager::instance()->GetGroup(receiverAccount);
     } else if (messageType == "command") {
         receiver = DatabaseManager::instance()->GetNetizen(receiverAccount);
-        return new Message(sender, receiver, content, timestamp, Individual, Command);
+        return new Message(sender, receiver, content, timestamp, Command);
     }
 
     return new Message(sender, receiver, content, timestamp);
