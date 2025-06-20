@@ -141,6 +141,15 @@ FrameLessWindow {
                                         ListElement { sender: "对方"; message: "我想和你讨论一下项目。"; isMe: false }
                                     }
                                     // myNickname: startWindow.globalNicknametext
+
+                                    Component.onCompleted: {
+                                        // 传入账号获取消息列表
+                                        var messageList = EchooClient.GetMessageList("123");
+                                        for (var i = 0; i < messageList.length; i++) {
+                                            // 示例处理
+                                            messageModel.append({ sender: "对方", message: messageList[i].content, isMe: false })
+                                        }
+                                    }
                                 }
                 }
 
@@ -262,9 +271,13 @@ FrameLessWindow {
     }
     Connections {
                target: EchooClient
+<<<<<<< HEAD
                function onMessageReceived(account,content, time) {
+=======
+               function onMessageReceived(msg) {
+>>>>>>> main
                    // console.log("nnnn")
-                   messageModel.append({ sender: "对方", message: content, isMe: false })
+                   messageModel.append({ sender: "对方", message: msg.content, isMe: false })
                }
            }
 }

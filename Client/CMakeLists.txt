@@ -51,11 +51,6 @@ qt_add_qml_module(appEchoo-Client
         SOURCES logger.h logger.cpp
         QML_FILES MessageWidget.qml
         # QML_FILES ../../../run/media/root/yun/111/Addfriend.qml
-
-
-
-
-
 )
 
 source_group("QML Files" FILES
@@ -77,8 +72,8 @@ source_group("QML Files" FILES
     GroupItem.qml
     Grouptotal.qml
     Maintotal.qml
+    QML_FILES Groupnotification.qml
     Addfriend.qml
-
         QML_FILES GroupChat.qml
         QML_FILES MessageWidegt.qml
         QML_FILES Groupnotification.qml
