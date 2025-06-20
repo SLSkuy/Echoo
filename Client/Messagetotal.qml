@@ -24,6 +24,7 @@ Rectangle{
                     time.text: time1
                     unreadCount.text: unreadCount1
                     isGroup:_isGroup
+                    messageid: account1
                 }
 
         }
@@ -37,12 +38,14 @@ Rectangle{
                 time1: ""
                 unreadCount1: 0
                 _isGroup: 1
+                account1:""
             }
         }
 
 
         Component.onCompleted: {
-            listModel.clear();
+            // listModel.clear();
+            // listModel[0].visible = false
             var netizen = EchooClient.GetThisInfo();
             var friends = netizen.GetFriends()
             // console.log(friends[1].nickname)
@@ -50,8 +53,8 @@ Rectangle{
                     var messages = EchooClient.GetMessageList(friends[i].account)
                 // console.log(messages[messages.length-1])
                 // console.log(messages[messages.length-1].timestamp)
-                    listModel.append({name1: friends[i].nickname, lastMessage1: messages[messages.length-1].content, time1: messages[messages.length-1].timestamp,
-                                         unreadCount1: 0,_isGroup: 1})
+                    listModel.append({picture1: "",name1: friends[i].nickname, lastMessage1: messages[messages.length-1].content, time1: messages[messages.length-1].timestamp,
+                                         unreadCount1: 0,_isGroup: 0, account1: friends[i].account})
 
                 }
 

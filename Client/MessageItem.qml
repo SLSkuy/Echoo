@@ -13,11 +13,14 @@ Rectangle{
     property alias unreadCountContainer : _unreadCountContainer
     property alias messageIte: messageItem
 
+    property string messageid
     property bool isGroup: false //判断当前ListView的条目为群聊的还是私聊的
 
     id: messageItem
     // height: 70
-    color: mouseArea.containsMouse ? "#E6E6E6" : "transparent"
+    // color: mouseArea.containsMouse ? "#E6E6E6" : "transparent"
+    property bool hovered: false
+    color: hovered ? "#E6E6E6" : "transparent"
 
 
     RowLayout {
@@ -94,23 +97,21 @@ Rectangle{
         }
     }
 
-    // 鼠标交互
-    MouseArea {
+
+    TapHandler {
         //TODO
-        id: mouseArea
-        anchors.fill: parent
-        hoverEnabled: true
+
 
         //设置初始值为null
         property var groupchat: null;
         property var chatWidget: null;
-        onClicked: {
+        onTapped: {
             if(isGroup){
                 if(!groupchat) {
                     var component1 = Qt.createComponent("GroupChat.qml");
                     if (component1.status === Component.Ready) {
                         groupchat = component1.createObject(null, {
-                            flags: Qt.Window | Qt.FramelessWindowHint
+                            flags: Qt.Window | Qt.FramelessWindowHint, account:messageid
                         });
 
                     }
@@ -125,7 +126,7 @@ Rectangle{
                     var component2 = Qt.createComponent("ChatWidget.qml");
                     if (component2.status === Component.Ready) {
                         chatWidget = component2.createObject(null, {
-                            flags: Qt.Window | Qt.FramelessWindowHint
+                            flags: Qt.Window | Qt.FramelessWindowHint, account:messageid
                         });
                     }
                 }

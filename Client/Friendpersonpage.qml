@@ -132,7 +132,7 @@ FrameLessWindow{
                 var component = Qt.createComponent("ChatWidget.qml");
                 if (component.status === Component.Ready) {
                     chatWidget = component.createObject(null, {
-                        flags: Qt.Window | Qt.FramelessWindowHint
+                        flags: Qt.Window | Qt.FramelessWindowHint, account:echoo_id
                     });
                 }
             }

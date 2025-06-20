@@ -26,6 +26,23 @@ Rectangle{
                 id: hoverHandler
                 onHoveredChanged: notification.hovered = hovered
             }
+            TapHandler{
+                id:friendTaphandler
+                property var friendnotification: null;
+                onTapped: {
+                    if(!friendnotification) {
+                        var component = Qt.createComponent("Friendnotification.qml");
+                        if (component.status === Component.Ready) {
+                            friendnotification = component.createObject(null, {
+                                    flags: Qt.Window | Qt.FramelessWindowHint
+                            });
+                        }
+                    }
+                    friendnotification.show();
+                    friendnotification.raise(); // 关键：置顶窗口
+                    friendnotification.requestActivate(); // 激活窗口
+                }
+            }
 
         }
 
@@ -60,22 +77,6 @@ Rectangle{
             }
         }
 
-        TapHandler{
-            id:friendTaphandler
-            property var friendnotification: null;
-            onTapped: {
-                if(!friendnotification) {
-                    var component = Qt.createComponent("Friendnotification.qml");
-                    if (component.status === Component.Ready) {
-                        friendnotification = component.createObject(null, {
-                                flags: Qt.Window | Qt.FramelessWindowHint
-                        });
-                    }
-                }
-                friendnotification.show();
-                friendnotification.raise(); // 关键：置顶窗口
-                friendnotification.requestActivate(); // 激活窗口
-            }
-        }
+
     }
 }
