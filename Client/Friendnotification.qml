@@ -1,4 +1,4 @@
-import QtQuick 2.15
+import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Window
@@ -51,6 +51,7 @@ FrameLessWindow {
 
                 // 添加鼠标区域
                 MouseArea {
+                    //TODO
                     id: mouseArea
                     anchors.fill: parent
                     hoverEnabled: true // 启用悬停检测
@@ -74,6 +75,7 @@ FrameLessWindow {
                     ColumnLayout {
                         Layout.alignment: Qt.AlignLeft
                         Label {
+                            // id:ffriendname
                             text: model.name1
                             font.bold: true
                         }
@@ -82,20 +84,30 @@ FrameLessWindow {
                             color: "#666"
                         }
                     }
+                    Label{
+                        id:friendaccount
+                        text:model.account
+                        visible: false
+                    }
 
                     RowLayout{
                         Layout.alignment: Qt.AlignRight
                         spacing:0
                         Button{
+                            id: accepet
                             text:"同意"
                             onClicked: {
-                                //
+                                // EchooClient.AddFriend(friendaccount);
+                                enabled = false
+                                reject.enabled = false
                             }
                         }
                         Button{
+                            id: reject
                             text: "拒绝"
                             onClicked: {
-                                //
+                                enabled = false
+                                accepet.enabled = false
                             }
                         }
                     }
@@ -110,13 +122,16 @@ FrameLessWindow {
             image1: ""
             name1: "111"
             aaction1: "222"
+            account:"333"
         }
         ListElement{
             image1: ""
             name1: "111"
             aaction1: "222"
+            account:"333"
         }
     }
 
 
 }
+

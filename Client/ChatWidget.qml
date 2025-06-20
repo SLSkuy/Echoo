@@ -1,10 +1,11 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+import QtQuick
+import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Window
 
 FrameLessWindow {
     property alias topBar: topbar
+    property string account: "123"
     id:chatwidget
     visible: true
     width: 800
@@ -130,49 +131,26 @@ FrameLessWindow {
                     height: parent.height - 100
                     color: "#ffffff"
 
-                    ListView {
-                        anchors.fill: parent
-                        spacing:5
-                        model: ListModel {
-                            id: messageModel
-                            ListElement { sender: "对方"; message: "你好！"; isMe: false }
-                            ListElement { sender: "我"; message: "你好！有什么事吗？"; isMe: true }
-                            ListElement { sender: "对方"; message: "我想和你讨论一下项目。"; isMe: false }
-                        }
+                    MessageWidget{
+                                    id: messageListView
+                                    anchors.fill: parent
+                                    model: ListModel {
+                                        id: messageModel
+                                        ListElement { sender: "对方"; message: "你好！"; isMe: false }
+                                        ListElement { sender: "我"; message: "你好！有什么事吗？"; isMe: true }
+                                        ListElement { sender: "对方"; message: "我想和你讨论一下项目。"; isMe: false }
+                                    }
+                                    // myNickname: startWindow.globalNicknametext
 
-                        Component.onCompleted: {
-                            var messageList = EchooClient.GetMessageList("123");
-                            for (var i = 0; i < messageList.length; i++) {
-                                messageModel.append({isMe:true,message:messageList[i].content})
-                            }
-                        }
-
-                        delegate: Rectangle {
-                            width: parent.width/2
-                            height: messageText.implicitHeight + 20
-                            color: isMe ? "#dcf8c6" : "white"
-                            radius: 5
-
-                            anchors.right: isMe ? parent.right : undefined
-                            anchors.left: isMe ? undefined : parent.left
-
-                            Text {
-                                id: messageText
-                                text: message
-                                anchors.centerIn: parent
-                                width: parent.width - 20
-                                wrapMode: Text.Wrap
-                                color: isMe ? "black" : "black"
-                            }
-                            Text {
-                                id: timeText
-                                text: Qt.formatDateTime(new Date(), "hh:mm")
-                                color: "gray"
-                                font.pixelSize: 10
-                                horizontalAlignment: Text.AlignRight
-                            }
-                        }
-                    }
+                                    Component.onCompleted: {
+                                        // 传入账号获取消息列表
+                                        var messageList = EchooClient.GetMessageList("123");
+                                        for (var i = 0; i < messageList.length; i++) {
+                                            // 示例处理
+                                            messageModel.append({ sender: "对方", message: messageList[i].content, isMe: false })
+                                        }
+                                    }
+                                }
                 }
 
                 // 消息输入区
@@ -269,7 +247,7 @@ FrameLessWindow {
                         enabled: messageInput.text.length > 0  // 根据输入框内容启用或禁用按钮
                         onClicked: {
                             console.log("发送消息: " + messageInput.text)
-                            EchooClient.SendMessage("123",messageInput.text);
+                            EchooClient.SendMessage(account,messageInput.text);
                             messageModel.append({ sender: "我", message: messageInput.text, isMe: true })
                             messageInput.text = ""
 
@@ -291,4 +269,11 @@ FrameLessWindow {
             }
         }
     }
+    Connections {
+               target: EchooClient
+               function onMessageReceived(msg) {
+                   // console.log("nnnn")
+                   messageModel.append({ sender: "对方", message: msg.content, isMe: false })
+               }
+           }
 }

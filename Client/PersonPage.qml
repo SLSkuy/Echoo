@@ -4,6 +4,7 @@ import QtQuick.Layouts
 
 FrameLessWindow{
     property alias username:_username
+    property alias usernametext:_username.text
     property alias sex:_sex
     property alias signature:qm_nr
     property alias region:szd_nr
@@ -120,6 +121,7 @@ FrameLessWindow{
         anchors.left:parent.left
         anchors.leftMargin:10
         MouseArea {
+            //TODO
             id: ma
             anchors.fill: parent
             hoverEnabled: true

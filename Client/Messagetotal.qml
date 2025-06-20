@@ -6,6 +6,7 @@ import QtQuick.Layouts
 
 Rectangle{
     // property alias isGroup: _isGroup
+    property alias messageItem : messageItem
 
     ListView {
             id: messageItem

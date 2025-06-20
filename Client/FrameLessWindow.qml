@@ -9,6 +9,7 @@ Window{
 
     // 实现全局拖拽功能
     MouseArea{
+        //TODO
         id: dragArea
         anchors.fill: parent
         hoverEnabled: true

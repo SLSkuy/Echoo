@@ -1,7 +1,7 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
-import QtQuick.Window 2.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import QtQuick.Window
 import QtQuick.Dialogs
 
 FrameLessWindow {
@@ -34,6 +34,7 @@ FrameLessWindow {
                 source:"qrc:/resources/LoginImage.png"
             }
             MouseArea{
+                //TODO
                 anchors.fill:parent
                 onClicked:{
                    fileDialog.open()
@@ -262,7 +263,7 @@ FrameLessWindow {
                 Layout.margins: 10 // 边距
                 onClicked:{
                     if(nicknameField.text.length>0)
-                        username.text=nicknameField.text
+                        startWindow.globalNicknametext=nicknameField.text
                     if(signatureField.text.length>0)
                         signature.text="            "+signatureField.text
                     if(genderCombo.currentText=="男"){

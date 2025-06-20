@@ -56,6 +56,7 @@ import QtQuick.Window
 
 
                 MouseArea {
+                    //TODO
                     id: ma
                     anchors.fill: parent
                     hoverEnabled: true

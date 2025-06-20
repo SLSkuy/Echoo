@@ -89,12 +89,14 @@ Rectangle{
                 id: _unreadCount
                 color: "white"
                 font.pixelSize: 12
+                visible: false
             }
         }
     }
 
     // 鼠标交互
     MouseArea {
+        //TODO
         id: mouseArea
         anchors.fill: parent
         hoverEnabled: true
@@ -117,7 +119,7 @@ Rectangle{
                 groupchat.show();
                 groupchat.raise(); // 关键：置顶窗口
                 groupchat.requestActivate(); // 激活窗口
-                groupchat.unreadCount.text = "0"; //点击进聊天界面就会让未读消息清零
+                // groupchat.unreadCount.text = "0"; //点击进聊天界面就会让未读消息清零
             } else {
                 if(!chatWidget) {
                     var component2 = Qt.createComponent("ChatWidget.qml");
@@ -131,9 +133,9 @@ Rectangle{
                 chatWidget.show();
                 chatWidget.raise();
                 chatWidget.requestActivate();
-                chatWidget.unreadCount.text = "0"; //点击进聊天界面就会让未读消息清零
+                // chatWidget.unreadCount.text = "0"; //点击进聊天界面就会让未读消息清零
             }
-
+            unreadCount.text = "0"
         }
     }
 
