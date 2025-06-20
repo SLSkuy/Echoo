@@ -131,52 +131,17 @@ FrameLessWindow {
                     height: parent.height - 100
                     color: "#ffffff"
 
-                    ListView {
-                        anchors.fill: parent
-                        spacing:5
-                        model: ListModel {
-                            id: messageModel
-                            ListElement { sender: "对方"; message: "你好！"; isMe: false }
-                            ListElement { sender: "我"; message: "你好！有什么事吗？"; isMe: true }
-                            ListElement { sender: "对方"; message: "我想和你讨论一下项目。"; isMe: false }
-                        }
-                        delegate: Rectangle {
-                            width: parent.width/2
-                            height: messageText.implicitHeight + 20
-                            color: isMe ? "#dcf8c6" : "lightblue"
-                            radius: 5
-
-                            anchors.right: isMe ? parent.right : undefined
-                            anchors.left: isMe ? undefined : parent.left
-
-                            Text {
-                                id: messageText
-                                text: message
-                                anchors.centerIn: parent
-                                width: parent.width - 20
-                                wrapMode: Text.Wrap
-                                color: isMe ? "black" : "black"
-                            }
-
-                            Label{
-                                id: timeText
-                                text: isMe ? (Qt.formatDateTime(new Date(), "hh:mm")+"  "+startWindow.globalNicknametext):Qt.formatDateTime(new Date(), "hh:mm")+" "+nameMessage.text
-                                // text: Qt.formatDateTime(new Date(), "hh:mm")+"  "+startWindow.globalNicknametext
-                                color: "gray"
-                                font.pixelSize: 10
-                                horizontalAlignment: isMe ?Text.AlignRight:Text.AlignLeft
-                            }
-                            // Text{
-                            //     id:messagesender
-                            //     text:"lll"
-                            //     font.pixelSize: 10
-                            //     height: timeText.height
-                            //     anchors.bottom: messageText.bottom
-                            //     anchors.left: timeText.right
-
-                            // }
-                        }
-                    }
+                    MessageWidget{
+                                    id: messageListView
+                                    anchors.fill: parent
+                                    model: ListModel {
+                                        id: messageModel
+                                        ListElement { sender: "对方"; message: "你好！"; isMe: false }
+                                        ListElement { sender: "我"; message: "你好！有什么事吗？"; isMe: true }
+                                        ListElement { sender: "对方"; message: "我想和你讨论一下项目。"; isMe: false }
+                                    }
+                                    // myNickname: startWindow.globalNicknametext
+                                }
                 }
 
                 // 消息输入区

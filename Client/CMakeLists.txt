@@ -42,14 +42,21 @@ qt_add_qml_module(appEchoo-Client
         QML_FILES SelectTitleBar.qml
         QML_FILES Friendpersonpage.qml
         QML_FILES GroupChat.qml
+        QML_FILES Addfriend.qml
+        QML_FILES
+        QML_FILES
         SOURCES netizen.h netizen.cpp
         SOURCES group.h group.cpp
         SOURCES databasemanager.h databasemanager.cpp
         SOURCES communicator.h communicator.cpp
         SOURCES message.h message.cpp
         SOURCES logger.h logger.cpp
-        QML_FILES
-        QML_FILES Addfriend.qml
+        QML_FILES MessageWidget.qml
+
+
+
+
+
 )
 
 source_group("QML Files" FILES
@@ -72,12 +79,17 @@ source_group("QML Files" FILES
     Grouptotal.qml
     Maintotal.qml
     Addfriend.qml
+
         QML_FILES GroupChat.qml
+        QML_FILES MessageWidegt.qml
         QML_FILES Groupnotification.qml
         QML_FILES Friendnotification.qml
         QML_FILES SelectFriends.qml
         QML_FILES SelectTitleBar.qml
         QML_FILES Friendpersonpage.qml
+        QML_FILES SingleMessage.qml
+
+
 )
 
 target_compile_features(appEchoo-Client PRIVATE cxx_std_23)
