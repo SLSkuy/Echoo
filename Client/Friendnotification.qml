@@ -68,18 +68,20 @@ FrameLessWindow {
                     ColumnLayout {
                         Layout.alignment: Qt.AlignLeft
                         Label {
+                            id:name
                             // id:ffriendname
                             text: model.name1
                             font.bold: true
                         }
                         Label {
+                            id:aaction
                             text: model.aaction1
                             color: "#666"
                         }
                     }
                     Label{
                         id:friendaccount
-                        text:model.account
+                        text:model.account1
                         visible: false
                     }
 
@@ -90,7 +92,7 @@ FrameLessWindow {
                             id: accepet
                             text:"同意"
                             onClicked: {
-                                EchooClient.AddFriend(friendaccount);
+                                EchooClient.AddFriendResponse(friendaccount,true);
                                 enabled = false
                                 reject.enabled = false
                             }
@@ -99,6 +101,7 @@ FrameLessWindow {
                             id: reject
                             text: "拒绝"
                             onClicked: {
+                                EchooClient.AddFriendResponse(friendaccount,false);
                                 enabled = false
                                 accepet.enabled = false
                             }
@@ -116,8 +119,9 @@ FrameLessWindow {
 
     Connections {
         target: EchooClient
-        // var addfriendnotification
+        // var addfriendnotification = null
         function onReceivedFriendRequest(addfriendnotification) {
+            console.log("aaa")
             listModel.append({image1:"", name1:addfriendnotification.nickname, aaction1: "请求添加你为好友", account1:addfriendnotification.account})
         }
     }

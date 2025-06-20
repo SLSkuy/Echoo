@@ -57,7 +57,7 @@ FrameLessWindow {
                         }
 
                         Text {
-                            id: name1
+                            id: name
                             Layout.topMargin: 40
                             Layout.leftMargin: 10
                             Layout.preferredHeight:parent.height
@@ -78,6 +78,7 @@ FrameLessWindow {
                             onClicked: {
                                 enabled = false
                                 EchooClient.AddFriendRequest(account.text)
+                                // console.log(account.text)
                             }
                         }
                     }
@@ -96,6 +97,7 @@ FrameLessWindow {
 
         for(var i = 0; i < netizens.length; i++){
             if(netizens[i].account === search.text){
+                // console.log(netizens[i].nickname)
                 listModel.append({source1:"", name1: netizens[i].nickname, account1: netizens[i].account})
             }
         }
