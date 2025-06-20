@@ -5,7 +5,7 @@ import QtQuick.Window
 
 FrameLessWindow {
     property alias topBar: topbar
-    property string account: "123"
+    property string account: "0721"
     id:chatwidget
     visible: true
     width: 800
@@ -144,7 +144,7 @@ FrameLessWindow {
 
                                     Component.onCompleted: {
                                         // 传入账号获取消息列表
-                                        var messageList = EchooClient.GetMessageList("123");
+                                        var messageList = EchooClient.GetMessageList("0721");
                                         for (var i = 0; i < messageList.length; i++) {
                                             // 示例处理
                                             messageModel.append({ sender: "对方", message: messageList[i].content, isMe: false })
