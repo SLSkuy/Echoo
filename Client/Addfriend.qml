@@ -54,14 +54,20 @@ FrameLessWindow {
                             font.pixelSize: 18
                             text: name1
                         }
+                        Text{
+                            id: account
+                            visible: false
+                            text:account1
+                        }
+
                         Button{
                             Layout.bottomMargin: 40
                             Layout.alignment: Qt.AlignRight
                             Layout.preferredHeight:20
                             text:"加好友"
                             onClicked: {
-                                //TODO
                                 enabled = false
+                                EchooClient.AddFriendRequest(account.text)
                             }
                         }
                     }
@@ -75,10 +81,12 @@ FrameLessWindow {
         ListElement{
             source1: ""
             name1:"abc"
+            account1:""
         }
         ListElement{
             source1: ""
             name1:"123"
+            account1:""
         }
     }
 }

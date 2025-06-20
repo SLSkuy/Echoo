@@ -238,7 +238,7 @@ FrameLessWindow {
                         enabled: messageInput.text.length > 0  // 根据输入框内容启用或禁用按钮
                         onClicked: {
                             console.log("发送消息: " + messageInput.text)
-                            EchooClient.SendMessage(account,messageInput.text);
+                            EchooClient.triggerMessage(account,messageInput.text);
                             messageModel.append({ sender: "我", message: messageInput.text, isMe: true })
                             messageInput.text = ""
 
@@ -262,7 +262,7 @@ FrameLessWindow {
     }
     Connections {
                target: EchooClient
-               function onProcessedMessageReceived(account,content, time) {
+               function onMessageReceived(account,content, time) {
                    // console.log("nnnn")
                    messageModel.append({ sender: "对方", message: content, isMe: false })
                }
