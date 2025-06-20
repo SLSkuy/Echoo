@@ -47,21 +47,12 @@ FrameLessWindow {
             delegate: Rectangle {
                 width: notification.width
                 height: 60
-                color: mouseArea.containsMouse ? "#e0e0e0" : "transparent" // 悬停时灰色，否则交替色
+                color: hoverHandler.hovered ? "#E6E6E6" : "transparent" // 悬停变灰
 
-                // 添加鼠标区域
-                MouseArea {
-                    //TODO
-                    id: mouseArea
-                    anchors.fill: parent
-                    hoverEnabled: true // 启用悬停检测
-                    cursorShape: Qt.PointingHandCursor // 悬停时显示手型指针
-                    onClicked: {
-                        // 点击项的处理逻辑（可选）
-                        console.log("Clicked:", model.name1)
-                    }
+                //悬停变灰
+                HoverHandler {
+                    id: hoverHandler
                 }
-
                 RowLayout {
                     // anchors.fill: parent
                     spacing: 15

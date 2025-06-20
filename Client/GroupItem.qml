@@ -11,8 +11,8 @@ Rectangle{
     property alias groupItem: groupItem
     id: groupItem
 
-    // height: 70
-    color: mouseArea.containsMouse ? "#E6E6E6" : "transparent"
+    property bool hovered
+    color: hovered ? "#E6E6E6" : "transparent"
 
     RowLayout {
         anchors.fill: parent
@@ -51,14 +51,9 @@ Rectangle{
     }
 
     // 鼠标交互
-    MouseArea {
-        //TODO
-        id: mouseArea
-        anchors.fill: parent
-        hoverEnabled: true
-
+    TapHandler {
         property var groupchat: null;
-        onClicked: {
+        onTapped: {
             if(!groupchat) {
                 var component = Qt.createComponent("GroupChat.qml");
                 if (component.status === Component.Ready) {
@@ -71,8 +66,12 @@ Rectangle{
             groupchat.show();
             groupchat.raise(); // 关键：置顶窗口
             groupchat.requestActivate(); // 激活窗口
-            // messageItem.unreadCount.text = "0"; //点击进聊天界面就会让未读消息清零
         }
+    }
+
+    HoverHandler {
+        id: hoverHandler
+        onHoveredChanged: groupItem.hovered = hovered
     }
 
     // 分割线

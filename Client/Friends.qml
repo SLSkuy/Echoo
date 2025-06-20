@@ -26,14 +26,7 @@ Rectangle{
                 friendpersonid: id1
                 friendregion: region1
 
-                // TapHandler{
-                //     onDoubleTapped:{
-                //         // s1 = 1
-
-                //         console.log("hhhh")
-                //     }
-                // }
-                friendmouseAreall.onDoubleClicked: {
+                friendTaphandler.onDoubleTapped: {
                     if ((mouse.buttons & Qt.LeftButton) && (mouse.modifiers & Qt.ControlModifier)) {
                         if (mm.isSelected) {
                             mm.isSelected = false;
