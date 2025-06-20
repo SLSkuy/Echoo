@@ -31,20 +31,29 @@ Rectangle{
         ListModel {
             id: listModel
             ListElement {
-                picture1: "qrc:/resources/LoginImage.png"
-                name1: "李四"
-                lastMessage1: "项目进展如何？"
-                time1: "昨天"
+                picture1: ""
+                name1: ""
+                lastMessage1: ""
+                time1: ""
                 unreadCount1: 0
                 _isGroup: 1
             }
-            ListElement {
-                picture1: ""
-                name1: "张三"
-                lastMessage1: "abc？"
-                time1: "12：00"
-                unreadCount1: 2
-                _isGroup: 0
-            }
+        }
+
+
+        Component.onCompleted: {
+            listModel.clear();
+            var netizen = EchooClient.GetThisInfo();
+            var friends = netizen.GetFriends()
+            // console.log(friends[1].nickname)
+            for (var i = 0; i < friends.length; i++) {
+                    var messages = EchooClient.GetMessageList(friends[i].account)
+                // console.log(messages[messages.length-1])
+                // console.log(messages[messages.length-1].timestamp)
+                    listModel.append({name1: friends[i].nickname, lastMessage1: messages[messages.length-1], time1: messages[messages.length-1].timestamp,
+                                         unreadCount1: 0,_isGroup: 1})
+
+                }
+
         }
 }

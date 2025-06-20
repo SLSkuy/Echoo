@@ -22,9 +22,7 @@ Rectangle{
                 width: parent.width
                 friendheadPortrait.source: headPortrait1
                 friendname.text: name1
-                friendsign.text: sign1
                 friendpersonid: id1
-                friendregion: region1
 
                 friendTaphandler.onDoubleTapped: {
                     if (Qt.LeftButton && Qt.ControlModifier) {
@@ -48,20 +46,23 @@ Rectangle{
     ListModel {
         id: listModel
         ListElement {
-            headPortrait1: "qrc:/resources/LoginImage.png"
-            name1: "李四"
-            sign1: "abc"
+            headPortrait1: ""
+            name1: ""
             s1:0
-            id1:"111"
-            region1:"重庆市"
-        }
-        ListElement {
-            headPortrait1: "qrc:/resources/LoginImage.png"
-            name1: "张三"
-            sign1: "321"
-            s1:0
-            id1: "222"
-            region1: "其他"
+            id1:""
         }
     }
+
+    Component.onCompleted: {
+        listModel.clear();
+        var netizen = EchooClient.GetThisInfo();
+        var friends = netizen.GetFriends()
+        for (var i = 0; i < friends.length; i++) {
+
+                listModel.append({name1: friends[i].nickname, s1: 0, id1: friends[i].account})
+            }
+        // console.log(friends)
+    }
+
+
 }
