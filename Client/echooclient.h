@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QQmlListProperty>
 #include <QTcpSocket>
 #include <QDateTime>
 #include <QList>
@@ -19,6 +20,7 @@ public:
     Q_INVOKABLE void Login(const QString &account, const QString &password); // 暴露给qml使用
     Q_INVOKABLE void Register(const QString &nickName, const QString &account, const QString &password);
     Q_INVOKABLE void AddFriend(const QString &account);
+    Q_INVOKABLE QVariantList GetMessageList(const QString &account);
     Q_INVOKABLE Netizen *GetThisInfo() { return _user; };
 
     // 消息功能

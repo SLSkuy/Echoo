@@ -54,3 +54,13 @@ void EchooClient::AddFriend(const QString &account)
     user->AddFriend(_user);
     _user->AddFriend(user);
 }
+
+QVariantList EchooClient::GetMessageList(const QString &account)
+{
+    QList<Message *> msgs = DatabaseManager::instance()->GetHistroyMessages(account);
+    QVariantList list;
+    for (Message *msg : msgs) {
+        list.append(QVariant::fromValue(msg));
+    }
+    return list;
+}

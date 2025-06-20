@@ -139,6 +139,14 @@ FrameLessWindow {
                             ListElement { sender: "我"; message: "你好！有什么事吗？"; isMe: true }
                             ListElement { sender: "对方"; message: "我想和你讨论一下项目。"; isMe: false }
                         }
+
+                        Component.onCompleted: {
+                            var messageList = EchooClient.GetMessageList("123");
+                            for (var i = 0; i < messageList.length; i++) {
+                                messageModel.append({isMe:true,message:messageList[i].content})
+                            }
+                        }
+
                         delegate: Rectangle {
                             width: parent.width/2
                             height: messageText.implicitHeight + 20

@@ -5,6 +5,7 @@
 #include <QList>
 #include <QMap>
 
+#include "message.h"
 #include "netizen.h"
 #include "group.h"
 
@@ -28,8 +29,9 @@ public:
     Group *GetGroup(const QString &account);
 
     // 消息存储与检测
-    void AddMessage(Message *message) { m_messages.append(message); }
+    void AddMessage(QString &account, Message *message);
     void AddOfflineMessage(Message *message) { m_offlineMessages.append(message); }
+    QList<Message *> GetHistroyMessages(const QString &account) { return m_messages[account]; }
     QList<Message *> GetOfflineMessages() { return m_offlineMessages; }
     void UpdateOfflineMessages(QList<Message *> offlineMessages) { m_offlineMessages = offlineMessages; }
 
@@ -43,6 +45,7 @@ private:
     // 缓存管理
     QMap<QString, Group *> m_groups;       // 记录所有的群聊信息
     QMap<QString, Netizen *> m_netizens;   // 记录局域网中的所有账号
-    QList<Message *> m_messages;           // 记录所有聊天信息
-    QList<Message *> m_offlineMessages;    // 发送的离线消息，当有用户上线时，监测是否有离线消息，若有则向其发送消息
+    QMap<QString, QList<Message *>> m_messages; // 记录所有聊天信息
+    // QList<Message *> m_messages;
+    QList<Message *> m_offlineMessages; // 发送的离线消息，当有用户上线时，监测是否有离线消息，若有则向其发送消息
 };
