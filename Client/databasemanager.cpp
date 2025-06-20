@@ -32,7 +32,7 @@ DatabaseManager::DatabaseManager()
     Message *message3 = new Message(newUser, newUser2, "12345", QDateTime::currentDateTime());
 
     // 添加历史消息
-    QString account = newUser->GetAccount();
+    QString account = newUser2->GetAccount();
     AddMessage(account, message1);
     AddMessage(account, message2);
     AddMessage(account, message3);

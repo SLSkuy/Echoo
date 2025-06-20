@@ -144,7 +144,7 @@ FrameLessWindow {
 
                                     Component.onCompleted: {
                                         // 传入账号获取消息列表
-                                        var messageList = EchooClient.GetMessageList("123");
+                                        var messageList = EchooClient.GetMessageList("0721");
                                         for (var i = 0; i < messageList.length; i++) {
                                             // 示例处理
                                             messageModel.append({ sender: "对方", message: messageList[i].content, isMe: false })
