@@ -56,6 +56,7 @@ import QtQuick.Layouts
                     color: closeButton.hovered ? "red" : "transparent"
                     border.color: "transparent"
                 }
+
             }
         }
 
