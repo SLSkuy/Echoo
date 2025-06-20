@@ -4,7 +4,7 @@ project(Echoo-Client VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON) # Globally preventing the fallback behaviour of C++ standard
 
-find_package(Qt6 REQUIRED COMPONENTS Quick Network)
+find_package(Qt6 REQUIRED COMPONENTS Quick Network Sql)
 
 qt_standard_project_setup(REQUIRES 6.5)
 
@@ -31,17 +31,24 @@ qt_add_qml_module(appEchoo-Client
         QML_FILES Friendtotal.qml
         QML_FILES Friendlist.qml
         QML_FILES Friends.qml
+        QML_FILES Friendpersonpage.qml
         QML_FILES EditTitle.qml
         QML_FILES EditProfile.qml
         QML_FILES Maintotal.qml
         QML_FILES GroupItem.qml
         QML_FILES Grouptotal.qml
+        QML_FILES GroupChat.qml
+        QML_FILES SelectFriends.qml
+        QML_FILES SelectTitleBar.qml
+        QML_FILES Groupnotification.qml
+        QML_FILES Friendnotification.qml
         SOURCES netizen.h netizen.cpp
         SOURCES group.h group.cpp
         SOURCES databasemanager.h databasemanager.cpp
         SOURCES communicator.h communicator.cpp
         SOURCES message.h message.cpp
         SOURCES logger.h logger.cpp
+        QML_FILES Addfriend.qml
 )
 
 source_group("QML Files" FILES
@@ -70,6 +77,7 @@ source_group("QML Files" FILES
         QML_FILES SelectFriends.qml
         QML_FILES SelectTitleBar.qml
         QML_FILES Friendpersonpage.qml
+        QML_FILES Addfriend.qml
 )
 
 target_compile_features(appEchoo-Client PRIVATE cxx_std_23)
@@ -90,6 +98,7 @@ target_link_libraries(appEchoo-Client
     PRIVATE
         Qt6::Quick
         Qt6::Network
+        Qt6::Sql
 )
 
 include(GNUInstallDirs)

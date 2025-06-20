@@ -1,16 +1,12 @@
 #include "databasemanager.h"
 #include "echooclient.h"
-#include "message.h"
 #include "netizen.h"
 #include "logger.h"
 #include "group.h"
 
 EchooClient::EchooClient(QObject *parent) : QObject(parent){}
 
-EchooClient::~EchooClient()
-{
-    delete _user;
-}
+EchooClient::~EchooClient(){}
 
 void EchooClient::Login(const QString &account, const QString &password)
 {
@@ -22,13 +18,14 @@ void EchooClient::Login(const QString &account, const QString &password)
             _user = user;
             emit loginSuccess(true);
 
-            // 连接对应信号处理
-            // 连接消息处理
-            connect(_user, &Netizen::messageReceived, this, &EchooClient::MessageProcess);
-            connect(_user, &Netizen::groupMessageReceived, this, &EchooClient::GroupMessageProcess);
             // 连接消息发送
             connect(this, &EchooClient::triggerMessage, _user, &Netizen::SendMessage);
             connect(this, &EchooClient::triggerGroupMessage, _user, &Netizen::SendGroupMessage);
+            // 连接消息接收
+            connect(_user, &Netizen::messageReceived, this, &EchooClient::messageReceived);
+            connect(_user, &Netizen::groupMessageReceived, this, &EchooClient::groupMessageReceived);
+            connect(_user, &Netizen::receivedFriendRequest, this, &EchooClient::receivedFriendRequest);
+            connect(_user, &Netizen::receivedFriendResponse, this, &EchooClient::receivedFriendResponse);
         }
     }
     emit loginSuccess(false);
@@ -49,12 +46,37 @@ void EchooClient::Register(const QString &nickName, const QString &account, cons
     emit registerSuccess(true);
 }
 
-void EchooClient::MessageProcess(Message *msg)
+QVariantList EchooClient::GetMessageList(const QString &account)
 {
-    // TODO
+    QList<Message *> msgs = DatabaseManager::instance()->GetHistroyMessages(account);
+    QVariantList list;
+    for (auto it = msgs.begin(); it != msgs.end(); it++) {
+        list.append(QVariant::fromValue(*it));
+    }
+    return list;
 }
 
-void EchooClient::GroupMessageProcess(Group *group, Message *msg)
+QVariantList EchooClient::GetNetizenList()
 {
-    // TODO
+    QList<Netizen *> users = DatabaseManager::instance()->GetAllNetizen();
+    QVariantList list;
+    for (auto it = users.begin(); it != users.end(); it++) {
+        list.append(QVariant::fromValue(*it));
+    }
+    return list;
+}
+
+void EchooClient::AddFriendRequest(const QString &account)
+{
+    _user->AddFriendRequest(account);
+}
+
+void EchooClient::AddFriendResponse(const QString &account, const bool result)
+{
+    _user->AddFriendResponse(account, result);
+}
+
+void EchooClient::RemoveFriend(const QString &account)
+{
+    _user->RemoveFriendRequest(account);
 }

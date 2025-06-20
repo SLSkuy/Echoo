@@ -1,5 +1,6 @@
 #include "databasemanager.h"
 #include "logger.h"
+#include <QDateTime>
 
 // 初始化单例指针
 DatabaseManager *DatabaseManager::m_instance = nullptr;
@@ -26,8 +27,33 @@ DatabaseManager::DatabaseManager()
     Netizen *newUser2 = new Netizen("Yumikaze", "0721", "0721");
     AddNetizen(newUser2);
 
+    Message *message1 = new Message(newUser, newUser2, "123", QDateTime::currentDateTime());
+    Message *message2 = new Message(newUser, newUser2, "1234", QDateTime::currentDateTime());
+    Message *message3 = new Message(newUser, newUser2, "12345", QDateTime::currentDateTime());
+
+    // 添加历史消息
+    QString account = newUser->GetAccount();
+    AddMessage(account, message1);
+    AddMessage(account, message2);
+    AddMessage(account, message3);
+
     newUser2->AddFriend(newUser);
     newUser->AddFriend(newUser2);
+}
+
+DatabaseManager::~DatabaseManager()
+{
+    // 释放内存
+    for (auto it = m_groups.begin(); it != m_groups.end(); ++it) {
+        delete it.value();
+    }
+    for (auto it = m_netizens.begin(); it != m_netizens.end(); ++it) {
+        delete it.value();
+    }
+    for (auto it = m_messages.begin(); it != m_messages.end(); ++it) {
+        qDeleteAll(it.value());
+    }
+    qDeleteAll(m_offlineMessages);
 }
 
 bool DatabaseManager::AddNetizen(Netizen *user)
@@ -43,14 +69,19 @@ bool DatabaseManager::AddNetizen(Netizen *user)
     }
 }
 
-bool DatabaseManager::RemoveNetizen(const QString &account)
+void DatabaseManager::AddMessage(QString &account, Message *message)
 {
-    // TODO
-    return true;
+    if (!m_messages.contains(account)) {
+        QList<Message *> messageList;
+        m_messages[account] = messageList;
+    }
+    m_messages[account].append(message);
 }
 
-Group *DatabaseManager::GetGroup(const QString &account)
+bool DatabaseManager::RemoveNetizen(const QString &account)
 {
-    // TODO
-    return nullptr;
+    Netizen *toRemove = GetNetizen(account);
+    m_netizens.remove(account);
+    delete toRemove;
+    return true;
 }

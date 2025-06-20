@@ -56,6 +56,7 @@ import QtQuick.Layouts
                     color: closeButton.hovered ? "red" : "transparent"
                     border.color: "transparent"
                 }
+
             }
         }
 
@@ -106,9 +107,29 @@ import QtQuick.Layouts
                 text: "+"
                 implicitWidth:30
                 implicitHeight: 30
+                ToolTip {
+                    id: add
+                    text: "加好友"
+                    visible: parent.hovered
+                    delay: 500 // 悬停500毫秒后显示
+                }
                 background:Rectangle{
                     // color: "#F0F0F0"
                     color: morebutton.hovered ? "lightgrey" : (morebutton.focus ? "#BEBEBE" : "#F0F0F0")
+                }
+                property var addfriend: null;
+                onClicked: {
+                    if(!addfriend) {
+                        var component = Qt.createComponent("Addfriend.qml");
+                        if (component.status === Component.Ready) {
+                            addfriend = component.createObject(null, {
+                                flags: Qt.Window | Qt.FramelessWindowHint
+                            });
+                        }
+                    }
+                    addfriend.show();
+                    addfriend.raise(); // 关键：置顶窗口
+                    addfriend.requestActivate(); // 激活窗口
                 }
             }
         }

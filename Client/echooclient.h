@@ -1,6 +1,9 @@
 #pragma once
 
+#include <QQmlListProperty>
 #include <QTcpSocket>
+#include <QDateTime>
+#include <QList>
 
 class Message;
 class Netizen;
@@ -16,6 +19,12 @@ public:
     // 账号功能
     Q_INVOKABLE void Login(const QString &account, const QString &password); // 暴露给qml使用
     Q_INVOKABLE void Register(const QString &nickName, const QString &account, const QString &password);
+    Q_INVOKABLE void AddFriendRequest(const QString &account);
+    Q_INVOKABLE void AddFriendResponse(const QString &account, const bool result);
+    Q_INVOKABLE void RemoveFriend(const QString &account);
+    Q_INVOKABLE QVariantList GetNetizenList();
+    Q_INVOKABLE QVariantList GetMessageList(const QString &account);
+    Q_INVOKABLE Netizen *GetThisInfo() { return _user; };
 
     // 消息功能
     Q_INVOKABLE void SendMessage(const QString &receiverAccount, const QString &content)
@@ -34,14 +43,11 @@ signals:
     // 账号处理信号
     void loginSuccess(bool result);
     void registerSuccess(bool result);
-    // 消息处理信号
+    // 消息接收信号
     void messageReceived(Message *msg);
     void groupMessageReceived(Group *group, Message *msg);
-
-private slots:
-    // 消息处理
-    void MessageProcess(Message *msg);
-    void GroupMessageProcess(Group *group, Message *msg);
+    void receivedFriendRequest(Netizen *);
+    void receivedFriendResponse(Netizen *, const bool result);
 
 private:
     Netizen *_user;
