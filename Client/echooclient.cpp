@@ -6,10 +6,7 @@
 
 EchooClient::EchooClient(QObject *parent) : QObject(parent){}
 
-EchooClient::~EchooClient()
-{
-    delete _user;
-}
+EchooClient::~EchooClient(){}
 
 void EchooClient::Login(const QString &account, const QString &password)
 {

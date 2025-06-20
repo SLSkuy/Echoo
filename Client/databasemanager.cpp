@@ -41,6 +41,21 @@ DatabaseManager::DatabaseManager()
     newUser->AddFriend(newUser2);
 }
 
+DatabaseManager::~DatabaseManager()
+{
+    // 释放内存
+    for (auto it = m_groups.begin(); it != m_groups.end(); ++it) {
+        delete it.value();
+    }
+    for (auto it = m_netizens.begin(); it != m_netizens.end(); ++it) {
+        delete it.value();
+    }
+    for (auto it = m_messages.begin(); it != m_messages.end(); ++it) {
+        qDeleteAll(it.value());
+    }
+    qDeleteAll(m_offlineMessages);
+}
+
 bool DatabaseManager::AddNetizen(Netizen *user)
 {
     // 检测是否存在对应用户
@@ -65,12 +80,8 @@ void DatabaseManager::AddMessage(QString &account, Message *message)
 
 bool DatabaseManager::RemoveNetizen(const QString &account)
 {
-    // TODO
+    Netizen *toRemove = GetNetizen(account);
+    m_netizens.remove(account);
+    delete toRemove;
     return true;
-}
-
-Group *DatabaseManager::GetGroup(const QString &account)
-{
-    // TODO
-    return nullptr;
 }
