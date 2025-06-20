@@ -13,7 +13,8 @@ ListView {
     property string myNickname: ""
 
     delegate: Rectangle {
-        width: messageText.implicitWidth+20
+        width: messageText.implicitWidth+60
+        // width: parent.width/2
         // height: messageText.implicitHeight + 20
         height: Math.max(messageText.implicitHeight, imagemessage.height) + 10
         color: isMe ? myMessageColor : otherMessageColor

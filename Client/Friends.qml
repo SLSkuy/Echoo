@@ -5,7 +5,8 @@ import QtQuick
 Rectangle{
     property alias friendItem : friendItem
     property alias friendlistmodel : listModel
-
+    property alias friendstotal: _friendstotal
+    id:_friendstotal
     visible: true
     ListView {
         id: friendItem
