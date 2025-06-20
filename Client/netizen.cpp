@@ -28,6 +28,7 @@ bool Netizen::LoginDetection(const QString &password)
         m_ip = _cmc->GetLocalIP();
         connect(_cmc, &Communicator::messageReceived, this, &Netizen::messageReceived);
         connect(_cmc, &Communicator::groupMessageReceived, this, &Netizen::groupMessageReceived);
+        connect(_cmc, &Communicator::commandReceived, this, &Netizen::CommandProcess);
 
         // 设置在线信息
         m_isOnline = true;
@@ -83,4 +84,76 @@ bool Netizen::AddFriend(Netizen *user)
         m_friends.insert(user->GetAccount(), user);
         return true;
     }
+}
+
+bool Netizen::RemoveFriend(const QString &account)
+{
+    if (HasFriend(account)) {
+        Logger::Log("Remove friend " + account);
+        m_friends.remove(account);
+        return true;
+    }
+    Logger::Warning("you don't have friend " + account);
+    return false;
+}
+
+void Netizen::CommandProcess(Message *msg)
+{
+    Netizen *user = msg->GetSender();
+    if (msg->GetMessage() == "addFriend") {
+        emit receivedFriendRequest(user);
+    } else if (msg->GetMessage() == "acceptFriend") {
+        // 确认接受则双向确认
+        user->AddFriend(this);
+        AddFriend(user);
+        emit receivedFriendResponse(user, true);
+    } else if (msg->GetMessage() == "rejectFriend") {
+        emit receivedFriendResponse(user, false);
+    } else if (msg->GetMessage() == "removeFriend") {
+        // 双向删除好友
+        user->RemoveFriend(m_account);
+        RemoveFriend(user->GetAccount());
+    }
+}
+
+void Netizen::RemoveFriendRequest(const QString &account)
+{
+    // 发送删除好友请求
+    Netizen *user = DatabaseManager::instance()->GetNetizen(account);
+    QDateTime time = QDateTime::currentDateTime();
+
+    // 本地客户端双向删除
+    RemoveFriend(account);
+    user->RemoveFriend(m_account);
+
+    Message *msg = new Message(this, user, "removeFriend", time, Message::Individual, Message::Command);
+    _cmc->SendMessage(msg);
+}
+
+void Netizen::AddFriendRequest(const QString &account)
+{
+    // 发送添加好友请求
+    Netizen *user = DatabaseManager::instance()->GetNetizen(account);
+    QDateTime time = QDateTime::currentDateTime();
+
+    Message *msg = new Message(this, user, "addFriend", time, Message::Individual, Message::Command);
+    _cmc->SendMessage(msg);
+}
+
+void Netizen::AddFriendResponse(const QString &account, const bool result)
+{
+    // 发送添加好友回应
+    Netizen *user = DatabaseManager::instance()->GetNetizen(account);
+    QDateTime time = QDateTime::currentDateTime();
+
+    // 若同意添加好友则双向添加
+    // 发送确认信息给对方使对方也进行双向添加确认
+    if (result) {
+        AddFriend(user);
+        user->AddFriend(this);
+    }
+
+    QString response = (result == true) ? "acceptFriend" : "rejectFriend";
+    Message *msg = new Message(this, user, response, time, Message::Individual, Message::Command);
+    _cmc->SendMessage(msg);
 }
