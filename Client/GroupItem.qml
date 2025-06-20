@@ -52,6 +52,7 @@ Rectangle{
 
     // 鼠标交互
     MouseArea {
+        //TODO
         id: mouseArea
         anchors.fill: parent
         hoverEnabled: true

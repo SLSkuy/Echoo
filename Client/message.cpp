@@ -2,10 +2,10 @@
 
 #include "databasemanager.h"
 #include "message.h"
-#include "netizen.h"
 #include "logger.h"
 #include "group.h"
 
+Message::Message(QObject *parent): QObject(parent){}
 Message::Message(Netizen *sender, QObject *receiver, const QString &content, const QDateTime &timestamp, QObject *parent)
     : QObject(parent)
     , m_sender(sender)

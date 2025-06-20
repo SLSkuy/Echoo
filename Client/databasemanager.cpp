@@ -1,5 +1,6 @@
 #include "databasemanager.h"
 #include "logger.h"
+#include <QDateTime>
 
 // 初始化单例指针
 DatabaseManager *DatabaseManager::m_instance = nullptr;
@@ -26,6 +27,16 @@ DatabaseManager::DatabaseManager()
     Netizen *newUser2 = new Netizen("Yumikaze", "0721", "0721");
     AddNetizen(newUser2);
 
+    Message *message1 = new Message(newUser, newUser2, "123", QDateTime::currentDateTime());
+    Message *message2 = new Message(newUser, newUser2, "1234", QDateTime::currentDateTime());
+    Message *message3 = new Message(newUser, newUser2, "12345", QDateTime::currentDateTime());
+
+    // 添加历史消息
+    QString account = newUser->GetAccount();
+    AddMessage(account, message1);
+    AddMessage(account, message2);
+    AddMessage(account, message3);
+
     newUser2->AddFriend(newUser);
     newUser->AddFriend(newUser2);
 }
@@ -41,6 +52,15 @@ bool DatabaseManager::AddNetizen(Netizen *user)
         Logger::Error("Account " + user->GetAccount() + " already exist.");
         return false;
     }
+}
+
+void DatabaseManager::AddMessage(QString &account, Message *message)
+{
+    if (!m_messages.contains(account)) {
+        QList<Message *> messageList;
+        m_messages[account] = messageList;
+    }
+    m_messages[account].append(message);
 }
 
 bool DatabaseManager::RemoveNetizen(const QString &account)

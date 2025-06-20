@@ -121,6 +121,7 @@ FrameLessWindow{
         anchors.left:parent.left
         anchors.leftMargin:10
         MouseArea {
+            //TODO
             id: ma
             anchors.fill: parent
             hoverEnabled: true

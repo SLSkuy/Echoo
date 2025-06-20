@@ -1,4 +1,4 @@
-import QtQuick 2.15
+import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Window
@@ -18,6 +18,7 @@ Window {
 
     //拖动全局窗口
     MouseArea{
+        //TODO
         id: dragArea
         anchors.fill: parent
         hoverEnabled: true

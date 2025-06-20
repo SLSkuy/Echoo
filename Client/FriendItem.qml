@@ -1,8 +1,8 @@
 //单个好友
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
 
 Rectangle {
     id:friend_single
@@ -71,6 +71,7 @@ Rectangle {
     }
 
     MouseArea {
+        //TODO
         id: mouseArea
         anchors.fill: parent
         hoverEnabled: true

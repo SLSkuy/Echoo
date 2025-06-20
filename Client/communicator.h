@@ -23,7 +23,6 @@ public:
     void SendMessage(Message *message);
     void SendGroupMessage(Message *message);
     void OnlineMessageProcess(QTcpSocket *socket);
-    void extracted(Netizen *&user, QList<Message *> &offlines, QList<Message *> &toRemove);
     void OfflineMessageProcess(Netizen *user);
 
 signals:

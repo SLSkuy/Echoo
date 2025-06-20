@@ -7,7 +7,6 @@
 #include "logger.h"
 
 Netizen::Netizen(QObject *parent) : QObject(parent) {}
-
 Netizen::Netizen(const QString &nickName, const QString &account, const QString &password, QObject *parent)
     : m_nickName(nickName)
     , m_account(account)
@@ -27,8 +26,8 @@ bool Netizen::LoginDetection(const QString &password)
         // 连接p2p服务器
         _cmc = new Communicator(this);
         m_ip = _cmc->GetLocalIP();
-        connect(_cmc, &Communicator::messageReceived, this, &Netizen::MessageProcess);
-        connect(_cmc, &Communicator::groupMessageReceived, this, &Netizen::GroupMessageProcess);
+        connect(_cmc, &Communicator::messageReceived, this, &Netizen::messageReceived);
+        connect(_cmc, &Communicator::groupMessageReceived, this, &Netizen::groupMessageReceived);
 
         // 设置在线信息
         m_isOnline = true;
@@ -85,17 +84,3 @@ bool Netizen::AddFriend(Netizen *user)
         return true;
     }
 }
-
-void Netizen::MessageProcess(Message *message)
-{
-    Logger::Log("Receive message from account " + message->GetSender()->GetAccount() + ": " + message->GetMessage());
-
-    QString sender = message->GetSender()->GetAccount();
-    QString content = message->GetMessage();
-    QDateTime time = message->GetMessageTime();
-
-    // 触发信号
-    emit messageProcessed(sender, content, time);
-}
-
-void Netizen::GroupMessageProcess(Group *group, Message *message) {}

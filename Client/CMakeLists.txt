@@ -43,8 +43,6 @@ qt_add_qml_module(appEchoo-Client
         QML_FILES Friendpersonpage.qml
         QML_FILES GroupChat.qml
         QML_FILES Addfriend.qml
-        QML_FILES
-        QML_FILES
         SOURCES netizen.h netizen.cpp
         SOURCES group.h group.cpp
         SOURCES databasemanager.h databasemanager.cpp
@@ -52,6 +50,7 @@ qt_add_qml_module(appEchoo-Client
         SOURCES message.h message.cpp
         SOURCES logger.h logger.cpp
         QML_FILES MessageWidget.qml
+        # QML_FILES ../../../run/media/root/yun/111/Addfriend.qml
 
 
 

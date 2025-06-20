@@ -122,6 +122,10 @@ void Communicator::OnlineMessageProcess(QTcpSocket *socket)
         if (!doc.isNull() && doc.isObject()) {
             Message *message = Message::FromJson(jsonData);
             QString type = doc["message_type"].toString();
+
+            // 保存消息，接受的消息的sender即是此客户端的receiver
+            QString sender = message->GetSender()->GetAccount();
+            DatabaseManager::instance()->AddMessage(sender, message);
             if (type == "individual") {
                 emit messageReceived(message);
             } else if (type == "group") {
@@ -144,7 +148,6 @@ void Communicator::OfflineMessageProcess(Netizen *user)
                          << "content:" << (*it)->GetMessage();
                 SendMessage(*it);
                 toRemove.append(*it);
-                DatabaseManager::instance()->AddMessage(*it);
             }
         }
     }
@@ -249,7 +252,7 @@ void Communicator::SendMessage(Message *message)
         packet.append(json);             // 接着写入数据
 
         socket->write(packet);
-        DatabaseManager::instance()->AddMessage(message);
+        DatabaseManager::instance()->AddMessage(receiverAccount, message);
     } else {
         DatabaseManager::instance()->AddOfflineMessage(message);
     }

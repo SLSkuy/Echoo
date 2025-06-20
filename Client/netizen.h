@@ -12,22 +12,28 @@ class Message;
 class Netizen : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(QString nickname READ GetNickname NOTIFY nicknameChanged)
+    Q_PROPERTY(QString account READ GetAccount CONSTANT)
+    Q_PROPERTY(bool online READ IsOnline NOTIFY onlineChanged)
+    Q_PROPERTY(QString ipAddress READ GetIpAddress WRITE SetIpAddress NOTIFY ipChanged)
 public:
     explicit Netizen(QObject *parent = nullptr);
     Netizen(const QString &nickName, const QString &account, const QString &password, QObject *parent = nullptr);
     ~Netizen();
 
     // 用户属性获取，用户数据库信息存储
-    QString GetNickname() { return m_nickName; };
-    QString GetAccount() { return m_account; };
-    QMap<QString, Netizen *> GetFriends() { return m_friends; };
-    QMap<QString, Group *> GetGroups() { return m_groups; };
-    bool IsOnline() { return m_isOnline; };
+    QString GetNickname()  { return m_nickName; }
+    QString GetAccount()  { return m_account; }
+    QString GetIpAddress()  { return m_ip; }
+    void SetIpAddress(QString ip) { m_ip=ip; }
+    void SetOnline(bool result) { m_isOnline=result; }
+    bool IsOnline() const { return m_isOnline; }
 
     // 账号功能
+    QMap<QString, Netizen *> GetFriends() { return m_friends; };
+    QMap<QString, Group *> GetGroups() { return m_groups; };
     bool LoginDetection(const QString &password);
     void Logout() { m_isOnline = false; };
-    void SetOnline(bool result) { m_isOnline = result; };
 
     // 好友管理
     bool AddFriend(Netizen *user);
@@ -44,14 +50,12 @@ public:
     bool LeaveGroup(Group *group);
     bool HasGroup(const QString &account) { return m_groups.contains(account); }
 
-    QString GetIpAddress() { return m_ip; }
-    void SetIpAddress(QString ip) { m_ip = ip; }
-
 signals:
     void messageReceived(Message *msg);
     void groupMessageReceived(Group *group, Message *msg);
-    void messageProcessed(QString account, QString content, QDateTime time);
-    void groupMessageProcessed(QString account, QString content, QDateTime time);
+    void nicknameChanged();
+    void onlineChanged();
+    void ipChanged();
 
 private:
     QString m_nickName;
@@ -65,7 +69,4 @@ private:
     // p2p服务
     Communicator *_cmc;
     QString m_ip;
-
-    void MessageProcess(Message *message);
-    void GroupMessageProcess(Group *group, Message *message);
 };

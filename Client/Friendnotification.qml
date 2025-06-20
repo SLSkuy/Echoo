@@ -1,4 +1,4 @@
-import QtQuick 2.15
+import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Window
@@ -51,6 +51,7 @@ FrameLessWindow {
 
                 // 添加鼠标区域
                 MouseArea {
+                    //TODO
                     id: mouseArea
                     anchors.fill: parent
                     hoverEnabled: true // 启用悬停检测

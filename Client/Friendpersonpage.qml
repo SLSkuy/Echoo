@@ -136,6 +136,7 @@ FrameLessWindow{
                     });
                 }
             }
+            chatWidget.topBar.text11.text = nameMessage.text
             chatWidget.show();
             chatWidget.raise(); // 关键：置顶窗口
             chatWidget.requestActivate(); // 激活窗口
