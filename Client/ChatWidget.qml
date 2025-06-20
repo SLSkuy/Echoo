@@ -271,11 +271,7 @@ FrameLessWindow {
     }
     Connections {
                target: EchooClient
-<<<<<<< HEAD
-               function onMessageReceived(account,content, time) {
-=======
                function onMessageReceived(msg) {
->>>>>>> main
                    // console.log("nnnn")
                    messageModel.append({ sender: "对方", message: msg.content, isMe: false })
                }
