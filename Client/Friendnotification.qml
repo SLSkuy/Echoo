@@ -90,7 +90,7 @@ FrameLessWindow {
                             id: accepet
                             text:"同意"
                             onClicked: {
-                                // EchooClient.AddFriend(friendaccount);
+                                EchooClient.AddFriend(friendaccount);
                                 enabled = false
                                 reject.enabled = false
                             }
@@ -111,17 +111,14 @@ FrameLessWindow {
 
     ListModel{
         id: listModel
-        ListElement{
-            image1: ""
-            name1: "111"
-            aaction1: "222"
-            account:"333"
-        }
-        ListElement{
-            image1: ""
-            name1: "111"
-            aaction1: "222"
-            account:"333"
+
+    }
+
+    Connections {
+        target: EchooClient
+        // var addfriendnotification
+        function onReceivedFriendRequest(addfriendnotification) {
+            listModel.append({image1:"", name1:addfriendnotification.nickname, aaction1: "请求添加你为好友", account1:addfriendnotification.account})
         }
     }
 

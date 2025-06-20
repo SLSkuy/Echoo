@@ -5,6 +5,7 @@ import QtQuick.Layouts
 FrameLessWindow {
     id:chatwidget
     width: 455
+
     ColumnLayout{
         anchors.fill: parent
 
@@ -18,12 +19,16 @@ FrameLessWindow {
             Layout.preferredHeight: 30
             id: search
 
-            placeholderText:"🔍 搜索 "
+            // text: ""
+            placeholderText:"🔍 搜索      请输入完整的账号查找"
             placeholderTextColor: "gray"
             background:Rectangle{
                 color: "#F0F0F0"
                 border.color: search.focus ? "#00BFFF" :"transparent"
             }
+
+            onTextChanged: searchnetizen
+
         }
         Rectangle{
             id:display
@@ -47,7 +52,7 @@ FrameLessWindow {
                         }
 
                         Text {
-                            id: name
+                            id: name1
                             Layout.topMargin: 40
                             Layout.leftMargin: 10
                             Layout.preferredHeight:parent.height
@@ -78,15 +83,20 @@ FrameLessWindow {
 
     ListModel{
         id: listModel
-        ListElement{
-            source1: ""
-            name1:"abc"
-            account1:""
-        }
-        ListElement{
-            source1: ""
-            name1:"123"
-            account1:""
+    }
+
+    function searchnetizen() {
+        listModel.clear()
+        var netizens = EchooClient.GetNetizenList()
+
+        for(var i = 0; i < netizens.length-1; i++){
+            if(netizens[i].account === search.text){
+
+                listModel.append({source1:"", name1: netizens[i].nickname, account1: netizens[i].account})
+            }
         }
     }
+
+    Component.onCompleted: searchnetizen()
+
 }
