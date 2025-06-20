@@ -21,7 +21,7 @@ Rectangle{
     // color: mouseArea.containsMouse ? "#E6E6E6" : "transparent"
     property bool hovered: false
     color: hovered ? "#E6E6E6" : "transparent"
-
+    //TODO
 
     RowLayout {
         anchors.fill: parent
@@ -97,11 +97,12 @@ Rectangle{
         }
     }
 
+    HoverHandler {
+        id: hoverHandler
+        onHoveredChanged: messageItem.hovered = hovered
+    }
 
     TapHandler {
-        //TODO
-
-
         //设置初始值为null
         property var groupchat: null;
         property var chatWidget: null;

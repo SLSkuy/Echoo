@@ -19,7 +19,7 @@ Rectangle{
             FriendItem{
                 id:mm
                 height:friendItem.height/13
-                width: parent.width
+                width: friendItem.width
                 friendheadPortrait.source: headPortrait1
                 friendname.text: name1
                 friendpersonid: id1

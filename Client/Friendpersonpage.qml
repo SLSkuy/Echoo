@@ -18,11 +18,13 @@ FrameLessWindow{
     ColumnLayout{
         anchors.fill:parent
         TopBar{
+            id:ttopbar
             Layout.preferredWidth: parent.width
             text11.text: "个人主页"
         }
 
         RowLayout{
+            anchors.top: ttopbar.bottom
             Rectangle {
                 Layout.topMargin:20
                 Layout.leftMargin:10
@@ -68,6 +70,7 @@ FrameLessWindow{
                 Layout.rightMargin:10
                 font.pixelSize: 20
                 Layout.alignment: Qt.AlignVCenter
+                visible: false
 
             }
             Rectangle{
@@ -80,9 +83,7 @@ FrameLessWindow{
                     font.pixelSize: 15
                     Layout.alignment: Qt.AlignVCenter
                     Layout.fillWidth: true
-
-
-
+                    visible: false
                 }
             }
         }
@@ -95,6 +96,7 @@ FrameLessWindow{
                 Layout.rightMargin:10
                 font.pixelSize: 20
                 Layout.alignment: Qt.AlignVCenter
+                visible: false
 
             }
             Rectangle{
@@ -106,8 +108,7 @@ FrameLessWindow{
                     font.pixelSize: 15
                     Layout.alignment: Qt.AlignVCenter
                     Layout.fillWidth: true
-
-
+                    visible: false
 
                 }
             }
@@ -124,6 +125,7 @@ FrameLessWindow{
         anchors.bottomMargin:10
         anchors.right:parent.right
         anchors.rightMargin:10
+        enabled: false
 
         //单机“发消息”按钮，弹出聊天框
         property var chatWidget: null;

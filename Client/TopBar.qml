@@ -6,6 +6,7 @@ import QtQuick.Window
 //titlebar
 Rectangle {
     property alias text11: widgettext
+    property alias tcloseButton: closeButton
     // property alias topBar: titleBar
 
         id: titleBar

@@ -9,9 +9,14 @@ FrameLessWindow {
     ColumnLayout{
         anchors.fill: parent
 
-        TopBar{
-            id:topbarr
+        TopBar {
+            id: topbarr
             Layout.preferredWidth: parent.height
+
+            tcloseButton.onClicked: {
+                search.text = ""  // 清除搜索内容
+                chatwidget.close()
+            }
         }
 
         TextField{
@@ -27,7 +32,7 @@ FrameLessWindow {
                 border.color: search.focus ? "#00BFFF" :"transparent"
             }
 
-            onTextChanged: searchnetizen
+            onTextChanged: searchnetizen()
 
         }
         Rectangle{
@@ -89,9 +94,8 @@ FrameLessWindow {
         listModel.clear()
         var netizens = EchooClient.GetNetizenList()
 
-        for(var i = 0; i < netizens.length-1; i++){
+        for(var i = 0; i < netizens.length; i++){
             if(netizens[i].account === search.text){
-
                 listModel.append({source1:"", name1: netizens[i].nickname, account1: netizens[i].account})
             }
         }
