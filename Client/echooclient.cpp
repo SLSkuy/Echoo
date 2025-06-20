@@ -59,8 +59,18 @@ QVariantList EchooClient::GetMessageList(const QString &account)
 {
     QList<Message *> msgs = DatabaseManager::instance()->GetHistroyMessages(account);
     QVariantList list;
-    for (Message *msg : msgs) {
-        list.append(QVariant::fromValue(msg));
+    for (auto it = msgs.begin(); it != msgs.end(); it++) {
+        list.append(QVariant::fromValue(*it));
+    }
+    return list;
+}
+
+QVariantList EchooClient::GetNetizenList()
+{
+    QList<Netizen *> users = DatabaseManager::instance()->GetAllNetizen();
+    QVariantList list;
+    for (auto it = users.begin(); it != users.end(); it++) {
+        list.append(QVariant::fromValue(*it));
     }
     return list;
 }

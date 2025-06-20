@@ -22,6 +22,7 @@ public:
     bool AddNetizen(Netizen *user);
     bool RemoveNetizen(const QString &account);
     Netizen *GetNetizen(const QString &account) { return m_netizens[account]; };
+    QList<Netizen *> GetAllNetizen() { return m_netizens.values(); };
 
     // 群聊检测与管理
     bool AddGroup(Group *group);
