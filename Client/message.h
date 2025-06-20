@@ -9,7 +9,7 @@ class Message : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString content READ GetMessage NOTIFY contentChanged)
-    Q_PROPERTY(QDateTime timestamp READ GetMessageTime NOTIFY timestampChanged)
+    Q_PROPERTY(QString timestamp READ GetMessageTime NOTIFY timestampChanged)
     Q_PROPERTY(Netizen* sender READ GetSender NOTIFY senderChanged FINAL)
     Q_PROPERTY(QObject* receiver READ GetReceiver NOTIFY receiverChanged)
 public:
@@ -25,7 +25,7 @@ public:
 
     QString GetMessage() { return m_content; }
     QObject *GetReceiver() { return m_receiver; }
-    QDateTime GetMessageTime() { return m_timestamp; }
+    QString GetMessageTime() { return m_timestamp.toString(); }
     Netizen *GetSender()  { return m_sender; }
     void setSender(Netizen *sender) { m_sender = sender; }
 
