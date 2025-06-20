@@ -50,7 +50,7 @@ Rectangle{
                     var messages = EchooClient.GetMessageList(friends[i].account)
                 // console.log(messages[messages.length-1])
                 // console.log(messages[messages.length-1].timestamp)
-                    listModel.append({name1: friends[i].nickname, lastMessage1: messages[messages.length-1], time1: messages[messages.length-1].timestamp,
+                    listModel.append({name1: friends[i].nickname, lastMessage1: messages[messages.length-1].content, time1: messages[messages.length-1].timestamp,
                                          unreadCount1: 0,_isGroup: 1})
 
                 }
