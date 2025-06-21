@@ -9,6 +9,8 @@ FrameLessWindow {
     width: 500
     height: 600
 
+    property alias friendlistmodelnotification: listModel
+
     // 主布局
     Column{
         id:column
@@ -119,14 +121,14 @@ FrameLessWindow {
 
     }
 
-    Connections {
-        target: EchooClient
-        // var addfriendnotification = null
-        function onReceivedFriendRequest(addfriendnotification) {
-            console.log("aaa")
-            listModel.append({image1:"", name1:addfriendnotification.nickname, aaction1: "请求添加你为好友", account1:addfriendnotification.account})
-        }
-    }
+    // Connections {
+    //     target: EchooClient
+    //     // var addfriendnotification = null
+    //     function onReceivedFriendRequest(addfriendnotification) {
+    //         console.log("aaa")
+    //         listModel.append({image1:"", name1:addfriendnotification.nickname, aaction1: "请求添加你为好友", account1:addfriendnotification.account})
+    //     }
+    // }
 
 
 }

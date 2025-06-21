@@ -41,6 +41,15 @@ Rectangle{
                     friendnotification.show();
                     friendnotification.raise(); // 关键：置顶窗口
                     friendnotification.requestActivate(); // 激活窗口
+
+                }
+            }
+            Connections {
+                target: EchooClient
+                // var addfriendnotification = null
+                function onReceivedFriendRequest(addfriendnotification) {
+                    console.log("aaa")
+                    friendlistmodelnotification.append({image1:"", name1:addfriendnotification.nickname, aaction1: "请求添加你为好友", account1:addfriendnotification.account})
                 }
             }
 
