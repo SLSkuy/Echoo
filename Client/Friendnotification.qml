@@ -1,15 +1,20 @@
+//好友通知
+
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Window
 
 FrameLessWindow {
+    property alias friendlistmodelnotification: listModel
+    property alias friendnotification: chatwidget
+    property bool select: false
+
     id:chatwidget
     visible: true
     width: 500
     height: 600
 
-    property alias friendlistmodelnotification: listModel
 
     // 主布局
     Column{
@@ -94,9 +99,9 @@ FrameLessWindow {
                             id: accepet
                             text:"同意"
                             onClicked: {
+                                select = true
                                 // console.log(friendaccount)
-                                EchooClient.AddFriendResponse(friendaccount.text,true);
-
+                                EchooClient.AddFriendResponse(friendaccount.text,select);
                                 enabled = false
                                 reject.enabled = false
                             }
@@ -105,7 +110,8 @@ FrameLessWindow {
                             id: reject
                             text: "拒绝"
                             onClicked: {
-                                EchooClient.AddFriendResponse(friendaccount.text,false);
+                                select = false
+                                EchooClient.AddFriendResponse(friendaccount.text,select);
                                 enabled = false
                                 accepet.enabled = false
                             }
@@ -121,14 +127,13 @@ FrameLessWindow {
 
     }
 
-    // Connections {
-    //     target: EchooClient
-    //     // var addfriendnotification = null
-    //     function onReceivedFriendRequest(addfriendnotification) {
-    //         console.log("aaa")
-    //         listModel.append({image1:"", name1:addfriendnotification.nickname, aaction1: "请求添加你为好友", account1:addfriendnotification.account})
-    //     }
-    // }
+    Connections {
+        target: EchooClient
+        function onReceivedFriendRequest(addfriendnotification) {
+            console.log("aaa")
+            listModel.append({image1:"", name1:addfriendnotification.nickname, aaction1: "请求添加你为好友", account1:addfriendnotification.account})
+        }
+    }
 
 
 }
