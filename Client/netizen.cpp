@@ -100,8 +100,11 @@ bool Netizen::RemoveFriend(const QString &account)
 void Netizen::CommandProcess(Message *msg)
 {
     Netizen *user = msg->GetSender();
-    if (msg->GetMessage() == "addFriend") {
+    QString aa = msg->GetMessage();
+    if (aa == "addFriend") {
+        // qDebug() << aa;
         emit receivedFriendRequest(user);
+        qDebug() << aa;
     } else if (msg->GetMessage() == "acceptFriend") {
         // 确认接受则双向确认
         user->AddFriend(this);
@@ -114,6 +117,7 @@ void Netizen::CommandProcess(Message *msg)
         user->RemoveFriend(m_account);
         RemoveFriend(user->GetAccount());
     }
+    qDebug() << aa.length();
 }
 
 void Netizen::RemoveFriendRequest(const QString &account)
