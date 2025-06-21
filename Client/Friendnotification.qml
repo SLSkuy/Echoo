@@ -92,8 +92,9 @@ FrameLessWindow {
                             id: accepet
                             text:"同意"
                             onClicked: {
-                                console.log(friendaccount)
-                                EchooClient.AddFriendResponse(friendaccount,true);
+                                // console.log(friendaccount)
+                                EchooClient.AddFriendResponse(friendaccount.text,true);
+
                                 enabled = false
                                 reject.enabled = false
                             }
@@ -102,7 +103,7 @@ FrameLessWindow {
                             id: reject
                             text: "拒绝"
                             onClicked: {
-                                EchooClient.AddFriendResponse(friendaccount,false);
+                                EchooClient.AddFriendResponse(friendaccount.text,false);
                                 enabled = false
                                 accepet.enabled = false
                             }
