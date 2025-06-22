@@ -102,9 +102,8 @@ void Netizen::CommandProcess(Message *msg)
     Netizen *user = msg->GetSender();
     QString aa = msg->GetMessage();
     if (aa == "addFriend") {
-        // qDebug() << aa;
         emit receivedFriendRequest(user);
-        qDebug() << aa;
+        //qDebug() << aa;
     } else if (msg->GetMessage() == "acceptFriend") {
         // 确认接受则双向确认
         user->AddFriend(this);
@@ -147,19 +146,20 @@ void Netizen::AddFriendRequest(const QString &account)
 void Netizen::AddFriendResponse(const QString &account, const bool result)
 {
     // 发送添加好友回应
-    // Netizen *user = DatabaseManager::instance()->GetNetizen(account);
+    Netizen *user = DatabaseManager::instance()->GetNetizen(account);
     QDateTime time = QDateTime::currentDateTime();
 
     // 若同意添加好友则双向添加
     // 发送确认信息给对方使对方也进行双向添加确认
-    // if (result) {
-    //     AddFriend(user);
-    //     user->AddFriend(this);
-    // }
+    if (result) {
+        AddFriend(user);
+        user->AddFriend(this);
+    }
 
     QString response = (result == true) ? "acceptFriend" : "rejectFriend";
-    // Message *msg = new Message(this, user, response, time, Message::Command);
-    // _cmc->SendMessage(msg);
+    qDebug() << response;
+    Message *msg = new Message(this, user, response, time, Message::Command);
+    _cmc->SendMessage(msg);
 }
 
 QVariantList Netizen::GetFriends()
