@@ -90,6 +90,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 Rectangle {
+
     ColumnLayout {
         anchors.fill: parent
 
@@ -159,5 +160,7 @@ Rectangle {
             }
         }
     }
+
+
 
 }

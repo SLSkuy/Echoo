@@ -213,7 +213,9 @@ FrameLessWindow {
 
                         Connections {
                             target: EchooClient
-                            function onReceivedFriendResponse(addfriend1, select) {
+                            property var addfriend1: null
+                            property bool result: friendPage.friendnotification.select
+                            function onReceivedFriendResponse(addfriend1, result) {
                                 var messages = EchooClient.GetMessageList(addfriend1.account)
                                 console.log(addfriend1.account)
                                 messagePage.messagelistModel.append({picture1: "",name1: addfriend1.nickname, lastMessage1: messages[messages.length-1].content, time1: messages[messages.length-1].timestamp,

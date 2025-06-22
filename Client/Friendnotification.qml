@@ -9,6 +9,7 @@ FrameLessWindow {
     property alias friendlistmodelnotification: listModel
     property alias friendnotification: chatwidget
     property bool select: false
+    signal selectStatusChanged(bool selected)
 
     id:chatwidget
     visible: true
@@ -99,7 +100,8 @@ FrameLessWindow {
                             id: accepet
                             text:"同意"
                             onClicked: {
-                                select = true
+                                select = true;
+                                selectStatusChanged(select); // 发射信号
                                 // console.log(friendaccount)
                                 EchooClient.AddFriendResponse(friendaccount.text,select);
                                 enabled = false
