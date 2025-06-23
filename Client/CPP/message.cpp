@@ -95,6 +95,10 @@ Message* Message::FromJson(const QByteArray &jsonData)
 
 bool Message::LoadImage()
 {
+    if (m_content.startsWith("file:///")) {
+        m_content = QUrl(m_content).toLocalFile();
+    }
+
     QFile file(m_content);
     if (!file.open(QIODevice::ReadOnly)) {
         Logger::Error("Can't open image: " + m_content);

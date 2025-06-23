@@ -161,6 +161,7 @@ FrameLessWindow {
                             for (var i = 0; i < messageList.length; i++) {
                                 // 示例处理
                                 messageModel.append({
+                                    picture:"",
                                     message: messageList[i].content,
                                     isMe: !(messageList[i].sender.account === account)})
                                 }
@@ -236,9 +237,9 @@ FrameLessWindow {
                                     title: "Select an Image"
                                     nameFilters: ["Image files (*.png *.jpg *.jpeg)"] // 过滤图片文件
                                     onAccepted: {
-                                        let filePath = fileDialog.selectedFile;
+                                        var filePath = fileDialog.selectedFile.toString();
                                         EchooClient.sendImage(account,filePath);
-                                        messageModel.append({ sender: "我", picture:filePath, isMe: true })
+                                        messageModel.append({ picture:filePath, isMe: true })
                                     }
                                 }
                             }
