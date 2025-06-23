@@ -36,7 +36,7 @@ Communicator::~Communicator()
     response["account"] = _netizen->GetAccount();
     response["online"] = false;
     response["ip"] = _netizen->GetIpAddress();
-    response["avatar"] = _netizen->GetAvatar();
+    response["avatar"] = _netizen->getAvatar();
     response["sign"] = _netizen->GetSign();
     BroadcastPresence(response);
 
@@ -182,7 +182,7 @@ void Communicator::OnlineProcess(QJsonObject &obj)
             Netizen *user = db->GetNetizen(account);
             user->SetOnline(true);
             user->SetIpAddress(ip);
-            user->UpdateAvatar(avatar);
+            user->updateAvatar(avatar);
             user->SetSign(sign);
 
             ConnectProcess(account, ip);
@@ -196,7 +196,7 @@ void Communicator::OnlineProcess(QJsonObject &obj)
         Netizen *newUser = new Netizen(nickName, account, NULL, nullptr);
         newUser->SetIpAddress(ip);
         newUser->SetOnline(true);
-        newUser->UpdateAvatar(avatar);
+        newUser->updateAvatar(avatar);
         db->AddNetizen(newUser);
 
         ConnectProcess(account, ip);
@@ -248,7 +248,7 @@ void Communicator::ConnectProcess(const QString &account, const QString &ip)
     response["account"] = _netizen->GetAccount();
     response["online"] = true;
     response["ip"] = _netizen->GetIpAddress();
-    response["avatar"] = _netizen->GetAvatar();
+    response["avatar"] = _netizen->getAvatar();
     response["sign"] = _netizen->GetSign();
     BroadcastPresence(response);
 }

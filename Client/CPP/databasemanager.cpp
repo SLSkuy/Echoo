@@ -34,7 +34,7 @@ DatabaseManager::DatabaseManager()
     Message *message3 = new Message(newUser, newUser2, "12345", QDateTime::currentDateTime());
     Message *message4 = new Message(newUser, newUser3, "12345", QDateTime::currentDateTime());
 
-    newUser->SetAvatar("/root/Code/Qt/Echoo/Client/resources/LoginImage.png");
+    newUser->setAvatar("/root/Code/Qt/Echoo/Client/resources/LoginImage.png");
 
     // 添加历史消息
     QString account = newUser2->GetAccount();

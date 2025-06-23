@@ -203,7 +203,7 @@ QVariantList Netizen::getGroups()
     return list;
 };
 
-void Netizen::SetAvatar(const QString &filePath)
+void Netizen::setAvatar(const QString &filePath)
 {
     QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly)) {

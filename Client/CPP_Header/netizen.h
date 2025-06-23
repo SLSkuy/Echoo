@@ -17,6 +17,7 @@ class Netizen : public QObject
     Q_PROPERTY(bool online READ IsOnline NOTIFY onlineChanged)
     Q_PROPERTY(QString ipAddress READ GetIpAddress WRITE SetIpAddress NOTIFY ipChanged)
     Q_PROPERTY(QString sign READ GetSign WRITE SetSign NOTIFY signChanged FINAL)
+    Q_PROPERTY(QString avatar READ getAvatar WRITE updateAvatar NOTIFY avatarChanged FINAL)
 public:
     explicit Netizen(QObject *parent = nullptr);
     Netizen(const QString &nickName, const QString &account, const QString &password, QObject *parent = nullptr);
@@ -45,9 +46,9 @@ public:
         }
     }
     // 头像
-    void SetAvatar(const QString &filePath);
-    void UpdateAvatar(const QString &base64Form) { m_avatar = base64Form; }
-    QString GetAvatar() { return m_avatar; };
+    void setAvatar(const QString &filePath);
+    void updateAvatar(const QString &base64Form) { m_avatar = base64Form; }
+    QString getAvatar() { return m_avatar; };
 
     // 账号功能
     Q_INVOKABLE QVariantList getFriends();
@@ -84,6 +85,7 @@ signals:
     void onlineChanged();
     void ipChanged();
     void signChanged();
+    void avatarChanged();
 
 private:
     QString m_nickName;

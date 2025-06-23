@@ -292,6 +292,6 @@ FrameLessWindow {
         }
     }
     Component.onCompleted: {
-        var user=EchooClient.GetThisInfo();
+        var user=EchooClient.getThisInfo();
     }
 }

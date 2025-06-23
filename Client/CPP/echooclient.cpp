@@ -90,7 +90,7 @@ void EchooClient::sendImage(const QString &receiverAccount, const QString &imgPa
 
 void EchooClient::setAvatar(const QString &filePath)
 {
-    _user->SetAvatar(filePath);
+    _user->setAvatar(filePath);
 }
 
 Netizen *EchooClient::getNetizen(const QString &account)
