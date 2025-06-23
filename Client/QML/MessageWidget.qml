@@ -29,6 +29,7 @@ ListView {
                 anchors.margins: 10
                 wrapMode: Text.Wrap
                 color: "black"
+                visible: message !== ""
             }
 
         Label {
@@ -54,6 +55,7 @@ ListView {
             anchors.left: isMe ? undefined : parent.left
             // source: "qrc:/resources/LoginImage.png"
             source: picture
+            visible: picture !== ""
         }
     }
 }
