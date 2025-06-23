@@ -3,6 +3,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Window
 import QtQuick.Dialogs
+import "../listmodels.js" as GlobalModels
 
 FrameLessWindow {
     property alias topBar: topbar
@@ -104,10 +105,10 @@ FrameLessWindow {
                                 break;
                             }
                         }
-                        // removeFriend();
-                        // EchooClient.removeFriendRequest(account.text)
-                        // EchooClient.removeFriend(account.text)
-
+                        // removeFriend
+                        // EchooClient.RemoveFriendRequested(account)
+                        EchooClient.removeFriend(account)
+                        // removeFriendRequested(account);
                         chatwidget.close();
                         }
 
@@ -241,8 +242,10 @@ FrameLessWindow {
                                     nameFilters: ["Image files (*.png *.jpg *.jpeg)"] // 过滤图片文件
                                     onAccepted: {
                                         var filePath = fileDialog.selectedFile.toString();
+                                        EchooClient.triggerImage(account,filePath);
                                         EchooClient.sendImage(account,filePath);
                                         messageModel.append({ picture:filePath, isMe: true })
+
 
                                     }
                                 }
@@ -299,9 +302,16 @@ FrameLessWindow {
     Connections {
         target: EchooClient
         function onMessageReceived(msg) {
-            messageModel.append({message: msg.content,picture: msg.content,isMe: !(msg.sender.account === account)})
+            messageModel.append({message: msg.content,isMe: !(msg.sender.account === account)})
+            console.log("message")
+        }
+        function onImgReceived(msgg){
+            messageModel.append({picture: msgg.GetImageData(),isMe: !(msgg.sender.account === account)})
+            console.log("image")
         }
     }
+
+    // signal removeFriendRequested(string account)
     // function removeFriend(){
     //       for (var j = 0; j < friendstotal.friendlistmodel.count; j++) {
     //           var item1 = friendstotal.friendlistmodel.get(j);

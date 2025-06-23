@@ -28,7 +28,7 @@ public:
     QObject *GetReceiver() { return m_receiver; }
     QString GetMessageTime() { return m_timestamp.toString(); }
     bool LoadImage();
-    QString GetImageData() const { return m_imageData.toBase64(); }
+    Q_INVOKABLE QString GetImageData() const { return m_imageData.toBase64(); }
     Netizen *GetSender()  { return m_sender; }
     void setSender(Netizen *sender) { m_sender = sender; }
 

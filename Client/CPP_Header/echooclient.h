@@ -22,6 +22,7 @@ public:
     Q_INVOKABLE void addFriendRequest(const QString &account);
     Q_INVOKABLE void addFriendResponse(const QString &account, const bool result);
     Q_INVOKABLE void removeFriend(const QString &account);
+
     Q_INVOKABLE void setAvatar(const QString &filePath); // 设置头像
     Q_INVOKABLE QVariantList getNetizenList();
     Q_INVOKABLE Netizen *getNetizen(const QString &account);
@@ -55,6 +56,7 @@ signals:
     void receivedFriendResponse(Netizen *newFriend, const bool result);
     void acceptFriendRequestn(Netizen *);                //发送同意信号，添加好友到好友列表
     void acceptFriendRequestnm(Netizen *, QVariantList); //发送同意信号，添加好友到消息列表
+    void removeFriendssignals(const QString &account);
 
 private:
     Netizen *_user;
