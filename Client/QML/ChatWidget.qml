@@ -145,7 +145,7 @@ FrameLessWindow {
                     MessageWidget{
                         id: messageListView
                         anchors.fill: parent
-                        myNickname:EchooClient.getThisInfo().nickname;
+                        myNickname: EchooClient.getThisInfo().nickname;
                         receiverName:receiver;
                         model: ListModel {
                             id: messageModel

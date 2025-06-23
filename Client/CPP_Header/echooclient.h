@@ -22,6 +22,7 @@ public:
     Q_INVOKABLE void addFriendRequest(const QString &account);
     Q_INVOKABLE void addFriendResponse(const QString &account, const bool result);
     Q_INVOKABLE void removeFriend(const QString &account);
+    Q_INVOKABLE void setAvatar(const QString &filePath); // 设置头像
     Q_INVOKABLE QVariantList getNetizenList();
     Q_INVOKABLE QVariantList getMessageList(const QString &account);
     Q_INVOKABLE Netizen *getThisInfo() { return _user; };
@@ -35,17 +36,20 @@ public:
     {
         emit triggerGroupMessage(groupAccount, content);
     }
+    Q_INVOKABLE void sendImage(const QString &receiverAccount, const QString &imgPath);
 
 signals:
     // 消息发送信号
     void triggerMessage(QString receiverAccount, QString content);
     void triggerGroupMessage(QString groupAccount, QString content);
+    void triggerImage(QString receiverAccount, QString imgPath);
     // 账号处理信号
     void loginSuccess(bool result);
     void registerSuccess(bool result);
     // 消息接收信号
     void messageReceived(Message *msg);
     void groupMessageReceived(Group *group, Message *msg);
+    void imgReceived(Message *msg);
     void receivedFriendRequest(Netizen *);
     void receivedFriendResponse(Netizen *, const bool result);
 

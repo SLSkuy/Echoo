@@ -12,8 +12,9 @@ class Message : public QObject
     Q_PROPERTY(QString timestamp READ GetMessageTime NOTIFY timestampChanged)
     Q_PROPERTY(Netizen* sender READ GetSender NOTIFY senderChanged FINAL)
     Q_PROPERTY(QObject* receiver READ GetReceiver NOTIFY receiverChanged)
+    Q_PROPERTY(QString imageData READ GetImageData NOTIFY imageDataChanged)
 public:
-    enum MessageType { Text, Command };
+    enum MessageType { Text, Command, Image };
 
     explicit Message(QObject *parent = nullptr);
     Message(Netizen *sender,
@@ -26,6 +27,8 @@ public:
     QString GetMessage() { return m_content; }
     QObject *GetReceiver() { return m_receiver; }
     QString GetMessageTime() { return m_timestamp.toString(); }
+    bool LoadImage();
+    QString GetImageData() const { return m_imageData.toBase64(); }
     Netizen *GetSender()  { return m_sender; }
     void setSender(Netizen *sender) { m_sender = sender; }
 
@@ -38,11 +41,13 @@ signals:
     void timestampChanged();
     void receiverChanged();
     void senderChanged();
+    void imageDataChanged();
 
 private:
     Netizen *m_sender = nullptr;
     QObject *m_receiver = nullptr; // 可以是Netizen或Group
     QString m_content;
     QDateTime m_timestamp;
+    QByteArray m_imageData = NULL; // 若传输图片时启用
     MessageType m_messageType = Text;
 };

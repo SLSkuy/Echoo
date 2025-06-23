@@ -23,8 +23,6 @@ Rectangle {
             unreadCount: unreadCount1
             isGroup: _isGroup
             messageid: account1
-            focus: true
-            enabled: true
         }
     }
 
