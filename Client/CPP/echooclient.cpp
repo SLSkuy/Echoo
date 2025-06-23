@@ -92,3 +92,8 @@ void EchooClient::setAvatar(const QString &filePath)
 {
     _user->SetAvatar(filePath);
 }
+
+Netizen *EchooClient::getNetizen(const QString &account)
+{
+    return DatabaseManager::instance()->GetNetizen(account);
+}

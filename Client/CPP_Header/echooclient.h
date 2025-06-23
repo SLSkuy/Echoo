@@ -24,6 +24,7 @@ public:
     Q_INVOKABLE void removeFriend(const QString &account);
     Q_INVOKABLE void setAvatar(const QString &filePath); // 设置头像
     Q_INVOKABLE QVariantList getNetizenList();
+    Q_INVOKABLE Netizen *getNetizen(const QString &account);
     Q_INVOKABLE QVariantList getMessageList(const QString &account);
     Q_INVOKABLE Netizen *getThisInfo() { return _user; };
 
