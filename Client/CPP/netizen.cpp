@@ -42,6 +42,7 @@ bool Netizen::LoginDetection(const QString &password)
         obj["online"] = true;
         obj["ip"] = GetIpAddress();
         obj["avatar"] = m_avatar;
+        obj["sign"] = m_sign;
         _cmc->BroadcastPresence(obj);
         return true;
     }

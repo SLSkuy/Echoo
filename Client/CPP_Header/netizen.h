@@ -12,10 +12,11 @@ class Message;
 class Netizen : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QString nickname READ GetNickname NOTIFY nicknameChanged)
+    Q_PROPERTY(QString nickname READ GetNickname WRITE SetNickname NOTIFY nicknameChanged)
     Q_PROPERTY(QString account READ GetAccount CONSTANT)
     Q_PROPERTY(bool online READ IsOnline NOTIFY onlineChanged)
     Q_PROPERTY(QString ipAddress READ GetIpAddress WRITE SetIpAddress NOTIFY ipChanged)
+    Q_PROPERTY(QString sign READ GetSign WRITE SetSign NOTIFY signChanged FINAL)
 public:
     explicit Netizen(QObject *parent = nullptr);
     Netizen(const QString &nickName, const QString &account, const QString &password, QObject *parent = nullptr);
@@ -23,11 +24,26 @@ public:
 
     // 用户属性获取，用户数据库信息存储
     QString GetNickname()  { return m_nickName; }
+    void SetNickname(QString nickname)
+    {
+        if (nickname != m_nickName) {
+            m_nickName = nickname;
+            emit nicknameChanged();
+        }
+    }
     QString GetAccount()  { return m_account; }
     QString GetIpAddress()  { return m_ip; }
     void SetIpAddress(QString ip) { m_ip=ip; }
     void SetOnline(bool result) { m_isOnline=result; }
     bool IsOnline() const { return m_isOnline; }
+    QString GetSign() { return m_sign; }
+    void SetSign(QString sign)
+    {
+        if (sign != m_sign) {
+            m_sign = sign;
+            emit signChanged();
+        }
+    }
     // 头像
     void SetAvatar(const QString &filePath);
     void UpdateAvatar(const QString &base64Form) { m_avatar = base64Form; }
@@ -67,6 +83,7 @@ signals:
     void nicknameChanged();
     void onlineChanged();
     void ipChanged();
+    void signChanged();
 
 private:
     QString m_nickName;
@@ -74,6 +91,7 @@ private:
     QString m_password;
     bool m_isOnline;
     QString m_avatar; // 使用base64存储的头像信息
+    QString m_sign;
 
     QMap<QString, Netizen *> m_friends;
     QMap<QString, Group *> m_groups;
