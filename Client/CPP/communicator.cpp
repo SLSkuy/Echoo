@@ -37,6 +37,7 @@ Communicator::~Communicator()
     response["online"] = false;
     response["ip"] = _netizen->GetIpAddress();
     response["avatar"] = _netizen->GetAvatar();
+    response["sign"] = _netizen->GetSign();
     BroadcastPresence(response);
 
     _udpSocket->deleteLater();
@@ -171,15 +172,18 @@ void Communicator::OnlineProcess(QJsonObject &obj)
     QString account = obj["account"].toString();
     QString ip = obj["ip"].toString();
     QString avatar = obj["avatar"].toString();
+    QString sign = obj["sign"].toString();
     // 检测当前设备本地数据库是否存在广播者信息
     DatabaseManager *db = DatabaseManager::instance();
     if (db->Contains(account)) {
         // 存在该用户
         if (!db->GetNetizen(account)->IsOnline()) {
             // 检测用户是否在线，若为否则标志为在线，并告诉对方自己也在线
-            db->GetNetizen(account)->SetOnline(true);
-            db->GetNetizen(account)->SetIpAddress(ip);
-            db->GetNetizen(account)->UpdateAvatar(avatar);
+            Netizen *user = db->GetNetizen(account);
+            user->SetOnline(true);
+            user->SetIpAddress(ip);
+            user->UpdateAvatar(avatar);
+            user->SetSign(sign);
 
             ConnectProcess(account, ip);
 
@@ -245,6 +249,7 @@ void Communicator::ConnectProcess(const QString &account, const QString &ip)
     response["online"] = true;
     response["ip"] = _netizen->GetIpAddress();
     response["avatar"] = _netizen->GetAvatar();
+    response["sign"] = _netizen->GetSign();
     BroadcastPresence(response);
 }
 
