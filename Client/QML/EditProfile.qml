@@ -5,6 +5,7 @@ import QtQuick.Window
 import QtQuick.Dialogs
 
 FrameLessWindow {
+
     property alias editprofile: _editprofile
     property alias image: _image
     width: 400
@@ -41,7 +42,7 @@ FrameLessWindow {
                 height: 80
                 anchors.topMargin: 20
                 anchors.centerIn: parent
-                source:"qrc:/resources/LoginImage.png"
+                // source:"qrc:/resources/LoginImage.png"
             }
 
             FileDialog {
@@ -50,7 +51,9 @@ FrameLessWindow {
                 nameFilters: ["Image files (*.png *.jpg *.jpeg)"] // 过滤图片文件
                 onAccepted: {
                     let filePath = fileDialog.selectedFile;
-                    _image.source = filePath
+                    _image.source = filePath;
+                    EchooClient.setAvatar(filePath);
+
                 }
             }
 
@@ -292,6 +295,10 @@ FrameLessWindow {
         }
     }
     Component.onCompleted: {
-        var user=EchooClient.GetThisInfo();
+        var user=EchooClient.getThisInfo();
+        _image.source = user.GetAvatar();
+        // if(!filePath){
+        //     user.setAvatar();
+        // }
     }
 }
