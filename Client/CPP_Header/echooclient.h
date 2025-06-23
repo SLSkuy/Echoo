@@ -53,6 +53,7 @@ signals:
     void imgReceived(Message *msg);
     void receivedFriendRequest(Netizen *newFriend);
     void receivedFriendResponse(Netizen *newFriend, const bool result);
+    void acceptFriendRequest(Netizen *, Message *);
 
 private:
     Netizen *_user;

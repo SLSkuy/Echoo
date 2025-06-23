@@ -14,7 +14,7 @@ Rectangle{
         id: friends_Item
         anchors.fill: parent
         model: listModel
-        // model: GlobalModels.models.friendlistModel
+        // model: GlobalModels.friendlistModel
         implicitHeight: parent.height
         spacing:5
 
@@ -69,6 +69,13 @@ Rectangle{
            }
 
        }
+    Connections {
+           target: EchooClient
+           function onAcceptFriendRequest(netizen,message) {
+               console.log("show??????????")
+                    GlobalModels.addFriend(netizen)
+               }
+           }
 
+       }
 
-}

@@ -39,10 +39,18 @@ Rectangle {
         // 初始化好友消息列表
         Component.onCompleted: {
             GlobalModels.messagelistModelinit(msgListModel);
-             GlobalModels.messagelistModel = msgListModel;
+            GlobalModels.messagelistModel = msgListModel;
 
             console.log("[DEBUG] 全局模型 === 本地模型？",
                 GlobalModels.messagelistModel === msgListModel);
+
+            console.log("内存地址验证：",
+                   "全局模型:", GlobalModels.messagelistModel,
+                   "本地模型:", msgListModel,
+                   "是否相同:", GlobalModels.messagelistModel === msgListModel);
+
+               // 防止被其他代码篡改
+            GlobalModels.messagelistModel.objectName = "LOCKED_MODEL";
 
             var netizen = EchooClient.getThisInfo();
             var friends = netizen.getFriends()
