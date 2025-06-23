@@ -1,6 +1,7 @@
 //某个分组的好友
 
 import QtQuick
+import "../listmodels.js" as GlobalModels
 
 Rectangle{
     property alias friendItem : friends_Item
@@ -42,21 +43,16 @@ Rectangle{
 
     ListModel {
         id: listModel
-        ListElement {
-            headPortrait: ""
-            name: ""
-            s1:0
-            account:""
-        }
+
     }
 
     Component.onCompleted: {
-        listModel.clear();
+        GlobalModels.friendlistModelinit(listModel);
+        // GlobalModels.clearfriendModel(listModel);
         var netizen = EchooClient.getThisInfo();
         var friends = netizen.getFriends()
         for (var i = 0; i < friends.length; i++) {
-
-                listModel.append({headPortrait:"", name: friends[i].nickname, s1: 0, account: friends[i].account})
+                GlobalModels.addFriend(friends[i])
             }
     }
 

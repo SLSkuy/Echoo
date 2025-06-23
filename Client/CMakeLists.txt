@@ -18,6 +18,7 @@ qt_add_qml_module(appEchoo-Client
         SOURCES CPP/communicator.cpp CPP/databasemanager.cpp CPP/echooclient.cpp CPP/group.cpp CPP/logger.cpp CPP/main.cpp CPP/message.cpp CPP/netizen.cpp
         SOURCES CPP_Header/communicator.h CPP_Header/databasemanager.h CPP_Header/echooclient.h CPP_Header/group.h CPP_Header/logger.h CPP_Header/message.h CPP_Header/netizen.h
         QML_FILES QML/Addfriend.qml QML/ChatWidget.qml QML/EditProfile.qml QML/EditTitle.qml QML/EmojiPopup.qml QML/FrameLessWindow.qml QML/FriendItem.qml QML/Friendlist.qml QML/Friendnotification.qml QML/Friendpersonpage.qml QML/Friends.qml QML/Friendtotal.qml QML/LoginForm.qml QML/MainpagetitleBar.qml QML/Maintotal.qml QML/MessageItem.qml QML/Messagetotal.qml QML/MessageWidget.qml QML/PersonPage.qml QML/RegForm.qml QML/StartWindow.qml QML/TitleBar.qml QML/ToolBars.qml QML/TopBar.qml
+        QML_FILES listmodels.js
 )
 
 source_group("QML Files\\Account Window" FILES

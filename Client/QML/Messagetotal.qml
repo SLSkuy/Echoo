@@ -2,6 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
+import "../listmodels.js" as GlobalModels
+
 Rectangle {
     property alias messagetotal: _messagetotal
     property alias messagelistModel: msgListModel
@@ -28,26 +30,32 @@ Rectangle {
         }
     }
 
-    ListModel {
+    ListModel{
         id: msgListModel
+    }
+
+    // ListModel {
+    //     id: msgListModel
         // 初始化好友消息列表
         Component.onCompleted: {
+            GlobalModels.messagelistModelinit(msgListModel);
             var netizen = EchooClient.getThisInfo();
             var friends = netizen.getFriends()
             for (var i = 0; i < friends.length; i++) {
                 var messages = EchooClient.getMessageList(friends[i].account);
-                msgListModel.append({
-                    picture:"",
-                    name: friends[i].nickname,
-                    lastMessage: messages[messages.length - 1].content,
-                    time: messages[messages.length - 1].timestamp,
-                    unreadCount: 0,
-                    _isGroup:0,
-                    account: friends[i].account
-                });
+                // msgListModel.append({
+                //     picture:"",
+                //     name: friends[i].nickname,
+                //     lastMessage: messages[messages.length - 1].content,
+                //     time: messages[messages.length - 1].timestamp,
+                //     unreadCount: 0,
+                //     _isGroup:0,
+                //     account: friends[i].account
+                // });
+                GlobalModels.addMessagelist(friends[i],messages)
             }
         }
-    }
+    // }
 
     Connections {
            target: EchooClient
@@ -56,8 +64,7 @@ Rectangle {
                if(result){
                    var messages = EchooClient.getMessageList(user.account)
                    console.log("添加的好友： "+user.account)
-                   msgListModel.append({picture: "",name: user.nickname, lastMessage: messages[messages.length-1].content, time: messages[messages.length-1].timestamp,
-                                                           unreadCount: 0,_isGroup: 0, account: user.account})
+                   GlobalModels.addMessagelist(user,messages)
                }
            }
 

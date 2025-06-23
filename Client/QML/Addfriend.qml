@@ -3,8 +3,10 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 FrameLessWindow {
+    // property alias addButton: addButton
     id:addFriend
     width: 455
+    property bool isfriend: false
 
     ColumnLayout{
         anchors.fill: parent
@@ -156,10 +158,12 @@ FrameLessWindow {
                         }
 
                         Button{
+                            id: addButton
                             Layout.bottomMargin: 40
                             Layout.alignment: Qt.AlignRight
                             Layout.preferredHeight:20
-                            text:"加好友"
+                            enabled: isfriend ? false : true
+                            text:isfriend ? "已是好友" : "加好友"
                             onClicked: {
                                 enabled = false
                                 EchooClient.addFriendRequest(account.text)
@@ -178,13 +182,17 @@ FrameLessWindow {
     function searchnetizen() {
         listModel.clear()
         var netizens = EchooClient.getNetizenList()
-
         for(var i = 0; i < netizens.length; i++){
             if(netizens[i].account === search.text){
-                // console.log(netizens[i].nickname)
-                listModel.append({source:"", name: netizens[i].nickname, account: netizens[i].account})
+                listModel.append({source:netizens[i].avatar, name: netizens[i].nickname, account: netizens[i].account})
             }
         }
+        var myself = EchooClient.getThisInfo();
+        var friends = myself.getFriends()
+        for (var j = 0; j < friends.length; j++) {
+                if(search.text === friends[j].account)
+                    isfriend = true
+            }
     }
 
     Component.onCompleted: searchnetizen()

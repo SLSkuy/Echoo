@@ -4,13 +4,13 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Window
+import "../listmodels.js" as GlobalModels
 
 FrameLessWindow {
     property alias friendlistmodelnotification: listModel
     property alias friendnotification: f_notification
     property bool select: false
     signal selectStatusChanged(bool selected)
-    property var user: null
 
     id:f_notification
     visible: true
@@ -196,10 +196,10 @@ FrameLessWindow {
 
                                 if(select){
                                     console.log(select)
-                                    var message = EchooClient.getMessageList(user.account)
-                                    friendlistmodel.append({headPortrait: "",name: user.nickname, account: user.account});
-                                    messagelistModel.append({picture: "",name: user.nickname, lastMessage: message[message.length-1].content, time: message[message.length-1].timestamp,
-                                                                unreadCount: 0,_isGroup: 0, account: user.account})
+                                    var netizen = EchooClient.getNetizen(friendaccount.text)
+                                    var message = EchooClient.getMessageList(netizen.account)
+                                    GlobalModels.addFriend(netizen)
+                                    GlobalModels.addMessagelist(netizen, message)
                                 }
                             }
                         }
@@ -227,11 +227,8 @@ FrameLessWindow {
     Connections {
         target: EchooClient
         function onReceivedFriendRequest(addfriendnotification) {
-             user = addfriendnotification
             console.log("aaa")
-            listModel.append({image1:"", name1:addfriendnotification.nickname, aaction1: "请求添加你为好友", account1:addfriendnotification.account})
-
-
+            listModel.append({image1:addfriendnotification.avatar, name1:addfriendnotification.nickname, aaction1: "请求添加你为好友", account1:addfriendnotification.account})
         }
     }
 
