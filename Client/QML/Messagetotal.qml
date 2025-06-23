@@ -48,4 +48,18 @@ Rectangle {
             }
         }
     }
+
+    Connections {
+           target: EchooClient
+           function onReceivedFriendResponse(user, result) {
+               console.log("result： ")
+               if(result){
+                   var messages = EchooClient.getMessageList(user.account)
+                   console.log("添加的好友： "+user.account)
+                   msgListModel.append({picture: "",name: user.nickname, lastMessage: messages[messages.length-1].content, time: messages[messages.length-1].timestamp,
+                                                           unreadCount: 0,_isGroup: 0, account: user.account})
+               }
+           }
+
+       }
 }

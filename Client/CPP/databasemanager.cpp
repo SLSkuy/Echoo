@@ -30,15 +30,16 @@ DatabaseManager::DatabaseManager()
     AddNetizen(newUser3);
 
     Message *message1 = new Message(newUser, newUser2, "123", QDateTime::currentDateTime());
-    Message *message2 = new Message(newUser, newUser2, "1234", QDateTime::currentDateTime());
+    Message *message2 = new Message(newUser2, newUser, "1234", QDateTime::currentDateTime());
     Message *message3 = new Message(newUser, newUser2, "12345", QDateTime::currentDateTime());
     Message *message4 = new Message(newUser, newUser3, "12345", QDateTime::currentDateTime());
 
     // 添加历史消息
     QString account = newUser2->GetAccount();
+    QString account3 = newUser->GetAccount();
     QString account2 = newUser3->GetAccount();
+    AddMessage(account3, message2);
     AddMessage(account, message1);
-    AddMessage(account, message2);
     AddMessage(account, message3);
     AddMessage(account2, message4);
 

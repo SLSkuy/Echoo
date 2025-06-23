@@ -4,7 +4,7 @@ import QtQuick.Layouts
 
 FrameLessWindow{
     property alias usernameFriend:_username
-    property alias sexFriend:_sex
+    // property alias sexFriend:_sex
     property alias signatureFriend:qm_nr
     property alias regionFriend:szd_nr
     property alias headPortraitFriend:tx
@@ -103,7 +103,7 @@ FrameLessWindow{
                     background: Rectangle {
                         color: "transparent"  // 设置背景颜色为透明
                         border.color: "transparent"  // 设置边框颜色为透明
-                        border.width: 2  // 设置边框宽度（可选，透明边框时宽度不影响视觉效果）
+                        border.width: 2
                     }
                     contentItem: Text {
                         text: parent.text
@@ -128,7 +128,8 @@ FrameLessWindow{
                 Image {
                     id: tx
                     anchors.fill:parent
-                    source: "qrc:/resources/LoginImage.png"
+                    source: friendheadPortrait.source
+                    //TODO
                 }
             }
             ColumnLayout{
@@ -138,11 +139,11 @@ FrameLessWindow{
                         id:_username
                         text:name.text
                     }
-                    Text{
-                        id:_sex
-                        text: "\u2640"
-                        color:"pink"
-                    }
+                    // Text{
+                    //     id:_sex
+                    //     text: "\u2640"
+                    //     color:"pink"
+                    // }
                 }
                 Text{
                     id:echoo_id

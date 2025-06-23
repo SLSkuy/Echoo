@@ -56,10 +56,21 @@ Rectangle{
         var friends = netizen.getFriends()
         for (var i = 0; i < friends.length; i++) {
 
-                listModel.append({name: friends[i].nickname, s1: 0, account: friends[i].account})
+                listModel.append({headPortrait:"", name: friends[i].nickname, s1: 0, account: friends[i].account})
             }
-        // console.log(friends)
     }
+
+    Connections {
+           target: EchooClient
+           function onReceivedFriendResponse(user, result) {
+               if(result){
+                   var messages = EchooClient.getMessageList(user.account)
+                   console.log("添加的好友： "+user.account)
+                   listModel.append({headPortrait: "",name: user.nickname, account: user.account})
+               }
+           }
+
+       }
 
 
 }
