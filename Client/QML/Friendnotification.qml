@@ -201,11 +201,6 @@ FrameLessWindow {
                                     var netizen = EchooClient.getNetizen(friendaccount.text)
                                     var message = EchooClient.getMessageList(netizen.account)
                                     EchooClient.acceptFriendRequest(netizen,message)
-
-                                    GlobalModels.addFriend(netizen)
-
-                                    GlobalModels.addMessagelist(netizen, message)
-
                                 }
                             }
                         }

@@ -71,4 +71,11 @@ Rectangle {
            }
 
        }
+
+    Connections {
+           target: EchooClient
+           function onAcceptFriendRequest(netizen,message) {
+                    GlobalModels.addMessagelist(netizen, message)
+               }
+           }
 }
