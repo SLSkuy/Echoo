@@ -8,6 +8,7 @@ FrameLessWindow {
     property alias topBar: topbar
     property string receiver
     property string account
+    property alias chatwidget: chatwidget
     id:chatwidget
     visible: true
     width: 800
@@ -242,6 +243,7 @@ FrameLessWindow {
                                         var filePath = fileDialog.selectedFile.toString();
                                         EchooClient.sendImage(account,filePath);
                                         messageModel.append({ picture:filePath, isMe: true })
+
                                     }
                                 }
                             }
@@ -297,7 +299,7 @@ FrameLessWindow {
     Connections {
         target: EchooClient
         function onMessageReceived(msg) {
-            messageModel.append({message: msg.content,isMe: !(msg.sender.account === account)})
+            messageModel.append({message: msg.content,picture: msg.content,isMe: !(msg.sender.account === account)})
         }
     }
     // function removeFriend(){

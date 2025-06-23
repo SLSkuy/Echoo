@@ -72,7 +72,7 @@ Rectangle{
        }
     Connections {
            target: EchooClient
-           function onAcceptFriendRequest(netizen) {
+           function onAcceptFriendRequestn(netizen) {
                     GlobalModels.addFriend(netizen)
                }
            }

@@ -12,7 +12,6 @@ FrameLessWindow {
     property bool select: false
     signal selectStatusChanged(bool selected)
 
-    property var friendsModel: friendstotal.friendlistmodel
 
     id:f_notification
     visible: true
