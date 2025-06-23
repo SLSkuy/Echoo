@@ -1,7 +1,12 @@
 
 
-var friendlistModel;
+// var friendlistModel;
 var messagelistModel;
+
+var friendlistModel = Qt.createQmlObject(`
+    import QtQuick 2.15
+    ListModel {}
+`, Qt.application);
 
 
 function friendlistModelinit(listmodel){

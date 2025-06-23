@@ -13,8 +13,13 @@ Rectangle{
     ListView {
         id: friends_Item
         anchors.fill: parent
+<<<<<<< HEAD
         model: listModel
         // model: GlobalModels.friendlistModel
+=======
+        // model: listModel
+        model: GlobalModels.friendlistModel
+>>>>>>> 4a934803e048bfc87adcc1463a9e4fb96df07f84
         implicitHeight: parent.height
         spacing:5
 
@@ -43,14 +48,14 @@ Rectangle{
 
     }
 
-    ListModel {
-        id: listModel
+    // ListModel {
+    //     id: listModel
 
-    }
+    // }
 
     Component.onCompleted: {
-        GlobalModels.friendlistModelinit(listModel);
-        GlobalModels.clearfriendModel(listModel);
+        // GlobalModels.friendlistModelinit(listModel);
+        // GlobalModels.clearfriendModel(listModel);
         var netizen = EchooClient.getThisInfo();
         var friends = netizen.getFriends()
         for (var i = 0; i < friends.length; i++) {
