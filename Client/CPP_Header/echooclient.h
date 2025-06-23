@@ -50,8 +50,8 @@ signals:
     void messageReceived(Message *msg);
     void groupMessageReceived(Group *group, Message *msg);
     void imgReceived(Message *msg);
-    void receivedFriendRequest(Netizen *);
-    void receivedFriendResponse(Netizen *, const bool result);
+    void receivedFriendRequest(Netizen *newFriend);
+    void receivedFriendResponse(Netizen *newFriend, const bool result);
 
 private:
     Netizen *_user;
