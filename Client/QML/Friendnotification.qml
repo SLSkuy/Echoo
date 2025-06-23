@@ -220,10 +220,12 @@ FrameLessWindow {
         function onReceivedFriendRequest(addfriendnotification) {
             console.log("aaa")
             listModel.append({image1:"", name1:addfriendnotification.nickname, aaction1: "请求添加你为好友", account1:addfriendnotification.account})
+
             if(select){
-                friendlistmodel.append({headPortrait: addfriendnotification.GetAvatar(),name: addfriendnotification.nickname, account: addfriendnotification.account});
-                messagelistModel.append({picture: "",name: user.nickname, lastMessage: messages[messages.length-1].content, time: messages[messages.length-1].timestamp,
-                                                        unreadCount: 0,_isGroup: 0, account: user.account})
+                var message = EchooClient.getMessageList(addfriendnotification.account)
+                friendlistmodel.append({headPortrait: "",name: addfriendnotification.nickname, account: addfriendnotification.account});
+                messagelistModel.append({picture: "",name: addfriendnotification.nickname, lastMessage: message[message.length-1].content, time: message[message.length-1].timestamp,
+                                                        unreadCount: 0,_isGroup: 0, account: addfriendnotification.account})
             }
         }
     }
