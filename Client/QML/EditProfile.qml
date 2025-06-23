@@ -309,7 +309,7 @@ FrameLessWindow {
         target: EchooClient
         function onNicknameChanged() {
             console.log("setnewnickname")
-            // listModel.append({image1:addfriendnotification.avatar, name1:addfriendnotification.nickname, aaction1: "请求添加你为好友", account1:addfriendnotification.account})
+            // chatwidget.
         }
     }
 }
