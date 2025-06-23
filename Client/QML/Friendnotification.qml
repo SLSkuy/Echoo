@@ -12,6 +12,8 @@ FrameLessWindow {
     property bool select: false
     signal selectStatusChanged(bool selected)
 
+    property var friendsModel: friendstotal.friendlistmodel
+
     id:f_notification
     visible: true
     width: 500
@@ -198,17 +200,14 @@ FrameLessWindow {
                                     console.log(select)
                                     var netizen = EchooClient.getNetizen(friendaccount.text)
                                     var message = EchooClient.getMessageList(netizen.account)
+                                    // GlobalModels.friendlistModelinit(friendsModel);
                                     GlobalModels.addFriend(netizen)
-                                    // GlobalModels.addMessagelist(netizen, message)
-                                    GlobalModels.messagelistModel.append({
-                                                picture: netizen.avatar,
-                                                name: netizen.nickname,
-                                                lastMessage: message[messages.length-1].content,
-                                                time: message[messages.length-1].timestamp,
-                                                unreadCount: 0,
-                                                _isGroup: 0,
-                                                account: netizen.account
-                                            });
+                                    // GlobalModels.friendsModel.append({
+                                    //                 headPortrait: netizen.avatar,
+                                    //                 name: netizen.nickname,
+                                    //                 account: netizen.account
+                                    //             });
+                                    GlobalModels.addMessagelist(netizen, message)
                                 }
                             }
                         }
