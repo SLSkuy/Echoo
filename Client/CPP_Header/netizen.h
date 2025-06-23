@@ -28,6 +28,10 @@ public:
     void SetIpAddress(QString ip) { m_ip=ip; }
     void SetOnline(bool result) { m_isOnline=result; }
     bool IsOnline() const { return m_isOnline; }
+    // 头像
+    void SetAvatar(const QString &filePath);
+    void UpdateAvatar(const QString &base64Form) { m_avatar = base64Form; }
+    QString GetAvatar() { return m_avatar; };
 
     // 账号功能
     Q_INVOKABLE QVariantList getFriends();
@@ -46,6 +50,7 @@ public:
     // 消息功能
     void SendMessage(const QString &receiverAccount, const QString &content);
     void SendGroupMessage(const QString &groupAccount, const QString &content);
+    void SendImage(const QString &receiverAccount, const QString &imgPath);
 
     // 群组功能
     bool CreateGroup(const QString &name, const QString &owner);
@@ -56,6 +61,7 @@ public:
 signals:
     void messageReceived(Message *msg);
     void groupMessageReceived(Group *group, Message *msg);
+    void imgReceived(Message *msg);
     void receivedFriendRequest(Netizen *newFriend);
     void receivedFriendResponse(Netizen *newFriend, const bool result);
     void nicknameChanged();
@@ -67,6 +73,7 @@ private:
     QString m_account;
     QString m_password;
     bool m_isOnline;
+    QString m_avatar; // 使用base64存储的头像信息
 
     QMap<QString, Netizen *> m_friends;
     QMap<QString, Group *> m_groups;

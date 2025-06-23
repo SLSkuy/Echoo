@@ -1,4 +1,5 @@
 #include <QJsonObject>
+#include <QFile>
 
 #include "databasemanager.h"
 #include "message.h"
@@ -38,15 +39,19 @@ QByteArray Message::ToJson()
         return NULL;
     }
 
-    // 设置消息类型
-    if (m_messageType == Command) {
-        json["message_type"] = "command";
-    }
-
     // 设置键值对
     json["sender_account"] = m_sender->GetAccount();
     json["content"] = m_content;
     json["timestamp"] = m_timestamp.toString();
+
+    // 设置消息类型
+    if (m_messageType == Command) {
+        json["message_type"] = "command";
+    } else if (m_messageType == Image) {
+        json["message_type"] = "image";
+        json["content"] = GetImageData();
+        // 使用base64进行图片传递
+    }
 
     QJsonDocument doc(json);
     return doc.toJson(QJsonDocument::Compact);
@@ -80,7 +85,32 @@ Message* Message::FromJson(const QByteArray &jsonData)
     } else if (messageType == "command") {
         receiver = DatabaseManager::instance()->GetNetizen(receiverAccount);
         return new Message(sender, receiver, content, timestamp, Command);
+    } else if (messageType == "image") {
+        receiver = DatabaseManager::instance()->GetNetizen(receiverAccount);
+        return new Message(sender, receiver, content, timestamp, Image);
     }
 
     return new Message(sender, receiver, content, timestamp);
+}
+
+bool Message::LoadImage()
+{
+    QFile file(m_content);
+    if (!file.open(QIODevice::ReadOnly)) {
+        Logger::Error("Can't open image: " + m_content);
+        return false;
+    }
+
+    m_imageData = file.readAll();
+    file.close();
+
+    if (m_imageData.isEmpty()) {
+        Logger::Error("Empty image: " + m_content);
+        return false;
+    }
+
+    // 将内容设置为图片转换为base64格式的数据
+    m_content = GetImageData();
+
+    return true;
 }

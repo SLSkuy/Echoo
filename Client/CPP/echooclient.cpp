@@ -21,9 +21,11 @@ void EchooClient::login(const QString &account, const QString &password)
             // 连接消息发送
             connect(this, &EchooClient::triggerMessage, _user, &Netizen::SendMessage);
             connect(this, &EchooClient::triggerGroupMessage, _user, &Netizen::SendGroupMessage);
+            connect(this, &EchooClient::triggerImage, _user, &Netizen::SendImage);
             // 连接消息接收
             connect(_user, &Netizen::messageReceived, this, &EchooClient::messageReceived);
             connect(_user, &Netizen::groupMessageReceived, this, &EchooClient::groupMessageReceived);
+            connect(_user, &Netizen::imgReceived, this, &EchooClient::imgReceived);
             connect(_user, &Netizen::receivedFriendRequest, this, &EchooClient::receivedFriendRequest);
             connect(_user, &Netizen::receivedFriendResponse, this, &EchooClient::receivedFriendResponse);
         }
@@ -79,4 +81,14 @@ void EchooClient::addFriendResponse(const QString &account, const bool result)
 void EchooClient::removeFriend(const QString &account)
 {
     _user->RemoveFriendRequest(account);
+}
+
+void EchooClient::sendImage(const QString &receiverAccount, const QString &imgPath)
+{
+    _user->SendImage(receiverAccount, imgPath);
+}
+
+void EchooClient::setAvatar(const QString &filePath)
+{
+    _user->SetAvatar(filePath);
 }

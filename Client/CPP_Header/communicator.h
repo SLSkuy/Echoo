@@ -29,6 +29,7 @@ signals:
     void messageReceived(Message *message);
     void groupMessageReceived(Group *group, Message *message);
     void commandReceived(Message *message);
+    void imageReceived(Message *message);
 
 private:
     Netizen *_netizen;

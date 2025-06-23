@@ -25,8 +25,6 @@ Rectangle {
             unreadCount: model.unreadCount
             isGroup: model._isGroup
             messageid: model.account
-            focus: true
-            enabled: true
         }
     }
 

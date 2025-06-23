@@ -36,6 +36,7 @@ Communicator::~Communicator()
     response["account"] = _netizen->GetAccount();
     response["online"] = false;
     response["ip"] = _netizen->GetIpAddress();
+    response["avatar"] = _netizen->GetAvatar();
     BroadcastPresence(response);
 
     _udpSocket->deleteLater();
@@ -133,6 +134,8 @@ void Communicator::OnlineMessageProcess(QTcpSocket *socket)
                 emit groupMessageReceived(group, message);
             } else if (type == "command") {
                 emit commandReceived(message);
+            } else if (type == "image") {
+                emit imageReceived(message);
             }
         }
     }
@@ -167,6 +170,7 @@ void Communicator::OnlineProcess(QJsonObject &obj)
     QString nickName = obj["nickName"].toString();
     QString account = obj["account"].toString();
     QString ip = obj["ip"].toString();
+    QString avatar = obj["avatar"].toString();
     // 检测当前设备本地数据库是否存在广播者信息
     DatabaseManager *db = DatabaseManager::instance();
     if (db->Contains(account)) {
@@ -175,6 +179,7 @@ void Communicator::OnlineProcess(QJsonObject &obj)
             // 检测用户是否在线，若为否则标志为在线，并告诉对方自己也在线
             db->GetNetizen(account)->SetOnline(true);
             db->GetNetizen(account)->SetIpAddress(ip);
+            db->GetNetizen(account)->UpdateAvatar(avatar);
 
             ConnectProcess(account, ip);
 
@@ -187,6 +192,7 @@ void Communicator::OnlineProcess(QJsonObject &obj)
         Netizen *newUser = new Netizen(nickName, account, NULL, nullptr);
         newUser->SetIpAddress(ip);
         newUser->SetOnline(true);
+        newUser->UpdateAvatar(avatar);
         db->AddNetizen(newUser);
 
         ConnectProcess(account, ip);
@@ -238,6 +244,7 @@ void Communicator::ConnectProcess(const QString &account, const QString &ip)
     response["account"] = _netizen->GetAccount();
     response["online"] = true;
     response["ip"] = _netizen->GetIpAddress();
+    response["avatar"] = _netizen->GetAvatar();
     BroadcastPresence(response);
 }
 
@@ -250,8 +257,8 @@ void Communicator::SendMessage(Message *message)
         QByteArray packet;
         QDataStream stream(&packet, QIODevice::WriteOnly);
         stream.setByteOrder(QDataStream::BigEndian);
-        stream << (quint32) json.size(); // 写入4字节长度前缀
-        packet.append(json);             // 接着写入数据
+        stream << (quint32) json.size(); // 写入4字节长度前缀，解决粘包问题
+        packet.append(json);
 
         socket->write(packet);
         DatabaseManager::instance()->AddMessage(receiverAccount, message);

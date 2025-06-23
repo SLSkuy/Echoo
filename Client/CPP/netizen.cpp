@@ -1,4 +1,5 @@
 #include <QJsonObject>
+#include <QFile>
 
 #include "databasemanager.h"
 #include "communicator.h"
@@ -28,6 +29,7 @@ bool Netizen::LoginDetection(const QString &password)
         m_ip = _cmc->GetLocalIP();
         connect(_cmc, &Communicator::messageReceived, this, &Netizen::messageReceived);
         connect(_cmc, &Communicator::groupMessageReceived, this, &Netizen::groupMessageReceived);
+        connect(_cmc, &Communicator::imageReceived, this, &Netizen::imgReceived);
         connect(_cmc, &Communicator::commandReceived, this, &Netizen::CommandProcess);
 
         // 设置在线信息
@@ -39,6 +41,7 @@ bool Netizen::LoginDetection(const QString &password)
         obj["account"] = m_account;
         obj["online"] = true;
         obj["ip"] = GetIpAddress();
+        obj["avatar"] = m_avatar;
         _cmc->BroadcastPresence(obj);
         return true;
     }
@@ -74,6 +77,26 @@ void Netizen::SendGroupMessage(const QString &groupAccount, const QString &conte
     }
 }
 
+void Netizen::SendImage(const QString &receiverAccount, const QString &imgPath)
+{
+    // 从数据库获取发送对象指针
+    Netizen *receiver = DatabaseManager::instance()->GetNetizen(receiverAccount);
+    QDateTime curTime = QDateTime::currentDateTime();
+
+    if (HasFriend(receiverAccount)) {
+        // 创建消息实体对象,接受者设置为空用于委托检测是否有对应好友
+        Message *msg = new Message(this, receiver, imgPath, curTime, Message::Image);
+        if (!msg->LoadImage()) {
+            // 图片加载失败
+            Logger::Error("Fail to load image.");
+            return;
+        }
+        _cmc->SendMessage(msg);
+    } else {
+        Logger::Warning(receiverAccount + " is not " + m_account + "'s friend.");
+    }
+}
+
 bool Netizen::AddFriend(Netizen *user)
 {
     if (HasFriend(user->GetAccount())) {
@@ -103,7 +126,7 @@ void Netizen::CommandProcess(Message *msg)
     QString command = msg->GetMessage();
     if (command == "addFriend") {
         emit receivedFriendRequest(user);
-    } else if ( command == "acceptFriend") {
+    } else if (command == "acceptFriend") {
         // 确认接受则双向确认
         user->AddFriend(this);
         AddFriend(user);
@@ -178,3 +201,16 @@ QVariantList Netizen::getGroups()
     }
     return list;
 };
+
+void Netizen::SetAvatar(const QString &filePath)
+{
+    QFile file(filePath);
+    if (!file.open(QIODevice::ReadOnly)) {
+        Logger::Error("Can't open image: " + filePath);
+        return;
+    }
+
+    // 存储头像base64信息
+    m_avatar = file.readAll().toBase64();
+    file.close();
+}
