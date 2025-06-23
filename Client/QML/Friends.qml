@@ -7,12 +7,14 @@ Rectangle{
     property alias friendItem : friends_Item
     property alias friendlistmodel : listModel
     property alias friendstotal: _friendstotal
+
     id:_friendstotal
     visible: true
     ListView {
         id: friends_Item
         anchors.fill: parent
         model: listModel
+        // model: GlobalModels.models.friendlistModel
         implicitHeight: parent.height
         spacing:5
 
@@ -29,10 +31,10 @@ Rectangle{
                     if (Qt.LeftButton && Qt.ControlModifier) {
                         if (friendItem.isSelected) {
                             friendItem.isSelected = false;
-                            s1=0
+                            // s1=0
                         } else {
                             friendItem.isSelected = true;
-                            s1=1
+                            // s1=1
                         }
                     }
                 }
@@ -48,7 +50,7 @@ Rectangle{
 
     Component.onCompleted: {
         GlobalModels.friendlistModelinit(listModel);
-        // GlobalModels.clearfriendModel(listModel);
+        GlobalModels.clearfriendModel(listModel);
         var netizen = EchooClient.getThisInfo();
         var friends = netizen.getFriends()
         for (var i = 0; i < friends.length; i++) {
@@ -62,7 +64,7 @@ Rectangle{
                if(result){
                    var messages = EchooClient.getMessageList(user.account)
                    console.log("添加的好友： "+user.account)
-                   listModel.append({headPortrait: "",name: user.nickname, account: user.account})
+                   GlobalModels.addFriend(user)
                }
            }
 

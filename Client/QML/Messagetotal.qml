@@ -39,28 +39,22 @@ Rectangle {
         // 初始化好友消息列表
         Component.onCompleted: {
             GlobalModels.messagelistModelinit(msgListModel);
+             GlobalModels.messagelistModel = msgListModel;
+
+            console.log("[DEBUG] 全局模型 === 本地模型？",
+                GlobalModels.messagelistModel === msgListModel);
+
             var netizen = EchooClient.getThisInfo();
             var friends = netizen.getFriends()
             for (var i = 0; i < friends.length; i++) {
                 var messages = EchooClient.getMessageList(friends[i].account);
-                // msgListModel.append({
-                //     picture:"",
-                //     name: friends[i].nickname,
-                //     lastMessage: messages[messages.length - 1].content,
-                //     time: messages[messages.length - 1].timestamp,
-                //     unreadCount: 0,
-                //     _isGroup:0,
-                //     account: friends[i].account
-                // });
                 GlobalModels.addMessagelist(friends[i],messages)
             }
         }
-    // }
 
     Connections {
            target: EchooClient
            function onReceivedFriendResponse(user, result) {
-               console.log("result： ")
                if(result){
                    var messages = EchooClient.getMessageList(user.account)
                    console.log("添加的好友： "+user.account)

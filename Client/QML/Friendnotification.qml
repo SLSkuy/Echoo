@@ -199,7 +199,16 @@ FrameLessWindow {
                                     var netizen = EchooClient.getNetizen(friendaccount.text)
                                     var message = EchooClient.getMessageList(netizen.account)
                                     GlobalModels.addFriend(netizen)
-                                    GlobalModels.addMessagelist(netizen, message)
+                                    // GlobalModels.addMessagelist(netizen, message)
+                                    GlobalModels.messagelistModel.append({
+                                                picture: netizen.avatar,
+                                                name: netizen.nickname,
+                                                lastMessage: message[messages.length-1].content,
+                                                time: message[messages.length-1].timestamp,
+                                                unreadCount: 0,
+                                                _isGroup: 0,
+                                                account: netizen.account
+                                            });
                                 }
                             }
                         }

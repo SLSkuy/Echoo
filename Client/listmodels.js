@@ -57,6 +57,7 @@ Qt.include({
     friendlistModelinit: friendlistModelinit,
     messagelistModelinit: messagelistModelinit,
     friendlistModel: friendlistModel,
+               // models: models,
     messagelistModel, messagelistModel
 });
 
