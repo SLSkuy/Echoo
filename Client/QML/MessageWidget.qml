@@ -52,6 +52,8 @@ ListView {
             anchors.topMargin: 10
             anchors.right: isMe ? parent.right : undefined
             anchors.left: isMe ? undefined : parent.left
+            // source: "qrc:/resources/LoginImage.png"
+            source: picture
         }
     }
 }

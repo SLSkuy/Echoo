@@ -10,6 +10,7 @@ FrameLessWindow {
     property alias friendnotification: f_notification
     property bool select: false
     signal selectStatusChanged(bool selected)
+    property var user: null
 
     id:f_notification
     visible: true
@@ -192,6 +193,14 @@ FrameLessWindow {
                                 EchooClient.addFriendResponse(friendaccount.text,select);
                                 enabled = false
                                 reject.enabled = false
+
+                                if(select){
+                                    console.log(select)
+                                    var message = EchooClient.getMessageList(user.account)
+                                    friendlistmodel.append({headPortrait: "",name: user.nickname, account: user.account});
+                                    messagelistModel.append({picture: "",name: user.nickname, lastMessage: message[message.length-1].content, time: message[message.length-1].timestamp,
+                                                                unreadCount: 0,_isGroup: 0, account: user.account})
+                                }
                             }
                         }
                         Button{
@@ -218,15 +227,11 @@ FrameLessWindow {
     Connections {
         target: EchooClient
         function onReceivedFriendRequest(addfriendnotification) {
+             user = addfriendnotification
             console.log("aaa")
             listModel.append({image1:"", name1:addfriendnotification.nickname, aaction1: "请求添加你为好友", account1:addfriendnotification.account})
 
-            if(select){
-                var message = EchooClient.getMessageList(addfriendnotification.account)
-                friendlistmodel.append({headPortrait: "",name: addfriendnotification.nickname, account: addfriendnotification.account});
-                messagelistModel.append({picture: "",name: addfriendnotification.nickname, lastMessage: message[message.length-1].content, time: message[message.length-1].timestamp,
-                                                        unreadCount: 0,_isGroup: 0, account: addfriendnotification.account})
-            }
+
         }
     }
 

@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Window
+import QtQuick.Dialogs
 
 FrameLessWindow {
     property alias topBar: topbar
@@ -93,7 +94,7 @@ FrameLessWindow {
                     onClicked: {
                         // 实现更多的逻辑
                         console.log("删除好友");
-                        // EchooClient.RemoveFriend(account)
+
                         // console.log(messageItem[1].account1)i < mainWindow.messageListModel.count
                         for (var i = 0; i < messagetotal.messagelistModel.count; i++) {
                             var item = messagetotal.messagelistModel.get(i);
@@ -103,7 +104,7 @@ FrameLessWindow {
                             }
                         }
                         // removeFriend();
-
+                        EchooClient.removeFriend(account)
                         chatwidget.close();
                         }
 
@@ -146,15 +147,17 @@ FrameLessWindow {
                     MessageWidget{
                         id: messageListView
                         anchors.fill: parent
-                        myNickname: EchooClient.getThisInfo().nickname;
+                        // myNickname: EchooClient.getThisInfo().nickname;
                         receiverName:receiver;
                         model: ListModel {
                             id: messageModel
                         }
 
                         Component.onCompleted: {
-                        // 传入账号获取消息列表
+                        // 传入账号获取消息列表和昵称
                             var messageList = EchooClient.getMessageList(account);
+                            var user = EchooClient.getThisInfo();
+                            myNickname=user.nickname;
                             for (var i = 0; i < messageList.length; i++) {
                                 // 示例处理
                                 messageModel.append({
@@ -215,6 +218,7 @@ FrameLessWindow {
                                 onClicked: {
                                     // 实现更多的逻辑
                                     console.log("更多");
+                                    fileDialog.open()
                                 }
                                 background: Rectangle {
                                     color: "transparent"  // 设置背景颜色为透明
@@ -226,6 +230,16 @@ FrameLessWindow {
                                     color: parent.hovered ? "red" : "black"  // 悬停时文本变为蓝色
                                     horizontalAlignment: Text.AlignHCenter
                                     verticalAlignment: Text.AlignVCenter
+                                }
+                                FileDialog {
+                                    id: fileDialog
+                                    title: "Select an Image"
+                                    nameFilters: ["Image files (*.png *.jpg *.jpeg)"] // 过滤图片文件
+                                    onAccepted: {
+                                        let filePath = fileDialog.selectedFile;
+                                        EchooClient.sendImage(account,filePath);
+                                        messageModel.append({ sender: "我", picture:filePath, isMe: true })
+                                    }
                                 }
                             }
                         }
@@ -283,4 +297,15 @@ FrameLessWindow {
             messageModel.append({message: msg.content,isMe: !(msg.sender.account === account)})
         }
     }
+    // function removeFriend(){
+    //       for (var j = 0; j < friendstotal.friendlistmodel.count; j++) {
+    //           var item1 = friendstotal.friendlistmodel.get(j);
+    //           if (item1.account === chatwidget.account) {
+    //               friendstotal.friendlistmodel.remove(j);
+    //               console.log("delete")
+    //               break;
+    //           }
+    //       }
+    //       console.log("out")
+    //   }
 }

@@ -17,6 +17,7 @@ FrameLessWindow{
         var n=EchooClient.getThisInfo();
         _username.text=n.nickname
         account = n.account
+        // tx.source=n.GetAvatar()
     }
 
     ColumnLayout{
@@ -34,7 +35,7 @@ FrameLessWindow{
                 Image {
                     id: tx
                     anchors.fill:parent
-                    source: "qrc:/resources/LoginImage.png"
+                    // source: "qrc:/resources/LoginImage.png"
                 }
             }
             ColumnLayout{
