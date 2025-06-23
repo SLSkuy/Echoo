@@ -6,21 +6,16 @@ import QtQuick.Layouts
 
 Rectangle{
     id:root
-    // anchors.top: parent.top
     width: parent.width
-    // height: parent.height/15
     state: "hideState"
 
-    // property alias group : group
-    property alias text : text
+    property alias friendlist_text : text
     property alias more : more
-    // property alias friends : friends
 
     ColumnLayout{
-        // anchors.top: parent.top
         anchors.fill: parent
         RowLayout{
-            id:group
+            id:row
             Button{
                 id: more
                 background: Rectangle{
@@ -28,24 +23,20 @@ Rectangle{
                 }
 
                 text: root.state === "hideState" ? ">" : "^"
-                // text:">"
                 onClicked:
                 {
                     root.state = (root.state === "hideState") ? "showState" : "hideState"
-                    // flags: Qt.WindowStaysOnTopHint
                 }
             }
 
             Text{
+                //列表名 目前只有一个
                 id:text
-            //     text:"列表名"
             }
         }
 
         Friends{
             id:friends
-            // Layout.fillHeight: true
-            // Layout.fillHeight: true
             height: root.height
             width: root.width
         }

@@ -4,6 +4,7 @@ import QtQuick.Layouts
 import QtQuick.Window
 
 FrameLessWindow {
+    property alias topBar: topbar
     property string receiver
     property string account
     id:chatwidget
@@ -64,7 +65,7 @@ FrameLessWindow {
                     background: Rectangle {
                         color: "white"  // 设置背景颜色为白色
                         border.color: "white"  // 设置边框颜色为白色
-                        border.width: 2  // 设置边框宽度（可选，透明边框时宽度不影响视觉效果）
+                        border.width: 2
                     }
                     contentItem: Text {
                         text: parent.text
@@ -96,7 +97,7 @@ FrameLessWindow {
                         // console.log(messageItem[1].account1)i < mainWindow.messageListModel.count
                         for (var i = 0; i < messagetotal.messagelistModel.count; i++) {
                             var item = messagetotal.messagelistModel.get(i);
-                            if (item.account1 === chatwidget.account) {
+                            if (item.account === chatwidget.account) {
                                 messagetotal.messagelistModel.remove(i);
                                 break;
                             }
@@ -109,7 +110,7 @@ FrameLessWindow {
                     background: Rectangle {
                         color: "white"  // 设置背景颜色为白色
                         border.color: "white"  // 设置边框颜色为白色
-                        border.width: 2  // 设置边框宽度（可选，透明边框时宽度不影响视觉效果）
+                        border.width: 2
                     }
                     contentItem: Text {
                         text: parent.text
@@ -172,7 +173,7 @@ FrameLessWindow {
 
 
                     ToolBar{
-                        id:ll
+                        id:textfieldtoolbar
                         RowLayout {
                             anchors.fill: parent
                             spacing: 2
@@ -189,7 +190,7 @@ FrameLessWindow {
                                 background: Rectangle {
                                     color: "transparent"  // 设置背景颜色为透明
                                     border.color: "transparent"  // 设置边框颜色为透明
-                                    border.width: 2  // 设置边框宽度（可选，透明边框时宽度不影响视觉效果）
+                                    border.width: 2
                                 }
                                 contentItem: Text {
                                     text: parent.text
@@ -218,7 +219,7 @@ FrameLessWindow {
                                 background: Rectangle {
                                     color: "transparent"  // 设置背景颜色为透明
                                     border.color: "transparent"  // 设置边框颜色为透明
-                                    border.width: 2  // 设置边框宽度（可选，透明边框时宽度不影响视觉效果）
+                                    border.width: 2
                                 }
                                 contentItem: Text {
                                     text: parent.text
@@ -233,12 +234,9 @@ FrameLessWindow {
                     TextField {
                         id: messageInput
                         anchors.fill: parent
-                        anchors.top:ll.bottom
+                        anchors.top:textfieldtoolbar.bottom
                         anchors.topMargin: 30
                         anchors.bottom: parent.bottom
-                        // anchors.leftMargin: 10
-                        // anchors.rightMargin: 10
-                        // font.family: "Microsoft YaHei"
                         placeholderText: "输入消息..."
                         placeholderTextColor: "grey"
                         width:40

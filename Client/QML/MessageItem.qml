@@ -14,7 +14,6 @@ Rectangle {
     property bool isGroup: false
     property string messageid
 
-    // 检测鼠标是否悬停并改变颜色
     property bool hovered: false
     color: hovered ? "#E6E6E6" : "transparent"
 
@@ -127,6 +126,7 @@ Rectangle {
                             flags: Qt.Window | Qt.FramelessWindowHint, account:messageid, receiver:nickname
                         });
                     }
+                    chatWidget.topBar.toptext = messageItem.nickname
                 }
 
                 chatWidget.show();

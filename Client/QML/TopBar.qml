@@ -5,7 +5,7 @@ import QtQuick.Window
 
 //titlebar
 Rectangle {
-    property alias text11: widgettext.text
+    property alias toptext: widgettext.text
     property alias tcloseButton: closeButton
     property alias textSize: widgettext.font.pixelSize
     // property alias topBar: titleBar
@@ -44,7 +44,7 @@ Rectangle {
                 background: Rectangle {
                        color: "transparent"  // 设置背景颜色为透明
                        border.color: "transparent"  // 设置边框颜色为透明
-                       border.width: 2  // 设置边框宽度（可选，透明边框时宽度不影响视觉效果）
+                       border.width: 2
                    }
                 contentItem: Text {
                     text: parent.text
@@ -70,7 +70,7 @@ Rectangle {
                 background: Rectangle {
                        color: "transparent"  // 设置背景颜色为透明
                        border.color: "transparent"  // 设置边框颜色为透明
-                       border.width: 2  // 设置边框宽度（可选，透明边框时宽度不影响视觉效果）
+                       border.width: 2
                    }
                 contentItem: Text {
                     text: parent.text
@@ -90,7 +90,7 @@ Rectangle {
                 background: Rectangle {
                        color: "transparent"  // 设置背景颜色为透明
                        border.color: "transparent"  // 设置边框颜色为透明
-                       border.width: 2  // 设置边框宽度（可选，透明边框时宽度不影响视觉效果）
+                       border.width: 2
                    }
                 contentItem: Text {
                     text: parent.text

@@ -13,8 +13,6 @@ ListView {
 
     delegate: Rectangle {
         width: messageText.implicitWidth+60
-        // width: parent.width/2
-        // height: messageText.implicitHeight + 20
         height: Math.max(messageText.implicitHeight, imagemessage.height) + 10
         color: isMe ? myMessageColor : otherMessageColor
         radius: 5
@@ -36,6 +34,7 @@ ListView {
         Label {
             id: timeText
             text: isMe ? ( myNickname+ "  " +Qt.formatDateTime(new Date(), "hh:mm") ) : Qt.formatDateTime(new Date(), "hh:mm")+ "  " +receiverName
+            //TODO
             color: "gray"
             font.pixelSize: 10
             anchors.bottom: messageText.top

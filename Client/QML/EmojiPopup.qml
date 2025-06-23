@@ -11,7 +11,6 @@ Popup {
     y:-200
     modal: true
     focus: true
-    closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
 
     // 表情网格布局
     GridLayout {
@@ -20,7 +19,6 @@ Popup {
         rowSpacing: 5
         columnSpacing: 5
 
-        // 示例表情（可以替换为实际表情）
         Repeater {
             model: ["😊", "😂",  "😎", "🤔", "😴", "😇", "🤗", "😋", "🤩", "😘", "😍", "😘", "😚", "😙",  "😋", "😛", "😜"]
 
@@ -29,7 +27,7 @@ Popup {
                 width: 40
                 height: 40
                 onClicked: {
-                    emojiPopup.emojiSelected(modelData)  // 触发自定义信号
+                    emojiPopup.emojiSelected(modelData)  // 触发信号
                     emojiPopup.close()  // 关闭表情选择框
                 }
                 background: Rectangle {
@@ -47,6 +45,6 @@ Popup {
         }
     }
 
-    // 自定义信号：当表情被选中时触发
+    // 信号：当表情被选中时触发
     signal emojiSelected(string emoji)
 }

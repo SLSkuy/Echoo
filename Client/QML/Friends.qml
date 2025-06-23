@@ -3,43 +3,39 @@
 import QtQuick
 
 Rectangle{
-    property alias friendItem : friendItem
+    property alias friendItem : friends_Item
     property alias friendlistmodel : listModel
     property alias friendstotal: _friendstotal
     id:_friendstotal
     visible: true
     ListView {
-        id: friendItem
+        id: friends_Item
         anchors.fill: parent
         model: listModel
-        // implicitWidth: 1000
         implicitHeight: parent.height
         spacing:5
 
         delegate:
             FriendItem{
-                id:mm
+                id:friendItem
                 height: 40
                 width: notification.width
-                friendheadPortrait.source: headPortrait1
-                friendname.text: name1
-                friendpersonid: id1
+                friendheadPortrait.source: model.headPortrait
+                friendname.text: model.name
+                friendpersonid: model.account
 
                 friendTaphandler.onDoubleTapped: {
                     if (Qt.LeftButton && Qt.ControlModifier) {
-                        if (mm.isSelected) {
-                            mm.isSelected = false;
-                            console.log("000");
+                        if (friendItem.isSelected) {
+                            friendItem.isSelected = false;
                             s1=0
                         } else {
-                            mm.isSelected = true;
-                            console.log("11");
+                            friendItem.isSelected = true;
                             s1=1
                         }
                     }
                 }
 
-                // isSelected: s1
             }
 
     }
@@ -47,10 +43,10 @@ Rectangle{
     ListModel {
         id: listModel
         ListElement {
-            headPortrait1: ""
-            name1: ""
+            headPortrait: ""
+            name: ""
             s1:0
-            id1:""
+            account:""
         }
     }
 
@@ -60,7 +56,7 @@ Rectangle{
         var friends = netizen.getFriends()
         for (var i = 0; i < friends.length; i++) {
 
-                listModel.append({name1: friends[i].nickname, s1: 0, id1: friends[i].account})
+                listModel.append({name: friends[i].nickname, s1: 0, account: friends[i].account})
             }
         // console.log(friends)
     }

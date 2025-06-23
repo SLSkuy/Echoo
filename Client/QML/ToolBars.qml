@@ -26,7 +26,7 @@ import QtQuick.Window
         property alias email: email
         property alias manage: manage
         property alias message: message
-        property alias myself_tx: _myself
+        property alias myself_headPortrait: _myself
 
 
         ColumnLayout{

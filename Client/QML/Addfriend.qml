@@ -3,19 +3,104 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 FrameLessWindow {
-    id:chatwidget
+    id:addFriend
     width: 455
 
     ColumnLayout{
         anchors.fill: parent
 
-        TopBar {
-            id: topbarr
+        Rectangle {
+            id: titleBar
             Layout.preferredWidth: parent.height
+            height: 40
+            color: "transparent"  // 标题栏背景颜色
 
-            tcloseButton.onClicked: {
-                search.text = ""  // 清除搜索内容
-                chatwidget.close()
+            RowLayout {
+                anchors.fill: parent
+
+                // 窗口标题
+                Text {
+                    id:text
+                    text: "好友通知"
+                    color: "black"
+                    font.pixelSize: 14
+                    Layout.leftMargin: 10
+                    verticalAlignment: Text.AlignVCenter
+                }
+
+                Item {
+                    Layout.fillWidth: true  // 占位符，将按钮推到右侧
+                }
+
+                // 最小化按钮
+                Button {
+                    id: minimizeButton
+                    text: "—"
+
+                    width: 25
+                    Layout.preferredHeight: 20
+                    onClicked: addFriend.showMinimized()
+                    background: Rectangle {
+                        color: "transparent"  // 设置背景颜色为透明
+                        border.color: "transparent"  // 设置边框颜色为透明
+                        border.width: 2
+                    }
+                    contentItem: Text {
+                        text: parent.text
+                        color: parent.hovered ? "red" : "black"  // 悬停时文本变为红色
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                    }
+                }
+
+                // 最大化/还原按钮
+                Button {
+                    id: maximizeButton
+                    text: addFriend.visibility === Window.Maximized ? "r" : "+"
+                    width: 25
+                    Layout.preferredHeight: 20
+                    onClicked: {
+                        if (addFriend.visibility === Window.Maximized) {
+                            addFriend.showNormal()
+                        } else {
+                            addFriend.showMaximized()
+                        }
+                    }
+                    background: Rectangle {
+                        color: "transparent"
+                        border.color: "transparent"
+                        border.width: 2
+                    }
+                    contentItem: Text {
+                        text: parent.text
+                        color: parent.hovered ? "red" : "black"  // 悬停时文本变为红色
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                    }
+                }
+
+                // 关闭按钮
+                Button {
+                    id: closeButton
+                    text: "x"
+                    width: 25
+                    Layout.preferredHeight: 20
+                    onClicked: {
+                        search.text = ""  // 清除搜索内容
+                        addFriend.close()
+                    }
+                    background: Rectangle {
+                        color: "transparent"
+                        border.color: "transparent"
+                        border.width: 2
+                    }
+                    contentItem: Text {
+                        text: parent.text
+                        color: parent.hovered ? "red" : "black"  // 悬停时文本变为红色
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                    }
+                }
             }
         }
 
@@ -24,7 +109,6 @@ FrameLessWindow {
             Layout.preferredHeight: 30
             id: search
 
-            // text: ""
             placeholderText:"🔍 搜索      请输入完整的账号查找"
             placeholderTextColor: "gray"
             background:Rectangle{
@@ -47,11 +131,12 @@ FrameLessWindow {
 
                 delegate: Rectangle{
                     width:parent.width
-                    height: parent.height/listModel.count
+                    // height: parent.height/listModel.count
+                    height: 40
                     RowLayout{
                         anchors.fill: parent
                         Image{
-                            source: source1
+                            source: model.source
                             Layout.preferredWidth: 50
                             Layout.preferredHeight:50
                         }
@@ -62,12 +147,12 @@ FrameLessWindow {
                             Layout.leftMargin: 10
                             Layout.preferredHeight:parent.height
                             font.pixelSize: 18
-                            text: name1
+                            text: model.name
                         }
                         Text{
                             id: account
                             visible: false
-                            text:account1
+                            text:model.account
                         }
 
                         Button{
@@ -78,7 +163,6 @@ FrameLessWindow {
                             onClicked: {
                                 enabled = false
                                 EchooClient.addFriendRequest(account.text)
-                                // console.log(account.text)
                             }
                         }
                     }
@@ -98,7 +182,7 @@ FrameLessWindow {
         for(var i = 0; i < netizens.length; i++){
             if(netizens[i].account === search.text){
                 // console.log(netizens[i].nickname)
-                listModel.append({source1:"", name1: netizens[i].nickname, account1: netizens[i].account})
+                listModel.append({source:"", name: netizens[i].nickname, account: netizens[i].account})
             }
         }
     }

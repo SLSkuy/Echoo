@@ -61,14 +61,14 @@ Rectangle {
             delegate: Friendlist {
                 height: parent.height
                 width: notification.width
-                text.text: text1
+                friendlist_text.text: model.text
             }
         }
 
         ListModel {
             id: listModel
             ListElement {
-                text1: "我的好友"
+                text: "我的好友"
             }
         }
     }

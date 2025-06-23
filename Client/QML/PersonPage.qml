@@ -8,7 +8,7 @@ FrameLessWindow{
     property alias sex:_sex
     property alias signature:qm_nr
     property alias region:szd_nr
-    property alias headPortrait:tx
+    property alias userheadPortrait:tx
     property string account
     id:personpage
     width:400
@@ -30,7 +30,7 @@ FrameLessWindow{
                 height: 100
                 radius: width / 2  // 使圆角半径等于宽度的一半
                 color: "lightgrey"
-                //后面改
+                //TODO
                 Image {
                     id: tx
                     anchors.fill:parent
@@ -42,9 +42,6 @@ FrameLessWindow{
 
                     Text{
                         id:_username
-                        // text:"香菜ovo"+
-                        // text: startWindow.globalNicknametext
-                        // text:n.nickname
 
 
                     }
@@ -60,10 +57,7 @@ FrameLessWindow{
 
                     font.pixelSize: 20
                 }
-                Text{
-                    text:"🐷小猪也苦恼"
-                    font.pixelSize: 15
-                }
+
             }
         }
         RowLayout{

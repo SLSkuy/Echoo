@@ -22,7 +22,7 @@ FrameLessWindow {
         spacing: 10
 
         Rectangle {
-            id: tx
+            id: headPortrait
             width: 400
             height: 100
             Button{
@@ -32,7 +32,7 @@ FrameLessWindow {
                 anchors.centerIn: parent
 
                 onClicked:{
-                   fileDialog.open()
+                    fileDialog.open()
                 }
             }
             Image {
@@ -45,14 +45,14 @@ FrameLessWindow {
             }
 
             FileDialog {
-                    id: fileDialog
-                    title: "Select an Image"
-                    nameFilters: ["Image files (*.png *.jpg *.jpeg)"] // 过滤图片文件
-                    onAccepted: {
-                        let filePath = fileDialog.selectedFile;
-                        _image.source = filePath
-                    }
+                id: fileDialog
+                title: "Select an Image"
+                nameFilters: ["Image files (*.png *.jpg *.jpeg)"] // 过滤图片文件
+                onAccepted: {
+                    let filePath = fileDialog.selectedFile;
+                    _image.source = filePath
                 }
+            }
 
         }
 
@@ -173,12 +173,12 @@ FrameLessWindow {
             }
 
             ComboBox{
-                    id:genderCombo
-                    Layout.preferredWidth: 186
-                    model:["女","男"]
-                    currentIndex:0
-                    font.pixelSize: 16
-                }
+                id:genderCombo
+                Layout.preferredWidth: 186
+                model:["女","男"]
+                currentIndex:0
+                font.pixelSize: 16
+            }
             Item{
                 Layout.fillWidth: true
             }
@@ -212,16 +212,7 @@ FrameLessWindow {
                     color: "white"
                 }
                 Layout.preferredWidth: 186
-                onTextChanged: {
-                    // 实时更新字符计数（限制36字符）
-                    if (text.length > 80) {
-                        text = text.substring(0, 80) // 截断超长文本
-                    }
-                    rightCounter.text = `${text.length}/80`
-                }
-                Component.onCompleted: {
-                    rightCounter.text = "0/80" // 初始化计数
-                }
+
             }
             Item{
                 Layout.fillWidth: true
@@ -245,14 +236,14 @@ FrameLessWindow {
             }
 
             ComboBox{
-                    id:regionCombo
-                    Layout.preferredWidth: 186
-                    model:["中国重庆市","其他"]
-                    currentIndex:0
-                    font.pixelSize: 16
+                id:regionCombo
+                Layout.preferredWidth: 186
+                model:["中国重庆市","其他"]
+                currentIndex:0
+                font.pixelSize: 16
 
 
-                }
+            }
             Item{
                 Layout.fillWidth: true
             }
@@ -260,28 +251,30 @@ FrameLessWindow {
         RowLayout{
             Layout.alignment: Qt.AlignBottom | Qt.AlignRight
             Button{
-                id:bjzl
                 text:"确定"
                 width:150
                 Layout.alignment: Qt.AlignBottom | Qt.AlignLeft // 底部对齐，左对齐
                 Layout.margins: 10 // 边距
                 onClicked:{
                     if(nicknameField.text.length>0)
-                        startWindow.globalNicknametext=nicknameField.text
+                        usernametext=nicknameField.text
+
                     if(signatureField.text.length>0)
                         signature.text="            "+signatureField.text
+
                     if(genderCombo.currentText==="男"){
                         sex.text= "\u2642"
                         sex.color= "blue"
                     }
+
                     else if(genderCombo.currentText==="女"){
                         sex.text= "\u2640"
                         sex.color="pink"
                     }
                     region.text="        "+regionCombo.currentText
 
-                    headPortrait.source=_image.source
-                    myself_tx.source=_image.source
+                    userheadPortrait.source=_image.source
+                    myself_headPortrait.source=_image.source
                     _editprofile.close()
                 }
 
@@ -289,7 +282,6 @@ FrameLessWindow {
 
             }
             Button{
-                id:fsxx
                 text:"取消"
                 width:150
                 Layout.alignment: Qt.AlignBottom | Qt.AlignRight // 底部对齐，右对齐
@@ -298,5 +290,8 @@ FrameLessWindow {
 
             }
         }
+    }
+    Component.onCompleted: {
+        var user=EchooClient.GetThisInfo();
     }
 }

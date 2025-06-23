@@ -3,6 +3,8 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 Rectangle {
+    property alias messagetotal: _messagetotal
+    property alias messagelistModel: msgListModel
     id: _messagetotal
     anchors.fill: parent
 
@@ -16,13 +18,13 @@ Rectangle {
             id:item
             height:60
             width:parent.width
-            picture: picture1
-            nickname: name1
-            lastMessage: lastMessage1
-            time: time1
-            unreadCount: unreadCount1
-            isGroup: _isGroup
-            messageid: account1
+            picture: model.picture
+            nickname: model.name
+            lastMessage: model.lastMessage
+            time: model.time
+            unreadCount: model.unreadCount
+            isGroup: model._isGroup
+            messageid: model.account
             focus: true
             enabled: true
         }
@@ -37,13 +39,13 @@ Rectangle {
             for (var i = 0; i < friends.length; i++) {
                 var messages = EchooClient.getMessageList(friends[i].account);
                 msgListModel.append({
-                    picture1:"",
-                    name1: friends[i].nickname,
-                    lastMessage1: messages[messages.length - 1].content,
-                    time1: messages[messages.length - 1].timestamp,
-                    unreadCount1: 0,
+                    picture:"",
+                    name: friends[i].nickname,
+                    lastMessage: messages[messages.length - 1].content,
+                    time: messages[messages.length - 1].timestamp,
+                    unreadCount: 0,
                     _isGroup:0,
-                    account1: friends[i].account
+                    account: friends[i].account
                 });
             }
         }

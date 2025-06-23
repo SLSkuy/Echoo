@@ -6,8 +6,6 @@ import QtQuick.Layouts
 
 Rectangle {
     id:friend_single
-    // width: parent.width
-    // height: parent.height/6
 
     property bool isSelected: false  // 新增选中状态
     property bool hovered
@@ -33,7 +31,6 @@ Rectangle {
         id: row
         anchors.fill: parent
         spacing: 10
-        // anchors.leftMargin: 1
         Image{
             id:headPortrait
             Layout.preferredHeight: 38
@@ -61,8 +58,6 @@ Rectangle {
                     font.pixelSize: 10
                     color: "grey"
                     clip: true
-                    // anchors.bottomMargin: 5
-                    // anchors.left: headPortrait.right
                     visible: false
                 }
             }
