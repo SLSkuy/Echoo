@@ -31,7 +31,9 @@ public:
         if (nickname != m_nickName) {
             m_nickName = nickname;
             emit nicknameChanged();
+            qDebug() << "sendsingle";
         }
+        qDebug() << "sendsingle";
     }
     QString GetAccount()  { return m_account; }
     QString GetIpAddress()  { return m_ip; }

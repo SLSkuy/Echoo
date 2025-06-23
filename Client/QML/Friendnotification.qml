@@ -200,7 +200,8 @@ FrameLessWindow {
                                     console.log(select)
                                     var netizen = EchooClient.getNetizen(friendaccount.text)
                                     var message = EchooClient.getMessageList(netizen.account)
-                                    EchooClient.acceptFriendRequest(netizen,message)
+                                    EchooClient.acceptFriendRequestn(netizen)
+                                    EchooClient.acceptFriendRequestnm(netizen, message)
                                 }
                             }
                         }

@@ -53,7 +53,8 @@ signals:
     void imgReceived(Message *msg);
     void receivedFriendRequest(Netizen *newFriend);
     void receivedFriendResponse(Netizen *newFriend, const bool result);
-    void acceptFriendRequest(Netizen *, Message *);
+    void acceptFriendRequestn(Netizen *);             //发送同意信号，添加好友到好友列表
+    void acceptFriendRequestnm(Netizen *, Message *); //发送同意信号，添加好友到消息列表
 
 private:
     Netizen *_user;
