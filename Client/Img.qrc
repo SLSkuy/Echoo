@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
         <file>resources/LoginImage.png</file>
-        <file>ChatWidget.qml</file>
     </qresource>
 </RCC>

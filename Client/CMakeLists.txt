@@ -13,78 +13,56 @@ qt_add_executable(appEchoo-Client)
 qt_add_qml_module(appEchoo-Client
     URI Echoo-Client
     VERSION 1.0
-    QML_FILES
-    StartWindow.qml LoginForm.qml TitleBar.qml RegForm.qml ToolBars.qml
-    SOURCES
-        main.cpp echooclient.h echooclient.cpp
     RESOURCES
         Img.qrc
-        QML_FILES ChatWidget.qml
-        QML_FILES TopBar.qml
-        QML_FILES MainpagetitleBar.qml
-        QML_FILES FrameLessWindow.qml
-        QML_FILES Messagetotal.qml
-        QML_FILES MessageItem.qml
-        QML_FILES EmojiPopup.qml
-        QML_FILES PersonPage.qml
-        QML_FILES FriendItem.qml
-        QML_FILES Friendtotal.qml
-        QML_FILES Friendlist.qml
-        QML_FILES Friends.qml
-        QML_FILES Friendnotification.qml
-        QML_FILES EditTitle.qml
-        QML_FILES EditProfile.qml
-        QML_FILES Maintotal.qml
-        QML_FILES GroupItem.qml
-        QML_FILES Grouptotal.qml
-        QML_FILES Groupnotification.qml
-        QML_FILES SelectFriends.qml
-        QML_FILES SelectTitleBar.qml
-        QML_FILES Friendpersonpage.qml
-        QML_FILES GroupChat.qml
-        QML_FILES Addfriend.qml
-        SOURCES netizen.h netizen.cpp
-        SOURCES group.h group.cpp
-        SOURCES databasemanager.h databasemanager.cpp
-        SOURCES communicator.h communicator.cpp
-        SOURCES message.h message.cpp
-        SOURCES logger.h logger.cpp
-        QML_FILES MessageWidget.qml
-        # QML_FILES ../../../run/media/root/yun/111/Addfriend.qml
+        SOURCES CPP/communicator.cpp CPP/databasemanager.cpp CPP/echooclient.cpp CPP/group.cpp CPP/logger.cpp CPP/main.cpp CPP/message.cpp CPP/netizen.cpp
+        SOURCES CPP_Header/communicator.h CPP_Header/databasemanager.h CPP_Header/echooclient.h CPP_Header/group.h CPP_Header/logger.h CPP_Header/message.h CPP_Header/netizen.h
+        QML_FILES QML/Addfriend.qml QML/ChatWidget.qml QML/EditProfile.qml QML/EditTitle.qml QML/EmojiPopup.qml QML/FrameLessWindow.qml QML/FriendItem.qml QML/Friendlist.qml QML/Friendnotification.qml QML/Friendpersonpage.qml QML/Friends.qml QML/Friendtotal.qml QML/LoginForm.qml QML/MainpagetitleBar.qml QML/Maintotal.qml QML/MessageItem.qml QML/Messagetotal.qml QML/MessageWidget.qml QML/PersonPage.qml QML/RegForm.qml QML/StartWindow.qml QML/TitleBar.qml QML/ToolBars.qml QML/TopBar.qml
 )
 
-source_group("QML Files" FILES
-    StartWindow.qml LoginForm.qml TitleBar.qml RegForm.qml ToolBars.qml
-    ChatWidget.qml
-    TopBar.qml
-    MainpagetitleBar.qml
-    FrameLessWindow.qml
-    Messagetotal.qml
-    MessageItem.qml
-    EmojiPopup.qml
-    PersonPage.qml
-    FriendItem.qml
-    Friendtotal.qml
-    Friendlist.qml
-    Friends.qml
-    EditTitle.qml
-    EditProfile.qml
-    GroupItem.qml
-    Grouptotal.qml
-    Maintotal.qml
-    QML_FILES Groupnotification.qml
-    Addfriend.qml
-        QML_FILES GroupChat.qml
-        QML_FILES MessageWidget.qml
-        QML_FILES Groupnotification.qml
-        QML_FILES Friendnotification.qml
-        QML_FILES SelectFriends.qml
-        QML_FILES SelectTitleBar.qml
-        QML_FILES Friendpersonpage.qml
-        QML_FILES SingleMessage.qml
-
-
+source_group("QML Files\\Account Window" FILES
+    QML/LoginForm.qml
+    QML/RegForm.qml
+    QML/StartWindow.qml
 )
+
+source_group("QML Files\\Template" FILES
+    QML/FrameLessWindow.qml
+    QML/TitleBar.qml
+)
+
+source_group("QML Files\\MainWindow" FILES
+    QML/Maintotal.qml
+    QML/Friendtotal.qml
+    QML/Messagetotal.qml
+    QML/ToolBars.qml
+    QML/MainpagetitleBar.qml
+)
+
+source_group("QML Files\\ChatWidget" FILES
+    QML/ChatWidget.qml
+    QML/MessageItem.qml
+    QML/EmojiPopup.qml
+    QML/MessageWidget.qml
+    QML/TopBar.qml
+)
+
+source_group("QML Files\\FriendWidget" FILES
+    QML/Friendlist.qml
+    QML/Friends.qml
+    QML/FriendItem.qml
+    QML/Friendnotification.qml
+    QML/Friendpersonpage.qml
+    QML/Addfriend.qml
+)
+
+source_group("QML Files\\PersonPage" FILES
+    QML/PersonPage.qml
+    QML/EditProfile.qml
+    QML/EditTitle.qml
+)
+
+target_include_directories(appEchoo-Client PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/CPP_Header)
 
 target_compile_features(appEchoo-Client PRIVATE cxx_std_23)
 
