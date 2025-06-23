@@ -200,21 +200,12 @@ FrameLessWindow {
                                     console.log(select)
                                     var netizen = EchooClient.getNetizen(friendaccount.text)
                                     var message = EchooClient.getMessageList(netizen.account)
-<<<<<<< HEAD
                                     EchooClient.acceptFriendRequest(netizen,message)
-                                    // GlobalModels.addFriend(netizen)
 
-                                    // GlobalModels.addMessagelist(netizen, message)
-=======
-                                    // GlobalModels.friendlistModelinit(friendsModel);
                                     GlobalModels.addFriend(netizen)
-                                    // GlobalModels.friendsModel.append({
-                                    //                 headPortrait: netizen.avatar,
-                                    //                 name: netizen.nickname,
-                                    //                 account: netizen.account
-                                    //             });
+
                                     GlobalModels.addMessagelist(netizen, message)
->>>>>>> 4a934803e048bfc87adcc1463a9e4fb96df07f84
+
                                 }
                             }
                         }
