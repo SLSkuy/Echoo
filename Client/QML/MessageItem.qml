@@ -15,6 +15,7 @@ Rectangle {
     property string messageid
 
     property bool hovered: false
+    property alias receivername: messageItem.nickname
     color: hovered ? "#E6E6E6" : "transparent"
 
     RowLayout {

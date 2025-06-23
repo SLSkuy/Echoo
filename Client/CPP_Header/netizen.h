@@ -4,6 +4,7 @@
 #include <QDateTime>
 #include <QString>
 #include <QMap>
+#include <QDebug>
 
 class Group;
 class Communicator;
@@ -25,12 +26,14 @@ public:
 
     // 用户属性获取，用户数据库信息存储
     QString GetNickname()  { return m_nickName; }
-    void SetNickname(QString nickname)
+    Q_INVOKABLE void SetNickname(QString nickname)
     {
         if (nickname != m_nickName) {
             m_nickName = nickname;
             emit nicknameChanged();
+            qDebug() << "sendsingle";
         }
+        qDebug() << "sendsingle";
     }
     QString GetAccount()  { return m_account; }
     QString GetIpAddress()  { return m_ip; }
@@ -46,9 +49,9 @@ public:
         }
     }
     // 头像
-    void setAvatar(const QString &filePath);
-    void updateAvatar(const QString &base64Form) { m_avatar = base64Form; }
-    QString getAvatar() { return m_avatar; };
+    Q_INVOKABLE void setAvatar(const QString &filePath);
+    Q_INVOKABLE void updateAvatar(const QString &base64Form) { m_avatar = base64Form; }
+    Q_INVOKABLE QString getAvatar() { return m_avatar; };
 
     // 账号功能
     Q_INVOKABLE QVariantList getFriends();

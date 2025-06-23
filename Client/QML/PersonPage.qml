@@ -36,6 +36,7 @@ FrameLessWindow{
                     id: tx
                     anchors.fill:parent
                     // source: "qrc:/resources/LoginImage.png"
+                    source: "data:image/png;base64," + EchooClient.getThisInfo().avatar
                 }
             }
             ColumnLayout{

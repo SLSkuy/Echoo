@@ -8,6 +8,7 @@ FrameLessWindow {
 
     property alias editprofile: _editprofile
     property alias image: _image
+    property string newname: ""
     width: 400
     height: 400
     visible: true
@@ -52,7 +53,9 @@ FrameLessWindow {
                 onAccepted: {
                     let filePath = fileDialog.selectedFile;
                     _image.source = filePath;
-                    EchooClient.setAvatar(filePath);
+                    headPortraitPath:"data:image/png;base64," + filePath
+                    // EchooClient.setAvatar(headPortraitPath);
+                    // EchooClient.setAvatar(filePath);
 
                 }
             }
@@ -259,8 +262,12 @@ FrameLessWindow {
                 Layout.alignment: Qt.AlignBottom | Qt.AlignLeft // 底部对齐，左对齐
                 Layout.margins: 10 // 边距
                 onClicked:{
-                    if(nicknameField.text.length>0)
-                        usernametext=nicknameField.text
+                    if(nicknameField.text.length>0){
+                        usernametext=nicknameField.text;
+                        newname=nicknameField.text;
+                        var n=EchooClient.getThisInfo();
+                        n.SetNickname(newname);
+                    }
 
                     if(signatureField.text.length>0)
                         signature.text="            "+signatureField.text
@@ -296,6 +303,13 @@ FrameLessWindow {
     }
     Component.onCompleted: {
         var user=EchooClient.getThisInfo();
-        _image.source = user.avatar();
+        _image.source = user.GetAvatar();
+    }
+    Connections {
+        target: EchooClient
+        function onNicknameChanged() {
+            console.log("setnewnickname")
+            // listModel.append({image1:addfriendnotification.avatar, name1:addfriendnotification.nickname, aaction1: "请求添加你为好友", account1:addfriendnotification.account})
+        }
     }
 }

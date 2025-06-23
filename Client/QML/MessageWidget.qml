@@ -9,16 +9,19 @@ ListView {
     property color myMessageColor: "#dcf8c6"
     property color otherMessageColor: "lightblue"
     property string myNickname: ""
-    property string receiverName: ""
+    property string receiverName: receivername
+    // property alias picture: picture
 
     delegate: Rectangle {
-        width: messageText.implicitWidth+60
-        height: Math.max(messageText.implicitHeight, imagemessage.height) + 10
+        width: message === "" ? Math.max(messageText.implicitWidth + 10, imagemessage.width + 10): imagemessage.width + 20
+        height: message === "" ? Math.max(messageText.implicitHeight + 10, imagemessage.height + 10):implicitHeight+40
         color: isMe ? myMessageColor : otherMessageColor
         radius: 5
 
         anchors.right: isMe ? parent.right : undefined
         anchors.left: isMe ? undefined : parent.left
+        anchors.rightMargin : isMe ? 10 : undefined
+        anchors.leftMargin : isMe ? undefined : 10
 
         Text {
                 id: messageText
@@ -26,15 +29,15 @@ ListView {
                 anchors.top: parent.top
                 anchors.left: parent.left
                 anchors.right: parent.right
+                anchors.bottom: parent.bottom
                 anchors.margins: 10
                 wrapMode: Text.Wrap
                 color: "black"
-                visible: message !== ""
             }
 
         Label {
             id: timeText
-            text: isMe ? ( myNickname+ "  " +Qt.formatDateTime(new Date(), "hh:mm") ) : Qt.formatDateTime(new Date(), "hh:mm")+ "  " +receiverName
+            text: isMe ? ( myNickname+ "  " +Qt.formatDateTime(new Date(), "hh:mm") ) : Qt.formatDateTime(new Date(), "hh:mm")+ "  " +receivername
             //TODO
             color: "gray"
             font.pixelSize: 10
@@ -47,15 +50,17 @@ ListView {
 
         Image {
             id: imagemessage
-            height:40
-            width: 40
+            height:150
+            width: 200
             anchors.top:parent.top
-            anchors.topMargin: 10
+            // anchors.topMargin: 10
+            fillMode: Image.PreserveAspectFit
             anchors.right: isMe ? parent.right : undefined
             anchors.left: isMe ? undefined : parent.left
             // source: "qrc:/resources/LoginImage.png"
             source: picture
             visible: picture !== ""
+
         }
     }
 }

@@ -104,7 +104,9 @@ FrameLessWindow {
                             }
                         }
                         // removeFriend();
-                        EchooClient.removeFriend(account)
+                        // EchooClient.removeFriendRequest(account.text)
+                        // EchooClient.removeFriend(account.text)
+
                         chatwidget.close();
                         }
 
