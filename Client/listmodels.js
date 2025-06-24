@@ -26,7 +26,7 @@ function addFriend(user) {
 }
 
 function addMessagelist(user, message) {
-    console.log("avatar prefix:", user.avatar?.slice(0, 50));
+    // console.log("avatar prefix:", user.avatar?.slice(0, 50));
     // 添加到好友列表
     let avatar = user.avatar;
     let lastMsg = message.length > 0 ? message[message.length-1] : {content: "", timestamp: ""};

@@ -10,10 +10,7 @@ EchooClient::EchooClient(QObject *parent) : QObject(parent)
     DatabaseManager::instance()->loadFromDatabase();
 }
 
-EchooClient::~EchooClient()
-{
-    DatabaseManager::instance()->destroy();
-}
+EchooClient::~EchooClient(){}
 
 void EchooClient::login(const QString &account, const QString &password)
 {

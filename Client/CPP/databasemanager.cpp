@@ -29,10 +29,10 @@ DatabaseManager::~DatabaseManager()
     saveToDatabase();
     // 释放内存
     for (auto it = m_groups.begin(); it != m_groups.end(); ++it) {
-        delete it.value();
+        it.value()->deleteLater();
     }
     for (auto it = m_netizens.begin(); it != m_netizens.end(); ++it) {
-        delete it.value();
+        it.value()->deleteLater();
     }
     for (auto it = m_messages.begin(); it != m_messages.end(); ++it) {
         qDeleteAll(it.value());

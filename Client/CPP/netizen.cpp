@@ -108,10 +108,10 @@ void Netizen::SendImage(const QString &receiverAccount, const QString &imgPath)
 bool Netizen::AddFriend(Netizen *user)
 {
     if (HasFriend(user->GetAccount())) {
-        Logger::Warning(user->GetAccount() + " is already your friend.");
+        // Logger::Warning(user->GetAccount() + " is already your friend.");
         return false;
     } else {
-        Logger::Log("Add friend " + user->GetAccount());
+        // Logger::Log("Add friend " + user->GetAccount());
         m_friends.insert(user->GetAccount(), user);
         return true;
     }
@@ -237,8 +237,7 @@ void Netizen::setAvatar(const QString &filePath)
         return;
     }
 
+    // 自动设置图片解析前缀
     QString base64 = QString::fromLatin1(imageData.toBase64());
     m_avatar = QString("data:image/%1;base64,%2").arg(imageType, base64);
 }
-
-

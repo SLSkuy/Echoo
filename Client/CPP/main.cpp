@@ -2,6 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 
+#include "databasemanager.h"
 #include "echooclient.h"
 #include "message.h"
 #include "netizen.h"
@@ -28,5 +29,8 @@ int main(int argc, char *argv[])
         Qt::QueuedConnection);
     engine.loadFromModule("Echoo-Client", "StartWindow");
 
-    return app.exec();
+
+    int ret = app.exec();
+    DatabaseManager::instance()->destroy();
+    return ret;
 }
