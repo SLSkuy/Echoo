@@ -11,8 +11,7 @@ class Message : public QObject
     Q_PROPERTY(QString content READ GetMessage NOTIFY contentChanged)
     Q_PROPERTY(QString timestamp READ GetMessageTime NOTIFY timestampChanged)
     Q_PROPERTY(Netizen* sender READ GetSender NOTIFY senderChanged FINAL)
-    Q_PROPERTY(QObject* receiver READ GetReceiver NOTIFY receiverChanged)
-    Q_PROPERTY(QString imageData READ GetImageData NOTIFY imageDataChanged)
+    Q_PROPERTY(QObject *receiver READ GetReceiver NOTIFY receiverChanged)
 public:
     enum MessageType { Text, Command, Image };
 
@@ -28,7 +27,7 @@ public:
     QObject *GetReceiver() { return m_receiver; }
     QString GetMessageTime() { return m_timestamp.toString(); }
     bool LoadImage();
-    Q_INVOKABLE QString GetImageData() const { return m_imageData.toBase64(); }
+    QString GetImageData() const { return m_imageData.toBase64(); }
     Netizen *GetSender()  { return m_sender; }
     void setSender(Netizen *sender) { m_sender = sender; }
 
@@ -41,7 +40,6 @@ signals:
     void timestampChanged();
     void receiverChanged();
     void senderChanged();
-    void imageDataChanged();
 
 private:
     Netizen *m_sender = nullptr;

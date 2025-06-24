@@ -306,7 +306,7 @@ FrameLessWindow {
             console.log("message")
         }
         function onImgReceived(msgg){
-            messageModel.append({picture: msgg.GetImageData(),isMe: !(msgg.sender.account === account)})
+            messageModel.append({picture: msgg.content,isMe: !(msgg.sender.account === account)})
             console.log("image")
         }
     }

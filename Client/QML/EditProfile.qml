@@ -303,7 +303,7 @@ FrameLessWindow {
     }
     Component.onCompleted: {
         var user=EchooClient.getThisInfo();
-        _image.source = user.GetAvatar();
+        _image.source = user.getAvatar();
     }
     Connections {
         target: EchooClient
