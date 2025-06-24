@@ -4,12 +4,9 @@ import QtQuick
 import "../listmodels.js" as GlobalModels
 
 Rectangle{
-    property alias friendItem : friends_Item
+    property alias friendsItem : friends_Item
     property alias friendlistmodel : listModel
     property alias friendstotal: _friendstotal
-
-    implicitHeight: friends_Item.implicitHeight
-    implicitWidth: friends_Item.implicitWidth
 
     id:_friendstotal
     visible: true
@@ -26,7 +23,7 @@ Rectangle{
             FriendItem{
                 id:friendItem
                 implicitHeight: 40
-                implicitWidth: ListView.view.width
+                implicitWidth: notification.width
                 friendheadPortrait.source: model.headPortrait
                 friendname.text: model.name
                 friendpersonid: model.account
