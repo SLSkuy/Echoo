@@ -51,7 +51,7 @@ public:
     // 头像
     Q_INVOKABLE void setAvatar(const QString &filePath);
     Q_INVOKABLE void updateAvatar(const QString &base64Form) { m_avatar = base64Form; }
-    Q_INVOKABLE QString getAvatar() { return m_avatar; };
+    Q_INVOKABLE QString getAvatar() {return m_avatar; }
 
     // 账号功能
     Q_INVOKABLE QVariantList getFriends();

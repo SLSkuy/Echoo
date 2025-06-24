@@ -211,8 +211,21 @@ void Netizen::setAvatar(const QString &filePath)
         return;
     }
 
-    // 存储头像base64信息
-    m_avatar = file.readAll().toBase64();
-    ;
+    QByteArray imageData = file.readAll();
     file.close();
+
+    // 判断图片格式
+    QString imageType;
+    if (imageData.startsWith("\x89PNG")) {
+        imageType = "png";
+    } else if (imageData.startsWith("\xFF\xD8\xFF")) {
+        imageType = "jpeg";
+    } else {
+        Logger::Error("Unsupported image format: " + filePath);
+        return;
+    }
+
+    // 存储带有前缀的完整 base64
+    m_avatar = "data:image/" + imageType + ";base64," + imageData.toBase64();
 }
+

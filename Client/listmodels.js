@@ -13,9 +13,12 @@ function messagelistModelinit(listmodel){
 }
 
 function addFriend(user) {
+    console.log("avatar prefix:", user.avatar?.slice(0, 50));
     // 添加到好友列表
+    let avatar = user.avatar;
+
     friendlistModel.append({
-        headPortrait: "data:image/png;base64," + user.avatar,
+        headPortrait: user.avatar,
         name: user.nickname,
         account: user.account,
         // s1: 0
@@ -23,13 +26,19 @@ function addFriend(user) {
 }
 
 function addMessagelist(user, message) {
+    console.log("avatar prefix:", user.avatar?.slice(0, 50));
     // 添加到好友列表
+    let avatar = user.avatar;
+    let lastMsg = message.length > 0 ? message[message.length-1] : {content: "", timestamp: ""};
+
     messagelistModel.append({
-         picture: "data:image/png;base64," + user.avatar,
+        picture: avatar,
         name: user.nickname,
-         lastMessage: message[message.length-1].content,
-        time: message[message.length-1].timestamp,
-                                                                                                      unreadCount: 0,_isGroup: 0, account: user.account
+        lastMessage: lastMsg.content,
+        time: lastMsg.timestamp,
+        unreadCount: 0,
+        _isGroup: 0,
+        account: user.account
     });
 }
 
