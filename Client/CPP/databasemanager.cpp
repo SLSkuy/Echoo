@@ -35,7 +35,7 @@ DatabaseManager::~DatabaseManager()
         it.value()->deleteLater();
     }
     qDeleteAll(m_allMessages);
-    qDeleteAll(m_offlineMessages);
+    // qDeleteAll(m_offlineMessages);
 }
 
 bool DatabaseManager::initDatabase()
@@ -190,9 +190,7 @@ bool DatabaseManager::loadFromDatabase()
 
         QDateTime timestamp = QDateTime::fromString(timestampStr, Qt::ISODate);
         Message *msg = new Message(sender, receiver, content, timestamp, static_cast<Message::MessageType>(type));
-        m_messages[receiverAccount].append(msg);
-        m_messages[senderAccount].append(msg);
-        m_allMessages.insert(msg);
+        m_allMessages.insert(msg);  // 记录消息
     }
 
     return true;
@@ -256,28 +254,27 @@ bool DatabaseManager::saveToDatabase()
     // 保存消息
     query.prepare("INSERT INTO messages (sender, receiver, content, timestamp, type) "
                   "VALUES (?, ?, ?, ?, ?)");
-    for (auto receiverAccount : m_messages.keys()) {
-        for (auto msg : m_messages[receiverAccount]) {
-            query.addBindValue(msg->GetSender()->GetAccount());
-            QString recAccount;
-            if (Netizen *n = qobject_cast<Netizen*>(msg->GetReceiver())) {
-                recAccount = n->GetAccount();
-            } else if (Group *g = qobject_cast<Group*>(msg->GetReceiver())) {
-                recAccount = g->GetGroupAccount();
-            } else {
-                recAccount = "";
-            }
+    for (auto msg : m_allMessages) {
+        query.addBindValue(msg->GetSender()->GetAccount());
 
-            query.addBindValue(recAccount);
-            query.addBindValue(msg->GetMessage());
-            query.addBindValue(msg->GetMessageTime());
-            query.addBindValue(static_cast<int>(msg->GetMessageType()));
+        QString recAccount;
+        if (Netizen *n = qobject_cast<Netizen*>(msg->GetReceiver())) {
+            recAccount = n->GetAccount();
+        } else if (Group *g = qobject_cast<Group*>(msg->GetReceiver())) {
+            recAccount = g->GetGroupAccount();
+        } else {
+            recAccount = "";
+        }
 
-            if (!query.exec()) {
-                qWarning() << "Failed to insert message:" << query.lastError().text();
-                m_db.rollback();
-                return false;
-            }
+        query.addBindValue(recAccount);
+        query.addBindValue(msg->GetMessage());
+        query.addBindValue(msg->GetMessageTime());
+        query.addBindValue(static_cast<int>(msg->GetMessageType()));
+
+        if (!query.exec()) {
+            qWarning() << "Failed to insert message:" << query.lastError().text();
+            m_db.rollback();
+            return false;
         }
     }
 
