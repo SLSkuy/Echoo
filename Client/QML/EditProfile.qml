@@ -53,7 +53,7 @@ FrameLessWindow {
                 onAccepted: {
                     let filePath = fileDialog.selectedFile;
                     _image.source = filePath;
-                    headPortraitPath:"data:image/png;base64," + filePath
+                    // headPortraitPath:"data:image/png;base64," + filePath
                     // EchooClient.setAvatar(headPortraitPath);
                     // EchooClient.setAvatar(filePath);
 
@@ -303,7 +303,7 @@ FrameLessWindow {
     }
     Component.onCompleted: {
         var user=EchooClient.getThisInfo();
-        _image.source = user.getAvatar();
+        // _image.source = user.getAvatar();
     }
     Connections {
         target: EchooClient

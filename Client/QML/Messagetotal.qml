@@ -5,7 +5,7 @@ import "../listmodels.js" as GlobalModels
 
 Rectangle {
     property alias messagelistModel: msgListModel
-    id: _messagetotal
+    id: messagetotal
     // anchors.fill: parent
     implicitHeight: messageItem.implicitHeight
     implicitWidth: messageItem.implicitWidth

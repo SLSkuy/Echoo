@@ -2,7 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-Window {
+FrameLessWindow {
     id: rootWindow
     width: 600
     height: 700
