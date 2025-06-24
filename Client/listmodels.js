@@ -17,7 +17,7 @@ function messagelistModelinit(listmodel){
 function addFriend(user) {
     // 添加到好友列表
     friendlistModel.append({
-        headPortrait: user.avatar,
+        headPortrait: "data:image/png;base64," + user.avatar,
         name: user.nickname,
         account: user.account,
         // s1: 0
@@ -27,7 +27,7 @@ function addFriend(user) {
 function addMessagelist(user, message) {
     // 添加到消息列表
     messagelistModel.append({
-         picture: user.avatar,
+         picture: "data:image/png;base64," + user.avatar,
         name: user.nickname,
          lastMessage: message[message.length-1].content,
         time: message[message.length-1].timestamp,
