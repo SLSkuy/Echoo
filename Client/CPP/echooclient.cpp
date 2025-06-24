@@ -4,9 +4,16 @@
 #include "logger.h"
 #include "group.h"
 
-EchooClient::EchooClient(QObject *parent) : QObject(parent){}
+EchooClient::EchooClient(QObject *parent) : QObject(parent)
+{
+    DatabaseManager::instance()->initDatabase();
+    DatabaseManager::instance()->loadFromDatabase();
+}
 
-EchooClient::~EchooClient(){}
+EchooClient::~EchooClient()
+{
+    DatabaseManager::instance()->destroy();
+}
 
 void EchooClient::login(const QString &account, const QString &password)
 {

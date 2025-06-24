@@ -26,6 +26,7 @@ bool Netizen::LoginDetection(const QString &password)
     if (password == m_password) {
         // 连接p2p服务器
         _cmc = new Communicator(this);
+
         m_ip = _cmc->GetLocalIP();
         connect(_cmc, &Communicator::messageReceived, this, &Netizen::messageReceived);
         connect(_cmc, &Communicator::groupMessageReceived, this, &Netizen::groupMessageReceived);
@@ -59,6 +60,9 @@ void Netizen::SendMessage(const QString &receiverAccount, const QString &content
         // 创建消息实体对象,接受者设置为空用于委托检测是否有对应好友
         Message *msg = new Message(this, receiver, content, curTime);
         _cmc->SendMessage(msg);
+
+        QString rec = receiverAccount;
+        DatabaseManager::instance()->AddMessage(rec,msg);
     } else {
         Logger::Warning(receiverAccount + " is not " + m_account + "'s friend.");
     }
@@ -93,6 +97,9 @@ void Netizen::SendImage(const QString &receiverAccount, const QString &imgPath)
             return;
         }
         _cmc->SendMessage(msg);
+
+        QString rec = receiverAccount;
+        DatabaseManager::instance()->AddMessage(rec,msg);
     } else {
         Logger::Warning(receiverAccount + " is not " + m_account + "'s friend.");
     }
@@ -214,6 +221,11 @@ void Netizen::setAvatar(const QString &filePath)
     QByteArray imageData = file.readAll();
     file.close();
 
+    if (imageData.isEmpty()) {
+        Logger::Error("Image file is empty: " + filePath);
+        return;
+    }
+
     // 判断图片格式
     QString imageType;
     if (imageData.startsWith("\x89PNG")) {
@@ -225,7 +237,8 @@ void Netizen::setAvatar(const QString &filePath)
         return;
     }
 
-    // 存储带有前缀的完整 base64
-    m_avatar = "data:image/" + imageType + ";base64," + imageData.toBase64();
+    QString base64 = QString::fromLatin1(imageData.toBase64());
+    m_avatar = QString("data:image/%1;base64,%2").arg(imageType, base64);
 }
+
 

@@ -25,6 +25,7 @@ public:
     ~Netizen();
 
     // 用户属性获取，用户数据库信息存储
+    QString GetPassword() {return m_password;}
     QString GetNickname()  { return m_nickName; }
     Q_INVOKABLE void SetNickname(QString nickname)
     {
@@ -55,6 +56,7 @@ public:
 
     // 账号功能
     Q_INVOKABLE QVariantList getFriends();
+    QList<QString> GetFriendsAccount(){return m_friends.keys();}
     Q_INVOKABLE QVariantList getGroups();
     bool LoginDetection(const QString &password);
     void Logout() { m_isOnline = false; };
