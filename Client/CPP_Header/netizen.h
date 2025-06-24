@@ -32,9 +32,8 @@ public:
         if (nickname != m_nickName) {
             m_nickName = nickname;
             emit nicknameChanged();
-            qDebug() << "sendsingle";
+            qDebug() << "update nickname";
         }
-        qDebug() << "sendsingle";
     }
     QString GetAccount()  { return m_account; }
     QString GetIpAddress()  { return m_ip; }
@@ -42,11 +41,12 @@ public:
     void SetOnline(bool result) { m_isOnline=result; }
     bool IsOnline() const { return m_isOnline; }
     QString GetSign() { return m_sign; }
-    void SetSign(QString sign)
+    Q_INVOKABLE void SetSign(QString sign)
     {
         if (sign != m_sign) {
             m_sign = sign;
             emit signChanged();
+            qDebug() << "update sign";
         }
     }
     // 头像

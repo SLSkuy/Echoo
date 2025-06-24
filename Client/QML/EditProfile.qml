@@ -9,6 +9,7 @@ FrameLessWindow {
     property alias editprofile: _editprofile
     property alias image: _image
     property string newname: ""
+    property string newsign: ""
     width: 400
     height: 400
     visible: true
@@ -56,6 +57,8 @@ FrameLessWindow {
                     // headPortraitPath:"data:image/png;base64," + filePath
                     // EchooClient.setAvatar(headPortraitPath);
                     // EchooClient.setAvatar(filePath);
+                    var user =EchooClient.getThisInfo();
+                    user.updateAvatar(filePath);
 
                 }
             }
@@ -209,7 +212,7 @@ FrameLessWindow {
             // 输入框
             TextField {
                 id: ageField
-                placeholderText: "请输入出生年月"
+                placeholderText: "请输入出生年月:2005-7-1"
                 placeholderTextColor:"lightgrey"
                 font.pixelSize: 16
                 color: "black" // 文字颜色
@@ -262,15 +265,19 @@ FrameLessWindow {
                 Layout.alignment: Qt.AlignBottom | Qt.AlignLeft // 底部对齐，左对齐
                 Layout.margins: 10 // 边距
                 onClicked:{
+                    var n=EchooClient.getThisInfo();
                     if(nicknameField.text.length>0){
                         usernametext=nicknameField.text;
                         newname=nicknameField.text;
-                        var n=EchooClient.getThisInfo();
+
                         n.SetNickname(newname);
                     }
 
-                    if(signatureField.text.length>0)
-                        signature.text="            "+signatureField.text
+                    if(signatureField.text.length>0){
+                        signature.text="            "+signatureField.text;
+                        newsign=signature.text;
+                        n.SetSign(newsign);
+                    }
 
                     if(genderCombo.currentText==="男"){
                         sex.text= "\u2642"
@@ -305,11 +312,5 @@ FrameLessWindow {
         var user=EchooClient.getThisInfo();
         // _image.source = user.getAvatar();
     }
-    Connections {
-        target: EchooClient
-        function onNicknameChanged() {
-            console.log("setnewnickname")
-            // listModel.append({image1:addfriendnotification.avatar, name1:addfriendnotification.nickname, aaction1: "请求添加你为好友", account1:addfriendnotification.account})
-        }
-    }
+
 }
