@@ -1,25 +1,26 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-
 import "../listmodels.js" as GlobalModels
 
 Rectangle {
-    property alias messagetotal: _messagetotal
     property alias messagelistModel: msgListModel
     id: _messagetotal
-    anchors.fill: parent
+    // anchors.fill: parent
+    implicitHeight: messageItem.implicitHeight
+    implicitWidth: messageItem.implicitWidth
+
 
     ListView {
         id: messageItem
         anchors.fill: parent
         model: msgListModel
+        clip: true
+        spacing: 1  // 项间距
 
-        delegate:
-            MessageItem{
-            id:item
-            height:60
-            width:parent.width
+        delegate: MessageItem {
+            implicitWidth: ListView.view.width
+            implicitHeight: 60
             picture: model.picture
             nickname: model.name
             lastMessage: model.lastMessage
@@ -30,41 +31,41 @@ Rectangle {
         }
     }
 
-    ListModel{
+    ListModel {
         id: msgListModel
     }
 
-    // ListModel {
-    //     id: msgListModel
-        // 初始化好友消息列表
-        Component.onCompleted: {
-            GlobalModels.messagelistModelinit(msgListModel);
-            GlobalModels.messagelistModel = msgListModel;
+    Component.onCompleted: {
+        console.log("Initializing message list...")
+        GlobalModels.messagelistModelinit(msgListModel)
+        GlobalModels.messagelistModel = msgListModel
 
-            var netizen = EchooClient.getThisInfo();
-            var friends = netizen.getFriends()
-            for (var i = 0; i < friends.length; i++) {
-                var messages = EchooClient.getMessageList(friends[i].account);
-                GlobalModels.addMessagelist(friends[i],messages)
+        var netizen = EchooClient.getThisInfo()
+
+        var friends = netizen.getFriends()
+
+        for (var i = 0; i < friends.length; i++) {
+            var messages = EchooClient.getMessageList(friends[i].account)
+            GlobalModels.addMessagelist(friends[i], messages)
+        }
+    }
+
+    Connections {
+        target: EchooClient
+        function onReceivedFriendResponse(user, result) {
+            if (result) {
+                console.log("Adding new friend:", user.account)
+                var messages = EchooClient.getMessageList(user.account)
+                GlobalModels.addMessagelist(user, messages)
             }
         }
+    }
 
     Connections {
-           target: EchooClient
-           function onReceivedFriendResponse(user, result) {
-               if(result){
-                   var messages = EchooClient.getMessageList(user.account)
-                   console.log("添加的好友： "+user.account)
-                   GlobalModels.addMessagelist(user,messages)
-               }
-           }
-
-       }
-
-    Connections {
-           target: EchooClient
-           function onAcceptFriendRequestnm(netizen,message) {
-                    GlobalModels.addMessagelist(netizen, message)
-               }
-           }
+        target: EchooClient
+        function onAcceptFriendRequestnm(netizen, message) {
+            console.log("Accepting friend request from:", netizen.account)
+            GlobalModels.addMessagelist(netizen, message)
+        }
+    }
 }

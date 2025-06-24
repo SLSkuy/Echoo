@@ -5,6 +5,8 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 Rectangle {
+    implicitHeight: row.implicitHeight
+    implicitWidth: row.implicitWidth
     id: messageItem
     property string picture
     property string nickname
@@ -19,6 +21,7 @@ Rectangle {
     color: hovered ? "#E6E6E6" : "transparent"
 
     RowLayout {
+        id:row
         anchors.fill: parent
         spacing: 10
 

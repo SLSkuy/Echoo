@@ -8,6 +8,9 @@ Rectangle{
     property alias friendlistmodel : listModel
     property alias friendstotal: _friendstotal
 
+    implicitHeight: friends_Item.implicitHeight
+    implicitWidth: friends_Item.implicitWidth
+
     id:_friendstotal
     visible: true
     ListView {
@@ -22,8 +25,8 @@ Rectangle{
         delegate:
             FriendItem{
                 id:friendItem
-                height: 40
-                width: notification.width
+                implicitHeight: 40
+                implicitWidth: ListView.view.width
                 friendheadPortrait.source: model.headPortrait
                 friendname.text: model.name
                 friendpersonid: model.account

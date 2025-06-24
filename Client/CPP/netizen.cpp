@@ -213,5 +213,6 @@ void Netizen::setAvatar(const QString &filePath)
 
     // 存储头像base64信息
     m_avatar = file.readAll().toBase64();
+    ;
     file.close();
 }

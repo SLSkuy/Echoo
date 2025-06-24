@@ -3,6 +3,8 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 Rectangle {
+    implicitHeight: 500
+    implicitWidth: 500
     ColumnLayout {
         anchors.fill: parent
 
@@ -53,14 +55,15 @@ Rectangle {
 
         // 好友列表
         ListView {
+
             id: friendlist
             model: listModel
             implicitWidth: parent.width
             implicitHeight: parent.height
 
             delegate: Friendlist {
-                height: parent.height
-                width: notification.width
+                height: 40
+                width: friendlist.width
                 friendlist_text.text: model.text
             }
         }

@@ -1,9 +1,7 @@
 
 
-// var friendlistModel;
-var messagelistModel;
-
 var friendlistModel;
+var messagelistModel;
 
 
 function friendlistModelinit(listmodel){
@@ -25,7 +23,7 @@ function addFriend(user) {
 }
 
 function addMessagelist(user, message) {
-    // 添加到消息列表
+    // 添加到好友列表
     messagelistModel.append({
          picture: "data:image/png;base64," + user.avatar,
         name: user.nickname,
@@ -44,18 +42,5 @@ function clearmessageModel(modelName) {
     modelName.clear();
 
 }
-
-
-// Qt.include({
-//     // models: models,
-//     addFriend: addFriend,
-//     addMessagelist: addMessagelist,
-//     clearfriendModel: clearfriendModel,
-//     clearmessageModel: clearmessageModel,
-//     friendlistModelinit: friendlistModelinit,
-//     messagelistModelinit: messagelistModelinit,
-//     friendlistModel: friendlistModel,
-//     messagelistModel: messagelistModel
-// });
 
 

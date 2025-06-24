@@ -2,59 +2,68 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-FrameLessWindow {
+Window {
     id: rootWindow
-    width: toolBars.width + infoArea.implicitWidth
-    height: toolBars.height
+    width: 600
+    height: 700
     visible: true
+    color: "#FFFFFF"
 
-    RowLayout
-    {
+    RowLayout {
+        id: row
         anchors.fill: parent
         spacing: 0
+
         // 左侧工具栏
         ToolBars {
             id: toolBars
-            message.onClicked: {messagePage.visible = true;friendPage.visible = false;}
-            friend.onClicked: {friendPage.visible = true;messagePage.visible = false;}
+            Layout.preferredWidth: 70
+            Layout.fillHeight: true
+            message.onClicked: {messagePage.visible = true; friendPage.visible = false;}
+            friend.onClicked: {friendPage.visible = true; messagePage.visible = false;}
         }
 
         // 右侧区域
-        ColumnLayout {
-            id: infoArea
+        Rectangle {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            spacing: 0
+            color: "transparent"
 
-            // 搜索栏与标题栏
-            MainpagetitleBar {
-                id: mainPage
-                Layout.preferredWidth: 550
-                minimizeButton.onClicked: rootWindow.showMinimized()
-            }
+            ColumnLayout {
+                anchors.fill: parent
+                spacing: 0
 
-            // 消息栏区域
-            Rectangle {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                Layout.rightMargin: 5
-                Layout.leftMargin: 5
-                Layout.bottomMargin: 5
-
-                Messagetotal {
-                    id: messagePage
-                    anchors.fill: parent
-                    visible: true
+                // 标题栏
+                MainpagetitleBar {
+                    id: mainPage
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 70
+                    minimizeButton.onClicked: rootWindow.showMinimized()
                 }
 
-                // 好友页面
-                Friendtotal {
-                    id: friendPage
-                    anchors.fill: parent
-                    visible: false
+                // 内容区域
+                Rectangle {
+                    id: contentArea
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    Layout.margins: 5
+                    color: "#F5F5F5"
+
+                    Messagetotal {
+                        id: messagePage
+                        anchors.fill: parent
+                        visible: true
+                        // color:"red"
+                    }
+
+                    Friendtotal {
+                        id: friendPage
+                        anchors.fill: parent
+                        visible: false
+                        // color:"red"
+                    }
                 }
             }
         }
     }
 }
-
