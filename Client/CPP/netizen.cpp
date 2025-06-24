@@ -35,16 +35,6 @@ bool Netizen::LoginDetection(const QString &password)
 
         // 设置在线信息
         m_isOnline = true;
-
-        // 广播在线消息
-        QJsonObject obj;
-        obj["nickName"] = m_nickName;
-        obj["account"] = m_account;
-        obj["online"] = true;
-        obj["ip"] = GetIpAddress();
-        obj["avatar"] = m_avatar;
-        obj["sign"] = m_sign;
-        _cmc->BroadcastPresence(obj);
         return true;
     }
     return false;

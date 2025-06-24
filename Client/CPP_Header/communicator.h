@@ -4,6 +4,7 @@
 #include <QTcpServer>
 #include <QTcpSocket>
 #include <QMap>
+#include <QTimer>
 
 class Group;
 class Message;
@@ -16,7 +17,8 @@ public:
     Communicator(Netizen *netizen);
     ~Communicator();
     // UDP广播通信
-    void BroadcastPresence(QJsonObject &obj);
+    void SendPeriodicOnlineBroadcast();
+    void CheckUserTimeout();
     QString GetLocalIP();
 
     // 消息传输与处理
@@ -37,9 +39,11 @@ private:
     QTcpServer *_tcpServer; // 用于接收其他客户端程序的连接
     quint16 m_udpPort;
     quint16 m_tcpPort;
+    QTimer *_timer;
 
     QMap<QString, QTcpSocket *> m_sockets; // 记录当前在线的账号的TcpSocket连接
     QMap<QTcpSocket *, QByteArray> m_buffers; // TcpSocket缓冲
+    QMap<QString, QDateTime> m_lastSeen; // 最后一次在线时间
 
     void OnUdpReadyRead();
     void OnNewTcpConnection();

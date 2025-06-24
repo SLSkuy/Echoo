@@ -34,9 +34,7 @@ DatabaseManager::~DatabaseManager()
     for (auto it = m_netizens.begin(); it != m_netizens.end(); ++it) {
         it.value()->deleteLater();
     }
-    for (auto it = m_messages.begin(); it != m_messages.end(); ++it) {
-        qDeleteAll(it.value());
-    }
+    qDeleteAll(m_allMessages);
     qDeleteAll(m_offlineMessages);
 }
 
@@ -193,6 +191,8 @@ bool DatabaseManager::loadFromDatabase()
         QDateTime timestamp = QDateTime::fromString(timestampStr, Qt::ISODate);
         Message *msg = new Message(sender, receiver, content, timestamp, static_cast<Message::MessageType>(type));
         m_messages[receiverAccount].append(msg);
+        m_messages[senderAccount].append(msg);
+        m_allMessages.insert(msg);
     }
 
     return true;
@@ -305,6 +305,7 @@ void DatabaseManager::AddMessage(QString &account, Message *message)
         m_messages[account] = messageList;
     }
     m_messages[account].append(message);
+    m_allMessages.insert(message); // 确保记录唯一指针
 }
 
 bool DatabaseManager::RemoveNetizen(const QString &account)

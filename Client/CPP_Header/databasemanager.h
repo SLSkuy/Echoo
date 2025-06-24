@@ -52,6 +52,6 @@ private:
     QMap<QString, Group *> m_groups;       // 记录所有的群聊信息
     QMap<QString, Netizen *> m_netizens;   // 记录局域网中的所有账号
     QMap<QString, QList<Message *>> m_messages; // 记录给定账号的所有聊天信息
-    // QList<Message *> m_messages;
+    QSet<Message *> m_allMessages;  // 消息集合，用于析构时唯一析构
     QList<Message *> m_offlineMessages; // 发送的离线消息，当有用户上线时，监测是否有离线消息，若有则向其发送消息
 };
