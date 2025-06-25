@@ -18,16 +18,17 @@ function addFriend(user) {
     let avatar = user.avatar;
 
     friendlistModel.append({
-        headPortrait: user.avatar,
+        headPortrait: avatar,
         name: user.nickname,
         account: user.account,
+        // sign: user.sign,
         // s1: 0
     });
 }
 
 function addMessagelist(user, message) {
     // console.log("avatar prefix:", user.avatar?.slice(0, 50));
-    // 添加到好友列表
+    // 添加到消息列表
     let avatar = user.avatar;
     let lastMsg = message.length > 0 ? message[message.length-1] : {content: "", timestamp: ""};
 

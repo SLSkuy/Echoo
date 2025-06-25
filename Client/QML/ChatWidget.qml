@@ -302,10 +302,12 @@ FrameLessWindow {
     Connections {
         target: EchooClient
         function onMessageReceived(msg) {
+            messageItem.unreadCount = "1";
             messageModel.append({message: msg.content,isMe: !(msg.sender.account === account)})
             console.log("message")
         }
         function onImgReceived(msgg){
+            messageItem.unreadCount = "1";
             messageModel.append({picture: msgg.content,isMe: !(msgg.sender.account === account)})
             console.log("image")
         }
@@ -323,4 +325,10 @@ FrameLessWindow {
     //       }
     //       console.log("out")
     //   }
+
+    TapHandler{
+        onTapped:{
+            messageItem.unreadCount = "0"
+        }
+    }
 }

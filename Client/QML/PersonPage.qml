@@ -17,7 +17,8 @@ FrameLessWindow{
         var n=EchooClient.getThisInfo();
         _username.text=n.nickname
         account = n.account
-        // tx.source=n.GetAvatar()
+        tx.source=n.getAvatar()
+
     }
 
     ColumnLayout{

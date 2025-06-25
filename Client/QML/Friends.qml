@@ -27,6 +27,7 @@ Rectangle{
                 friendheadPortrait.source: model.headPortrait
                 friendname.text: model.name
                 friendpersonid: model.account
+                friendsign.text: model.sign
 
                 friendTaphandler.onDoubleTapped: {
                     if (Qt.LeftButton && Qt.ControlModifier) {
