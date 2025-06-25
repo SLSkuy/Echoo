@@ -53,48 +53,42 @@ bool DatabaseManager::initDatabase()
     QSqlQuery query;
 
     // 创建netizens表
-    if (!query.exec(
-            "CREATE TABLE IF NOT EXISTS netizens ("
-            "account TEXT PRIMARY KEY,"
-            "nickname TEXT,"
-            "password TEXT,"
-            "avatar TEXT,"
-            "sign TEXT,"
-            "ip TEXT,"
-            "online INTEGER)")) {
+    if (!query.exec("CREATE TABLE IF NOT EXISTS netizens ("
+                    "account TEXT PRIMARY KEY,"
+                    "nickname TEXT,"
+                    "password TEXT,"
+                    "avatar TEXT,"
+                    "sign TEXT)")) {
         qWarning() << "Failed to create netizens table:" << query.lastError().text();
         return false;
     }
 
     // 创建friends表
-    if (!query.exec(
-            "CREATE TABLE IF NOT EXISTS friends ("
-            "user_account TEXT,"
-            "friend_account TEXT,"
-            "PRIMARY KEY (user_account, friend_account))")) {
+    if (!query.exec("CREATE TABLE IF NOT EXISTS friends ("
+                    "user_account TEXT,"
+                    "friend_account TEXT,"
+                    "PRIMARY KEY (user_account, friend_account))")) {
         qWarning() << "Failed to create friends table:" << query.lastError().text();
         return false;
     }
 
     // 创建groups表
-    if (!query.exec(
-            "CREATE TABLE IF NOT EXISTS groups ("
-            "account TEXT PRIMARY KEY,"
-            "name TEXT,"
-            "owner TEXT)")) {
+    if (!query.exec("CREATE TABLE IF NOT EXISTS groups ("
+                    "account TEXT PRIMARY KEY,"
+                    "name TEXT,"
+                    "owner TEXT)")) {
         qWarning() << "Failed to create groups table:" << query.lastError().text();
         return false;
     }
 
     // 创建messages表
-    if (!query.exec(
-            "CREATE TABLE IF NOT EXISTS messages ("
-            "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-            "sender TEXT,"
-            "receiver TEXT,"
-            "content TEXT,"
-            "timestamp TEXT,"
-            "type INTEGER)")) {
+    if (!query.exec("CREATE TABLE IF NOT EXISTS messages ("
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    "sender TEXT,"
+                    "receiver TEXT,"
+                    "content TEXT,"
+                    "timestamp TEXT,"
+                    "type INTEGER)")) {
         qWarning() << "Failed to create messages table:" << query.lastError().text();
         return false;
     }
@@ -112,7 +106,7 @@ bool DatabaseManager::loadFromDatabase()
     QSqlQuery query;
 
     // 加载所有用户
-    if (!query.exec("SELECT account, nickname, password, avatar, sign, ip, online FROM netizens")) {
+    if (!query.exec("SELECT account, nickname, password, avatar, sign FROM netizens")) {
         qWarning() << "Failed to query netizens:" << query.lastError().text();
         return false;
     }
@@ -123,10 +117,10 @@ bool DatabaseManager::loadFromDatabase()
         QString password = query.value(2).toString();
         QString avatar = query.value(3).toString();
         QString sign = query.value(4).toString();
-        QString ip = query.value(5).toString();
+
+        Logger::Log("Add Netizen: " + nickname + " " + account + " " + sign + " " + avatar.slice(0, 50));
 
         Netizen *user = new Netizen(nickname, account, password);
-        user->SetIpAddress(ip);
         user->SetOnline(false);
         user->SetSign(sign);
         user->updateAvatar(avatar);
@@ -168,10 +162,11 @@ bool DatabaseManager::loadFromDatabase()
         QString content = query.value(2).toString();
         QString timestampStr = query.value(3).toString();
         int type = query.value(4).toInt();
+        Logger::Log(senderAccount + " " + receiverAccount);
 
         Netizen *sender = m_netizens[senderAccount];
         if (!sender) {
-            qWarning() << "Message sender not found:" << senderAccount;
+            Logger::Warning("Message sender not found:" + senderAccount);
             continue;
         }
 
@@ -183,9 +178,12 @@ bool DatabaseManager::loadFromDatabase()
         }
 
         if (!receiver) {
-            qWarning() << "Message receiver not found:" << receiverAccount;
+            Logger::Warning("Message receiver not found:" + receiverAccount);
             continue;
         }
+
+        Logger::Log("Add Message: " + senderAccount + " " + receiverAccount + " " + content.slice(0, 50) + " "
+                    + timestampStr);
 
         QDateTime timestamp = QDateTime::fromString(timestampStr, Qt::ISODate);
         Message *msg = new Message(sender, receiver, content, timestamp, static_cast<Message::MessageType>(type));
@@ -217,16 +215,17 @@ bool DatabaseManager::saveToDatabase()
     }
 
     // 保存netizens
-    query.prepare("INSERT INTO netizens (account, nickname, password, avatar, sign, ip, online) "
-                  "VALUES (?, ?, ?, ?, ?, ?, ?)");
+    query.prepare("INSERT INTO netizens (account, nickname, password, avatar, sign) "
+                  "VALUES (?, ?, ?, ?, ?)");
     for (auto user : m_netizens.values()) {
         query.addBindValue(user->GetAccount());
         query.addBindValue(user->GetNickname());
         query.addBindValue(user->GetPassword());
         query.addBindValue(user->getAvatar());
         query.addBindValue(user->GetSign());
-        query.addBindValue(user->GetIpAddress());
-        query.addBindValue(user->IsOnline() ? 1 : 0);
+
+        Logger::Log("Save Netizen: " + user->GetNickname() + " " + user->GetAccount() + " " + user->GetSign() + " "
+                    + user->getAvatar().slice(0, 50));
 
         if (!query.exec()) {
             qWarning() << "Failed to insert netizen:" << query.lastError().text();

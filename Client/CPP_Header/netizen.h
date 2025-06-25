@@ -46,7 +46,6 @@ public:
         if (sign != m_sign) {
             m_sign = sign;
             emit signChanged();
-            qDebug() << "update sign";
         }
     }
     // 头像
