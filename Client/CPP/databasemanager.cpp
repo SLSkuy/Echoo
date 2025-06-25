@@ -124,11 +124,10 @@ bool DatabaseManager::loadFromDatabase()
         QString avatar = query.value(3).toString();
         QString sign = query.value(4).toString();
         QString ip = query.value(5).toString();
-        bool online = query.value(6).toInt() != 0;
 
         Netizen *user = new Netizen(nickname, account, password);
         user->SetIpAddress(ip);
-        user->SetOnline(online);
+        user->SetOnline(false);
         user->SetSign(sign);
         user->updateAvatar(avatar);
 
