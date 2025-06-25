@@ -26,8 +26,6 @@ bool Netizen::LoginDetection(const QString &password)
     if (password == m_password) {
         // 连接p2p服务器
         _cmc = new Communicator(this);
-
-        m_ip = _cmc->GetLocalIP();
         connect(_cmc, &Communicator::messageReceived, this, &Netizen::messageReceived);
         connect(_cmc, &Communicator::groupMessageReceived, this, &Netizen::groupMessageReceived);
         connect(_cmc, &Communicator::imageReceived, this, &Netizen::imgReceived);

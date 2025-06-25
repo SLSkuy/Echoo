@@ -20,7 +20,7 @@ Communicator::Communicator(Netizen *netizen) : _netizen(netizen), QObject(netize
     m_tcpPort = 1145;
 
     _udpSocket = new QUdpSocket(this);
-    _udpSocket->bind(QHostAddress::AnyIPv4, m_udpPort, QUdpSocket::ShareAddress | QUdpSocket::ReuseAddressHint);
+    _udpSocket->bind(QHostAddress::AnyIPv4, m_udpPort);
     connect(_udpSocket, &QUdpSocket::readyRead, this, &Communicator::OnUdpReadyRead);
 
     _tcpServer = new QTcpServer(this);
@@ -40,17 +40,6 @@ Communicator::~Communicator()
     _timer->deleteLater();
 }
 
-QString Communicator::GetLocalIP()
-{
-    // 返回本机IP
-    foreach (const QHostAddress &address, QNetworkInterface::allAddresses()) {
-        if (address.protocol() == QAbstractSocket::IPv4Protocol && address != QHostAddress(QHostAddress::LocalHost)) {
-            return address.toString();
-        }
-    }
-    return QHostAddress(QHostAddress::LocalHost).toString();
-}
-
 void Communicator::SendPeriodicOnlineBroadcast()
 {
     // 定时发送在线消息
@@ -58,7 +47,6 @@ void Communicator::SendPeriodicOnlineBroadcast()
     response["nickName"] = _netizen->GetNickname();
     response["account"] = _netizen->GetAccount();
     response["online"] = true;
-    response["ip"] = _netizen->GetIpAddress();
     response["avatar"] = _netizen->getAvatar();
     response["sign"] = _netizen->GetSign();
     QJsonDocument doc(response);
@@ -82,6 +70,7 @@ void Communicator::OnUdpReadyRead()
         {
             // 读取json内容
             QJsonObject obj = doc.object();
+            obj["ip"] = senderAddr.toString();
             bool online = obj["online"].toBool();
 
             // 检测为离线操作还是在线操作
@@ -180,15 +169,16 @@ void Communicator::OnlineProcess(QJsonObject &obj)
     // 检测当前设备本地数据库是否存在广播者信息
     DatabaseManager *db = DatabaseManager::instance();
     if (db->Contains(account)) {
-        // 存在该用户
+        // 存在该用户，更新数据
+        Netizen *user = db->GetNetizen(account);
+        user->SetNickname(nickName);
+        user->updateAvatar(avatar);
+        user->SetSign(sign);
+
         if (!db->GetNetizen(account)->IsOnline()) {
             // 检测用户是否在线，若为否则标志为在线，并告诉对方自己也在线
-            Netizen *user = db->GetNetizen(account);
             user->SetOnline(true);
             user->SetIpAddress(ip);
-            user->SetNickname(nickName);
-            user->updateAvatar(avatar);
-            user->SetSign(sign);
 
             ConnectProcess(account, ip);
 
