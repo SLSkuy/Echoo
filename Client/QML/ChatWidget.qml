@@ -104,10 +104,9 @@ FrameLessWindow {
                                 break;
                             }
                         }
-                        var user=EchooClient.getThisInfo();
-                        if(RemoveFriend(account)){
-                            EchooClient.removeFriend(account)
-                                };
+                            EchooClient.removeFriendssignals(account)
+                            EchooClient.removeFriendRequest(account)
+
                         chatwidget.close();
                         }
 

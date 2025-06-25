@@ -153,4 +153,27 @@ Rectangle {
         color: "#E6E6E6"
         anchors.bottom: parent.bottom
     }
+
+    // Connections {
+    //     target: EchooClient
+    //     function onMessageReceived(msg) {
+    //         lastMessage = msg.content;
+    //         unreadCount.text = "1";
+    //         time = msg.timestamp
+    //         console.log("ddd")
+    //         console.log(msg.timestamp)
+    //          console.log(time)
+
+    //     }
+    //     function onImgReceived(msg){
+    //         lastMessage = msg[msg.length-1].content;
+    //         unreadCount.text = "1";
+    //         time = msg[msg.length-1].timestamp
+    //     }
+    //     function onTriggerMessage(receiverAccount, content){
+    //         lastMessage = content
+    //         time = new Date().toLocaleString(Qt.locale(), "yyyy-MM-dd hh:mm:ss")
+    //     }
+    // }
+
 }

@@ -10,20 +10,23 @@ Rectangle{
 
     id:_friendstotal
     visible: true
+
+    implicitHeight: friends_Item.implicitHeight
+    implicitWidth: friends_Item.implicitWidth
     ListView {
         id: friends_Item
         anchors.fill: parent
 
         model: listModel
         // model: GlobalModels.friendlistModel
-        implicitHeight: parent.height
+        height: parent.height
         spacing:5
 
         delegate:
             FriendItem{
                 id:friendItem
-                implicitHeight: 40
-                implicitWidth: notification.width
+                height: 40
+                width: notification.width
                 friendheadPortrait.source: model.headPortrait
                 friendname.text: model.name
                 friendpersonid: model.account
@@ -75,6 +78,7 @@ Rectangle{
            target: EchooClient
            function onAcceptFriendRequestn(netizen) {
                     GlobalModels.addFriend(netizen)
+               conosle.log("niaccpectlema")
                }
            }
 

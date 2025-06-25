@@ -68,4 +68,83 @@ Rectangle {
             GlobalModels.addMessagelist(netizen, message)
         }
     }
+
+    Connections {
+        target: EchooClient
+        function onMessageReceived(msg) {
+            var netizen = EchooClient.getThisInfo()
+            for(var i = 0; i < msgListModel.length; i++){
+                if(msgListModel.get(i).account === msg.sender.account){
+                    msgListModel.set(i, {
+                                         picture:  msgListModel.get(i).picture,
+                                         name: msgListModel.get(i).name,
+                                         account: msgListModel.get(i).account,
+                                         lastMessage: msg.content,
+                                         time: new Date().toLocaleString(),
+                                         unreadCount: msgListModel.get(i).unreadCount + 1,
+                                         _isGroup:msgListModel.get(i)._isGroup
+                                     })
+                    msgListModel.move(i, 0, 1);
+                }
+            }
+        }
+
+        function onImgReceived(msg){
+            var netizen = EchooClient.getThisInfo()
+            for(var i = 0; i < msgListModel.length; i++){
+                if(msgListModel.get(i).account === msg.sender.account){
+                    msgListModel.set(i, {
+                                         picture:  msgListModel.get(i).picture,
+                                         name: msgListModel.get(i).name,
+                                         account: msgListModel.get(i).account,
+                                         lastMessage: msg.content,
+                                         time: new Date().toLocaleString(),
+                                         unreadCount: msgListModel.get(i).unreadCount + 1,
+                                         _isGroup:msgListModel.get(i)._isGroup
+                                     })
+                    msgListModel.move(i, 0, 1);
+                }
+            }
+        }
+
+        function onTriggerMessage(receiverAccount, content){
+            var messages = EchooClient.getMessageList(receiverAccount)
+            var netizen = EchooClient.getThisInfo()
+            // var friends = netizen.getFriends()
+            for(var i = 0; i < msgListModel.length; i++){
+                if(msgListModel.get(i).account === receiverAccount){
+                    msgListModel.set(i, {
+                                         picture:  msgListModel.get(i).picture,
+                                         name: msgListModel.get(i).name,
+                                         account: msgListModel.get(i).account,
+                                         lastMessage: content,
+                                         time: new Date().toLocaleString(),
+                                         unreadCount: msgListModel.get(i).unreadCount + 1,
+                                         _isGroup:msgListModel.get(i)._isGroup
+                                     })
+                    msgListModel.move(i, 0, 1);
+                }
+            }
+        }
+
+        function onTriggerImage(receiverAccount, imgPath){
+            var messages = EchooClient.getMessageList(receiverAccount)
+            var netizen = EchooClient.getThisInfo()
+            // var friends = netizen.getFriends()
+            for(var i = 0; i < msgListModel.length; i++){
+                if(msgListModel.get(i).account === receiverAccount){
+                    msgListModel.set(i, {
+                                         picture:  msgListModel.get(i).picture,
+                                         name: msgListModel.get(i).name,
+                                         account: msgListModel.get(i).account,
+                                         lastMessage: imgPath,
+                                         time: new Date().toLocaleString(),
+                                         unreadCount: msgListModel.get(i).unreadCount + 1,
+                                         _isGroup:msgListModel.get(i)._isGroup
+                                     })
+                    msgListModel.move(i, 0, 1);
+                }
+            }
+        }
+    }
 }
