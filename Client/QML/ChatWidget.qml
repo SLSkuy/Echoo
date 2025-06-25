@@ -105,7 +105,7 @@ FrameLessWindow {
                             }
                         }
 
-                        EchooClient.removeFriendssignals(account);
+                        EchooClient.removeFriendsSignals(account);
                         EchooClient.removeFriend(account);
                         chatwidget.close();
                         }
