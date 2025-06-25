@@ -31,7 +31,7 @@ FrameLessWindow {
             id:toolbar
             // anchors.topMargin:10
             background: Rectangle {
-                color: "white"  // 设置背景颜色为白色
+                color: "white"
             }
             anchors.right:parent.right
             // anchors.bottomMargin:80
@@ -49,7 +49,7 @@ FrameLessWindow {
                         id: buttonTooltip
                         text: "发起群聊"
                         visible: parent.hovered
-                        delay: 500 // 悬停500毫秒后显示
+                        delay: 500
                     }
 
                     // 启用悬停检测
@@ -66,8 +66,8 @@ FrameLessWindow {
                         }
                     }
                     background: Rectangle {
-                        color: "white"  // 设置背景颜色为白色
-                        border.color: "white"  // 设置边框颜色为白色
+                        color: "white"
+                        border.color: "white"
                         border.width: 2
                     }
                     contentItem: Text {
@@ -94,7 +94,6 @@ FrameLessWindow {
                     // 启用悬停检测
                     hoverEnabled: true
                     onClicked: {
-                        // 实现更多的逻辑
                         console.log("删除好友");
 
                         // console.log(messageItem[1].account1)i < mainWindow.messageListModel.count
@@ -113,8 +112,8 @@ FrameLessWindow {
                         }
 
                     background: Rectangle {
-                        color: "white"  // 设置背景颜色为白色
-                        border.color: "white"  // 设置边框颜色为白色
+                        color: "white"
+                        border.color: "white"
                         border.width: 2
                     }
                     contentItem: Text {
@@ -136,7 +135,7 @@ FrameLessWindow {
         // 聊天区域
         Rectangle {
             width: parent.width
-            height: parent.height - 120 // 减去顶部工具栏的高度
+            height: parent.height - 120
 
             Column {
                 anchors.fill: parent
@@ -196,8 +195,8 @@ FrameLessWindow {
 
                                 }
                                 background: Rectangle {
-                                    color: "transparent"  // 设置背景颜色为透明
-                                    border.color: "transparent"  // 设置边框颜色为透明
+                                    color: "transparent"
+                                    border.color: "transparent"
                                     border.width: 2
                                 }
                                 contentItem: Text {
@@ -226,8 +225,8 @@ FrameLessWindow {
                                     fileDialog.open()
                                 }
                                 background: Rectangle {
-                                    color: "transparent"  // 设置背景颜色为透明
-                                    border.color: "transparent"  // 设置边框颜色为透明
+                                    color: "transparent"
+                                    border.color: "transparent"
                                     border.width: 2
                                 }
                                 contentItem: Text {

@@ -8,8 +8,8 @@ FrameLessWindow {
 
     property alias editprofile: _editprofile
     property alias image: _image
-    property string newname: ""
-    property string newsign: ""
+    property string newName: ""
+    property string newSign: ""
     width: 400
     height: 400
     visible: true
@@ -45,6 +45,7 @@ FrameLessWindow {
                 anchors.topMargin: 20
                 anchors.centerIn: parent
                 // source:"qrc:/resources/LoginImage.png"
+                source:EchooClient.getThisInfo().getAvatar()
             }
 
             FileDialog {
@@ -58,7 +59,7 @@ FrameLessWindow {
                     // EchooClient.setAvatar(headPortraitPath);
                     // EchooClient.setAvatar(filePath);
                     var user =EchooClient.getThisInfo();
-                    user.updateAvatar(filePath);
+                    user.setAvatar(filePath);
 
                 }
             }
@@ -212,7 +213,7 @@ FrameLessWindow {
             // 输入框
             TextField {
                 id: ageField
-                placeholderText: "请输入出生年月:2005-7-1"
+                placeholderText: "eg:2005-7-1"
                 placeholderTextColor:"lightgrey"
                 font.pixelSize: 16
                 color: "black" // 文字颜色
@@ -268,15 +269,14 @@ FrameLessWindow {
                     var n=EchooClient.getThisInfo();
                     if(nicknameField.text.length>0){
                         usernametext=nicknameField.text;
-                        newname=nicknameField.text;
-
-                        n.SetNickname(newname);
+                        newName=nicknameField.text;
+                        n.SetNickname(newName);
                     }
 
                     if(signatureField.text.length>0){
-                        signature.text="            "+signatureField.text;
-                        newsign=signature.text;
-                        n.SetSign(newsign);
+                        signature.text=signatureField.text;
+                        newSign=signature.text;
+                        n.SetSign(newSign);
                     }
 
                     if(genderCombo.currentText==="男"){
@@ -288,8 +288,8 @@ FrameLessWindow {
                         sex.text= "\u2640"
                         sex.color="pink"
                     }
-                    region.text="        "+regionCombo.currentText
-
+                    region.text=regionCombo.currentText
+                    _image.source = EchooClient.getThisInfo().getAvatar()
                     userheadPortrait.source=_image.source
                     myself_headPortrait.source=_image.source
                     _editprofile.close()

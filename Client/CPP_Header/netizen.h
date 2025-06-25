@@ -40,13 +40,14 @@ public:
     void SetIpAddress(QString ip) { m_ip=ip; }
     void SetOnline(bool result) { m_isOnline=result; }
     bool IsOnline() const { return m_isOnline; }
-    QString GetSign() { return m_sign; }
+    Q_INVOKABLE QString GetSign() { return m_sign; }
     Q_INVOKABLE void SetSign(QString sign)
     {
         if (sign != m_sign) {
             m_sign = sign;
             emit signChanged();
             qDebug() << "update sign";
+            qDebug() << m_sign;
         }
     }
     // 头像

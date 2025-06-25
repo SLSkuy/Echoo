@@ -87,6 +87,8 @@ import QtQuick.Window
                     id:_myself
                     anchors.fill: parent
                     source: EchooClient.getThisInfo().getAvatar()
+                    // var user = EchooClient.getThisInfo()
+                    // source: user.getAvatar()
                 }
             }
             Button{

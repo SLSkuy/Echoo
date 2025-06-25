@@ -18,6 +18,7 @@ FrameLessWindow{
         _username.text=n.nickname
         account = n.account
         tx.source=n.getAvatar()
+        qm_nr.text=n.GetSign()
 
     }
 
@@ -74,12 +75,17 @@ FrameLessWindow{
                 Layout.alignment: Qt.AlignVCenter
 
             }
+            Item {
+
+                width:53
+            }
             Rectangle{
                 Layout.alignment: Qt.AlignVCenter
                 Text{
                     id:qm_nr
                     width:300
-                    text:"            生活不止眼前的苟且，还有远方的苟且"
+
+                    // text:EchooClient.getThisInfo().getSign()
                     font.pixelSize: 15
                     Layout.alignment: Qt.AlignVCenter
                     Layout.fillWidth: true
@@ -100,11 +106,15 @@ FrameLessWindow{
                 Layout.alignment: Qt.AlignVCenter
 
             }
+            Item {
+
+                width:31
+            }
             Rectangle{
                 Layout.alignment: Qt.AlignVCenter
                 Text{
                     id:szd_nr
-                    text:"        中国重庆市"
+                    text:"中国重庆市"
                     font.pixelSize: 15
                     Layout.alignment: Qt.AlignVCenter
                     Layout.fillWidth: true

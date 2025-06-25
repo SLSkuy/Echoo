@@ -26,22 +26,18 @@ Communicator::Communicator(Netizen *netizen) : _netizen(netizen), QObject(netize
     _tcpServer = new QTcpServer(this);
     _tcpServer->listen(QHostAddress::AnyIPv4, m_tcpPort);
     connect(_tcpServer, &QTcpServer::newConnection, this, &Communicator::OnNewTcpConnection);
+
+    _timer = new QTimer(this);
+    connect(_timer, &QTimer::timeout, this, &Communicator::SendPeriodicOnlineBroadcast);
+    connect(_timer, &QTimer::timeout, this, &Communicator::CheckUserTimeout);
+    _timer->start(5000); // 每5秒广播一次
 }
 
 Communicator::~Communicator()
 {
-    // 发送离线消息
-    QJsonObject response;
-    response["nickName"] = _netizen->GetNickname();
-    response["account"] = _netizen->GetAccount();
-    response["online"] = false;
-    response["ip"] = _netizen->GetIpAddress();
-    response["avatar"] = _netizen->getAvatar();
-    response["sign"] = _netizen->GetSign();
-    BroadcastPresence(response);
-
     _udpSocket->deleteLater();
     _tcpServer->deleteLater();
+    _timer->deleteLater();
 }
 
 QString Communicator::GetLocalIP()
@@ -55,10 +51,17 @@ QString Communicator::GetLocalIP()
     return QHostAddress(QHostAddress::LocalHost).toString();
 }
 
-void Communicator::BroadcastPresence(QJsonObject &obj)
+void Communicator::SendPeriodicOnlineBroadcast()
 {
-    // 广播消息
-    QJsonDocument doc(obj);
+    // 定时发送在线消息
+    QJsonObject response;
+    response["nickName"] = _netizen->GetNickname();
+    response["account"] = _netizen->GetAccount();
+    response["online"] = true;
+    response["ip"] = _netizen->GetIpAddress();
+    response["avatar"] = _netizen->getAvatar();
+    response["sign"] = _netizen->GetSign();
+    QJsonDocument doc(response);
     _udpSocket->writeDatagram(doc.toJson(), QHostAddress::Broadcast, m_udpPort);
 }
 
@@ -107,7 +110,7 @@ void Communicator::OnlineMessageProcess(QTcpSocket *socket)
     m_buffers[socket].append(socket->readAll());
 
     while (true) {
-        // 检查是否能读出完整长度前缀（4字节）
+        // 检查是否能读出完整长度前缀
         if (m_buffers[socket].size() < 4) return;
 
         QDataStream stream(m_buffers[socket]);
@@ -115,7 +118,8 @@ void Communicator::OnlineMessageProcess(QTcpSocket *socket)
         quint32 length;
         stream >> length;
 
-        if (m_buffers[socket].size() - 4 < length) return; // 不够完整包，等下次再读
+        // 不完整的包，等待数据完整
+        if (m_buffers[socket].size() - 4 < length) return;
 
         QByteArray jsonData = m_buffers[socket].mid(4, length);
         m_buffers[socket].remove(0, 4 + length);
@@ -240,18 +244,46 @@ void Communicator::ConnectProcess(const QString &account, const QString &ip)
 
         // 记录TcpSocket在线
         m_sockets[account] = socket;
+        // 更新最后一次在线时间
+        m_lastSeen[account] = QDateTime::currentDateTime();
+    }
+}
+
+void Communicator::CheckUserTimeout()
+{
+    // 超过15秒未收到广播视为离线
+    const int timeout = 15;
+
+    QDateTime now = QDateTime::currentDateTime();
+    QStringList toOffline;
+
+    for (auto it = m_lastSeen.begin(); it != m_lastSeen.end(); ++it) {
+        if (it.value().secsTo(now) > timeout) {
+            toOffline.append(it.key());
+        }
     }
 
-    // 广播回应自己也在线，以此确保双向连接
-    QJsonObject response;
-    response["nickName"] = _netizen->GetNickname();
-    response["account"] = _netizen->GetAccount();
-    response["online"] = true;
-    response["ip"] = _netizen->GetIpAddress();
-    response["avatar"] = _netizen->getAvatar();
-    response["sign"] = _netizen->GetSign();
-    BroadcastPresence(response);
+    for (const QString &account : toOffline) {
+        if (DatabaseManager::instance()->Contains(account)) {
+            Netizen *netizen = DatabaseManager::instance()->GetNetizen(account);
+            if (netizen->IsOnline()) {
+                netizen->SetOnline(false);
+                Logger::Log(account + " timeout offline.");
+
+                // 删除 socket 连接
+                if (m_sockets.contains(account)) {
+                    m_buffers.remove(m_sockets[account]);
+                    m_sockets[account]->deleteLater();
+                    m_sockets.remove(account);
+                }
+            }
+        }
+
+        // 移除记录
+        m_lastSeen.remove(account);
+    }
 }
+
 
 void Communicator::SendMessage(Message *message)
 {
