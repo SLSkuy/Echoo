@@ -46,7 +46,7 @@ bool DatabaseManager::initDatabase()
     m_db.setDatabaseName("databse.db");
 
     if (!m_db.open()) {
-        qWarning() << "Failed to open database:" << m_db.lastError().text();
+        Logger::Warning("Failed to open database:" + m_db.lastError().text());
         return false;
     }
 
@@ -59,7 +59,7 @@ bool DatabaseManager::initDatabase()
                     "password TEXT,"
                     "avatar TEXT,"
                     "sign TEXT)")) {
-        qWarning() << "Failed to create netizens table:" << query.lastError().text();
+        Logger::Warning("Failed to create netizens table:" + query.lastError().text());
         return false;
     }
 
@@ -68,7 +68,7 @@ bool DatabaseManager::initDatabase()
                     "user_account TEXT,"
                     "friend_account TEXT,"
                     "PRIMARY KEY (user_account, friend_account))")) {
-        qWarning() << "Failed to create friends table:" << query.lastError().text();
+        Logger::Warning("Failed to create netizens table:" + query.lastError().text());
         return false;
     }
 
@@ -77,7 +77,7 @@ bool DatabaseManager::initDatabase()
                     "account TEXT PRIMARY KEY,"
                     "name TEXT,"
                     "owner TEXT)")) {
-        qWarning() << "Failed to create groups table:" << query.lastError().text();
+        Logger::Warning("Failed to create netizens table:" + query.lastError().text());
         return false;
     }
 
@@ -89,7 +89,7 @@ bool DatabaseManager::initDatabase()
                     "content TEXT,"
                     "timestamp TEXT,"
                     "type INTEGER)")) {
-        qWarning() << "Failed to create messages table:" << query.lastError().text();
+        Logger::Warning("Failed to create netizens table:" + query.lastError().text());
         return false;
     }
 
@@ -99,7 +99,7 @@ bool DatabaseManager::initDatabase()
 bool DatabaseManager::loadFromDatabase()
 {
     if (!m_db.isOpen() && !m_db.open()) {
-        qWarning() << "Database is not open:" << m_db.lastError().text();
+        Logger::Warning("Database is not open:" + m_db.lastError().text());
         return false;
     }
 
@@ -107,7 +107,7 @@ bool DatabaseManager::loadFromDatabase()
 
     // 加载所有用户
     if (!query.exec("SELECT account, nickname, password, avatar, sign FROM netizens")) {
-        qWarning() << "Failed to query netizens:" << query.lastError().text();
+        Logger::Warning("Failed to query netizens:" + m_db.lastError().text());
         return false;
     }
 
@@ -130,7 +130,7 @@ bool DatabaseManager::loadFromDatabase()
 
     // 加载好友关系
     if (!query.exec("SELECT user_account, friend_account FROM friends")) {
-        qWarning() << "Failed to query friends:" << query.lastError().text();
+        Logger::Warning("Failed to query friends:" + query.lastError().text());
         return false;
     }
 
@@ -145,14 +145,14 @@ bool DatabaseManager::loadFromDatabase()
             user->AddFriend(friendUser);
             friendUser->AddFriend(user);
         } else {
-            qWarning() << "Friend link failed for " << userAccount << " -> " << friendAccount;
+            Logger::Warning("Friend link failed for " + userAccount + "->" + friendAccount);
         }
     }
 
 
     // 加载消息
     if (!query.exec("SELECT sender, receiver, content, timestamp, type FROM messages")) {
-        qWarning() << "Failed to query messages:" << query.lastError().text();
+        Logger::Warning("Failed to query messages:" + query.lastError().text());
         return false;
     }
 
@@ -195,7 +195,7 @@ bool DatabaseManager::loadFromDatabase()
 bool DatabaseManager::saveToDatabase()
 {
     if (!m_db.isOpen() && !m_db.open()) {
-        qWarning() << "Database is not open:" << m_db.lastError().text();
+        Logger::Warning("Database is not open:" + m_db.lastError().text());
         return false;
     }
 
@@ -208,7 +208,7 @@ bool DatabaseManager::saveToDatabase()
     if (!query.exec("DELETE FROM netizens") ||
         !query.exec("DELETE FROM messages") ||
         !query.exec("DELETE FROM friends")) {
-        qWarning() << "Failed to clear tables:" << query.lastError().text();
+        Logger::Warning("Failed to clear tables:" + query.lastError().text());
         m_db.rollback();
         return false;
     }
@@ -226,7 +226,7 @@ bool DatabaseManager::saveToDatabase()
         Logger::Log("Save Netizen: " + user->GetNickname() + " " + user->GetAccount() + " " + user->GetSign());
 
         if (!query.exec()) {
-            qWarning() << "Failed to insert netizen:" << query.lastError().text();
+            Logger::Warning("Failed to insert netizen:" + query.lastError().text());
             m_db.rollback();
             return false;
         }
@@ -234,13 +234,13 @@ bool DatabaseManager::saveToDatabase()
 
     // 保存好友关系
     query.prepare("INSERT INTO friends (user_account, friend_account) VALUES (?, ?)");
-    for (auto user : m_netizens.values()) {
-        QString userAccount = user->GetAccount();
-        for (const QString &friendAccount : user->GetFriendsAccount()) {
+    for (auto it = m_netizens.begin(); it != m_netizens.end(); it++) {
+        QString userAccount = it.value()->GetAccount();
+        for (auto friendAccount : it.value()->GetFriendsAccount()) {
             query.addBindValue(userAccount);
             query.addBindValue(friendAccount);
             if (!query.exec()) {
-                qWarning() << "Failed to insert friend relation:" << query.lastError().text();
+                Logger::Warning("Failed to insert friend relation:" + query.lastError().text());
                 m_db.rollback();
                 return false;
             }
@@ -250,25 +250,25 @@ bool DatabaseManager::saveToDatabase()
     // 保存消息
     query.prepare("INSERT INTO messages (sender, receiver, content, timestamp, type) "
                   "VALUES (?, ?, ?, ?, ?)");
-    for (auto msg : m_allMessages) {
-        query.addBindValue(msg->GetSender()->GetAccount());
+    for (auto it = m_allMessages.begin(); it != m_allMessages.end(); it++) {
+        query.addBindValue((*it)->GetSender()->GetAccount());
 
         QString recAccount;
-        if (Netizen *n = qobject_cast<Netizen*>(msg->GetReceiver())) {
+        if (Netizen *n = qobject_cast<Netizen *>((*it)->GetReceiver())) {
             recAccount = n->GetAccount();
-        } else if (Group *g = qobject_cast<Group*>(msg->GetReceiver())) {
+        } else if (Group *g = qobject_cast<Group *>((*it)->GetReceiver())) {
             recAccount = g->GetGroupAccount();
         } else {
             recAccount = "";
         }
 
         query.addBindValue(recAccount);
-        query.addBindValue(msg->GetMessage());
-        query.addBindValue(msg->GetMessageTime());
-        query.addBindValue(static_cast<int>(msg->GetMessageType()));
+        query.addBindValue((*it)->GetMessage());
+        query.addBindValue((*it)->GetMessageTime());
+        query.addBindValue(static_cast<int>((*it)->GetMessageType()));
 
         if (!query.exec()) {
-            qWarning() << "Failed to insert message:" << query.lastError().text();
+            Logger::Warning("Failed to insert message:" + query.lastError().text());
             m_db.rollback();
             return false;
         }

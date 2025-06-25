@@ -17,15 +17,17 @@ public:
     ~EchooClient();
 
     // 账号功能
-    Q_INVOKABLE void login(const QString &account, const QString &password); // 暴露给qml使用
+    Q_INVOKABLE void login(const QString &account, const QString &password);
     Q_INVOKABLE void reg(const QString &nickName, const QString &account, const QString &password);
     Q_INVOKABLE void addFriendRequest(const QString &account);
     Q_INVOKABLE void addFriendResponse(const QString &account, const bool result);
     Q_INVOKABLE void removeFriend(const QString &account);
-    Q_INVOKABLE void setAvatar(const QString &filePath); // 设置头像
+    Q_INVOKABLE void setAvatar(const QString &filePath); // 设置头像（传入本地路径并转换为base64编码）
+
+    // 属性获取
     Q_INVOKABLE QVariantList getNetizenList();
-    Q_INVOKABLE Netizen *getNetizen(const QString &account);
     Q_INVOKABLE QVariantList getMessageList(const QString &account);
+    Q_INVOKABLE Netizen *getNetizen(const QString &account);
     Q_INVOKABLE Netizen *getThisInfo() { return _user; };
 
     // 消息功能
@@ -44,9 +46,11 @@ signals:
     void triggerMessage(QString receiverAccount, QString content);
     void triggerGroupMessage(QString groupAccount, QString content);
     void triggerImage(QString receiverAccount, QString imgPath);
+
     // 账号处理信号
     void loginSuccess(bool result);
     void registerSuccess(bool result);
+
     // 消息接收信号
     void messageReceived(Message *msg);
     void groupMessageReceived(Group *group, Message *msg);
@@ -55,7 +59,7 @@ signals:
     void receivedFriendResponse(Netizen *newFriend, const bool result);
     void acceptFriendRequestn(Netizen *);                //发送同意信号，添加好友到好友列表
     void acceptFriendRequestnm(Netizen *, QVariantList); //发送同意信号，添加好友到消息列表
-    void removeFriendssignals(const QString &account);
+    void removeFriendSignal(const QString &account);
 
 private:
     Netizen *_user;

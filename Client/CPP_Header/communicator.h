@@ -16,6 +16,7 @@ class Communicator : public QObject
 public:
     Communicator(Netizen *netizen);
     ~Communicator();
+
     // UDP广播通信
     void SendPeriodicOnlineBroadcast();
     void CheckUserTimeout();
@@ -45,9 +46,9 @@ private:
     QMap<QTcpSocket *, QByteArray> m_buffers; // TcpSocket缓冲
     QMap<QString, QDateTime> m_lastSeen; // 最后一次在线时间
 
-    void OnUdpReadyRead();
-    void OnNewTcpConnection();
-    void OnlineProcess(QJsonObject &obj);
-    void OfflineProcess(QJsonObject &obj);
-    void ConnectProcess(const QString &account, const QString &ip);
+    void OnUdpReadyRead();                                          // UDP处理
+    void OnNewTcpConnection();                                      // TCP处理
+    void OnlineProcess(QJsonObject &obj);                           // 上线消息处理
+    void OfflineProcess(QJsonObject &obj);                          // 离线消息处理
+    void ConnectProcess(const QString &account, const QString &ip); // 与对应账号建立TCP连接用于后续消息发送传输等
 };

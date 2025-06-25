@@ -47,8 +47,10 @@ public:
 private:
     // 单例访问指针
     static DatabaseManager *m_instance;
+
     // 数据库连接
     QSqlDatabase m_db;
+
     // 缓存管理
     QMap<QString, Group *> m_groups;       // 记录所有的群聊信息
     QMap<QString, Netizen *> m_netizens;   // 记录局域网中的所有账号

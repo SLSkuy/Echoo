@@ -29,7 +29,10 @@ public:
     // 用户属性获取，用户数据库信息存储
     QString GetPassword() {return m_password;}
     QString GetNickname()  { return m_nickName; }
-    Q_INVOKABLE void SetNickname(QString nickname)
+    QString GetAccount()  { return m_account; }
+    QString GetIpAddress()  { return m_ip; }
+    bool IsOnline() const { return m_isOnline; }
+    void SetNickname(QString nickname)
     {
         if (nickname != m_nickName) {
             m_nickName = nickname;
@@ -37,30 +40,27 @@ public:
             qDebug() << "update nickname";
         }
     }
-    QString GetAccount()  { return m_account; }
-    QString GetIpAddress()  { return m_ip; }
     void SetIpAddress(QString ip) { m_ip=ip; }
     void SetOnline(bool result) { m_isOnline=result; }
-    bool IsOnline() const { return m_isOnline; }
     QString GetSign() { return m_sign; }
-    Q_INVOKABLE void SetSign(QString sign)
+    void SetSign(QString sign)
     {
         if (sign != m_sign) {
             m_sign = sign;
             emit signChanged();
         }
     }
+
     // 头像
     Q_INVOKABLE void setAvatar(const QString &filePath);
-    Q_INVOKABLE void updateAvatar(const QString &base64Form) { m_avatar = base64Form; }
-    Q_INVOKABLE QString getAvatar() {return m_avatar; }
+    void updateAvatar(const QString &base64Form) { m_avatar = base64Form; }
+    QString getAvatar() { return m_avatar; }
 
     // 账号功能
+    QList<QString> GetFriendsAccount() { return m_friends.keys(); }
     Q_INVOKABLE QVariantList getFriends();
-    QList<QString> GetFriendsAccount(){return m_friends.keys();}
     Q_INVOKABLE QVariantList getGroups();
     bool LoginDetection(const QString &password);
-    void Logout() { m_isOnline = false; };
 
     // 好友管理
     bool AddFriend(Netizen *user);
@@ -87,6 +87,7 @@ signals:
     void imgReceived(Message *msg);
     void receivedFriendRequest(Netizen *newFriend);
     void receivedFriendResponse(Netizen *newFriend, const bool result);
+    void removeFriendSignal(const QString &account);
     void nicknameChanged();
     void onlineChanged();
     void ipChanged();

@@ -18,6 +18,7 @@ public:
     explicit Group(QObject *parent = nullptr);
     Group(const QString &groupName,const QString &account,QObject *parent = nullptr);
 
+    // 群组属性获取，用于数据库存储
     QString GetGroupName() { return m_groupName; }
     QString GetGroupAccount() { return m_account; }
     QString GetGroupOwner() { return m_owner; }
