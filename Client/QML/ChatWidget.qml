@@ -104,10 +104,9 @@ FrameLessWindow {
                                 break;
                             }
                         }
-                        var user=EchooClient.getThisInfo();
-                        if(RemoveFriend(account)){
-                            EchooClient.removeFriend(account)
-                                };
+
+                        EchooClient.removeFriendssignals(account);
+                        EchooClient.removeFriend(account);
                         chatwidget.close();
                         }
 
@@ -241,7 +240,7 @@ FrameLessWindow {
                                     nameFilters: ["Image files (*.png *.jpg *.jpeg)"] // 过滤图片文件
                                     onAccepted: {
                                         var filePath = fileDialog.selectedFile.toString();
-                                        EchooClient.triggerImage(account,filePath);
+                                        // EchooClient.triggerImage(account,filePath);
                                         EchooClient.sendImage(account,filePath);
                                         messageModel.append({ picture:filePath, isMe: true })
 
