@@ -4,9 +4,6 @@
 
 #include "databasemanager.h"
 #include "echooclient.h"
-#include "message.h"
-#include "netizen.h"
-#include "group.h"
 
 int main(int argc, char *argv[])
 {
@@ -17,9 +14,6 @@ int main(int argc, char *argv[])
     // 避免出现QML已经加载但client对象还未初始化
     EchooClient client;
     engine.rootContext()->setContextProperty("EchooClient", &client);
-    qmlRegisterType<Message>("EchooClient", 1, 0, "Message");
-    qmlRegisterType<Netizen>("EchooClient", 1, 0, "Netizen");
-    qmlRegisterType<Group>("EchooClient", 1, 0, "Group");
 
     QObject::connect(
         &engine,

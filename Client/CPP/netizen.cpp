@@ -202,7 +202,11 @@ QVariantList Netizen::getGroups()
 
 void Netizen::setAvatar(const QString &filePath)
 {
-    QFile file(filePath);
+    // 去除开头的file://
+    QString cleanedPath = filePath;
+    if (cleanedPath.startsWith("file://")) { cleanedPath.remove(0, 7); }
+
+    QFile file(cleanedPath);
     if (!file.open(QIODevice::ReadOnly)) {
         Logger::Error("Can't open image: " + filePath);
         return;

@@ -5,6 +5,7 @@
 #include <QString>
 #include <QMap>
 #include <QDebug>
+#include <QtQml/qqmlregistration.h>
 
 class Group;
 class Communicator;
@@ -13,6 +14,7 @@ class Message;
 class Netizen : public QObject
 {
     Q_OBJECT
+    QML_ELEMENT
     Q_PROPERTY(QString nickname READ GetNickname WRITE SetNickname NOTIFY nicknameChanged)
     Q_PROPERTY(QString account READ GetAccount CONSTANT)
     Q_PROPERTY(bool online READ IsOnline NOTIFY onlineChanged)

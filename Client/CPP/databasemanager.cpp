@@ -118,7 +118,7 @@ bool DatabaseManager::loadFromDatabase()
         QString avatar = query.value(3).toString();
         QString sign = query.value(4).toString();
 
-        Logger::Log("Add Netizen: " + nickname + " " + account + " " + sign + " " + avatar.slice(0, 50));
+        Logger::Log("Add Netizen: " + nickname + " " + account + " " + sign);
 
         Netizen *user = new Netizen(nickname, account, password);
         user->SetOnline(false);
@@ -182,8 +182,7 @@ bool DatabaseManager::loadFromDatabase()
             continue;
         }
 
-        Logger::Log("Add Message: " + senderAccount + " " + receiverAccount + " " + content.slice(0, 50) + " "
-                    + timestampStr);
+        Logger::Log("Add Message: " + senderAccount + " " + receiverAccount + " " + content + " " + timestampStr);
 
         QDateTime timestamp = QDateTime::fromString(timestampStr, Qt::ISODate);
         Message *msg = new Message(sender, receiver, content, timestamp, static_cast<Message::MessageType>(type));
@@ -224,8 +223,7 @@ bool DatabaseManager::saveToDatabase()
         query.addBindValue(user->getAvatar());
         query.addBindValue(user->GetSign());
 
-        Logger::Log("Save Netizen: " + user->GetNickname() + " " + user->GetAccount() + " " + user->GetSign() + " "
-                    + user->getAvatar().slice(0, 50));
+        Logger::Log("Save Netizen: " + user->GetNickname() + " " + user->GetAccount() + " " + user->GetSign());
 
         if (!query.exec()) {
             qWarning() << "Failed to insert netizen:" << query.lastError().text();

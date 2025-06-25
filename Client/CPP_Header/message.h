@@ -2,12 +2,14 @@
 
 #include <QObject>
 #include <QDateTime>
+#include <QtQml/qqmlregistration.h>
 
 #include "netizen.h"
 
 class Message : public QObject
 {
     Q_OBJECT
+    QML_ELEMENT
     Q_PROPERTY(QString content READ GetMessage NOTIFY contentChanged)
     Q_PROPERTY(QString timestamp READ GetMessageTime NOTIFY timestampChanged)
     Q_PROPERTY(Netizen* sender READ GetSender NOTIFY senderChanged FINAL)
