@@ -104,10 +104,10 @@ FrameLessWindow {
                                 break;
                             }
                         }
-                        // removeFriend
-                        // EchooClient.RemoveFriendRequested(account)
-                        EchooClient.removeFriend(account)
-                        // removeFriendRequested(account);
+                        var user=EchooClient.getThisInfo();
+                        if(RemoveFriend(account)){
+                            EchooClient.removeFriend(account)
+                                };
                         chatwidget.close();
                         }
 
@@ -303,7 +303,9 @@ FrameLessWindow {
         function onMessageReceived(msg) {
             messageItem.unreadCount = "1";
             messageModel.append({message: msg.content,isMe: !(msg.sender.account === account)})
-            console.log("message")
+            console.log("message");
+
+
         }
         function onImgReceived(msgg){
             messageItem.unreadCount = "1";
@@ -328,6 +330,8 @@ FrameLessWindow {
     TapHandler{
         onTapped:{
             messageItem.unreadCount = "0"
+            clearunreadcount();
         }
     }
+    signal clearunreadcount();
 }

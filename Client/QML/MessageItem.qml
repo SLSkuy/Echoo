@@ -136,12 +136,15 @@ Rectangle {
                 chatWidget.show();
                 chatWidget.raise();
                 chatWidget.requestActivate();
+
                 // chatWidget.unreadCount.text = "0"; //点击进聊天界面就会让未读消息清零
             }
             unreadCount.text = "0"
         }
     }
-
+    function onClearunreadcount(){
+        unreadCount.text = "0"
+    }
 
     // 分割线
     Rectangle {
