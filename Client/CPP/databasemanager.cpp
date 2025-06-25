@@ -190,7 +190,7 @@ bool DatabaseManager::loadFromDatabase()
 
         QDateTime timestamp = QDateTime::fromString(timestampStr, Qt::ISODate);
         Message *msg = new Message(sender, receiver, content, timestamp, static_cast<Message::MessageType>(type));
-        m_allMessages.insert(msg);  // 记录消息
+        m_allMessages.append(msg); // 记录消息
     }
 
     return true;
@@ -281,6 +281,25 @@ bool DatabaseManager::saveToDatabase()
     return m_db.commit();
 }
 
+void DatabaseManager::ClassifyMessage(const QString account)
+{
+    // 按时间升序排序
+    std::sort(m_allMessages.begin(), m_allMessages.end(), [](Message *a, Message *b) {
+        return a->GetTime() < b->GetTime();
+    });
+    // 将数据库中的历史消息根据账号分类
+    for (auto it = m_allMessages.begin(); it != m_allMessages.end(); it++) {
+        if ((*it)->GetSender()->GetAccount() == account) {
+            auto receiver = (*it)->GetReceiver();
+            QString account;
+            if (auto user = qobject_cast<Netizen *>(receiver)) { account = user->GetAccount(); }
+            m_messages[account].append(*it);
+        } else {
+            QString account = (*it)->GetSender()->GetAccount();
+            m_messages[account].append(*it);
+        }
+    }
+}
 
 bool DatabaseManager::AddNetizen(Netizen *user)
 {
@@ -302,7 +321,7 @@ void DatabaseManager::AddMessage(QString &account, Message *message)
         m_messages[account] = messageList;
     }
     m_messages[account].append(message);
-    m_allMessages.insert(message); // 确保记录唯一指针
+    m_allMessages.append(message); // 确保记录唯一指针
 }
 
 bool DatabaseManager::RemoveNetizen(const QString &account)

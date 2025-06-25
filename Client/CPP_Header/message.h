@@ -26,6 +26,7 @@ public:
     QString GetMessage() { return m_content; }
     QObject *GetReceiver() { return m_receiver; }
     QString GetMessageTime() { return m_timestamp.toString(); }
+    QDateTime GetTime() { return m_timestamp; }
     int GetMessageType() {return m_messageType;}
     bool LoadImage();
     QString GetImageData() const { return m_imageData.toBase64(); }
