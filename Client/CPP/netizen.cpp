@@ -135,6 +135,7 @@ void Netizen::CommandProcess(Message *msg)
         // 双向删除好友
         user->RemoveFriend(m_account);
         RemoveFriend(user->GetAccount());
+        emit removeFriendSignal(user->GetAccount());
     }
 }
 

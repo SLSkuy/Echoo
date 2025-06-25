@@ -86,7 +86,6 @@ void EchooClient::addFriendResponse(const QString &account, const bool result)
 void EchooClient::removeFriend(const QString &account)
 {
     _user->RemoveFriendRequest(account);
-    emit removeFriendssignals(account);
 }
 
 void EchooClient::sendImage(const QString &receiverAccount, const QString &imgPath)
