@@ -59,7 +59,6 @@ FrameLessWindow {
                     Friendtotal {
                         id: friendPage
                         anchors.fill: parent
-                        // notificationwidth:contentArea.width
                         visible: false
                         // color:"red"
                     }

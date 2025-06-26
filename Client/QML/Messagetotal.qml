@@ -79,12 +79,12 @@ Rectangle {
         }
     }
 
-<<<<<<< HEAD
+
     Connections {
         target: EchooClient
         function onMessageReceived(msg) {
             var netizen = EchooClient.getThisInfo()
-            for(var i = 0; i < msgListModel.length; i++){
+            for(var i = 0; i < msgListModel.count; i++){
                 if(msgListModel.get(i).account === msg.sender.account){
                     msgListModel.set(i, {
                                          picture:  msgListModel.get(i).picture,
@@ -102,13 +102,13 @@ Rectangle {
 
         function onImgReceived(msg){
             var netizen = EchooClient.getThisInfo()
-            for(var i = 0; i < msgListModel.length; i++){
+            for(var i = 0; i < msgListModel.count; i++){
                 if(msgListModel.get(i).account === msg.sender.account){
                     msgListModel.set(i, {
-                                         picture:  msgListModel.get(i).picture,
+                                         picture: msgListModel.get(i).picture,
                                          name: msgListModel.get(i).name,
                                          account: msgListModel.get(i).account,
-                                         lastMessage: msg.content,
+                                         lastMessage: "[图片]",
                                          time: new Date().toLocaleString(),
                                          unreadCount: msgListModel.get(i).unreadCount + 1,
                                          _isGroup:msgListModel.get(i)._isGroup
@@ -122,7 +122,7 @@ Rectangle {
             var messages = EchooClient.getMessageList(receiverAccount)
             var netizen = EchooClient.getThisInfo()
             // var friends = netizen.getFriends()
-            for(var i = 0; i < msgListModel.length; i++){
+            for(var i = 0; i < msgListModel.count; i++){
                 if(msgListModel.get(i).account === receiverAccount){
                     msgListModel.set(i, {
                                          picture:  msgListModel.get(i).picture,
@@ -134,7 +134,9 @@ Rectangle {
                                          _isGroup:msgListModel.get(i)._isGroup
                                      })
                     msgListModel.move(i, 0, 1);
+                    console.log("111111111111");
                 }
+                console.log(i);
             }
         }
 
@@ -142,13 +144,13 @@ Rectangle {
             var messages = EchooClient.getMessageList(receiverAccount)
             var netizen = EchooClient.getThisInfo()
             // var friends = netizen.getFriends()
-            for(var i = 0; i < msgListModel.length; i++){
+            for(var i = 0; i < msgListModel.count; i++){
                 if(msgListModel.get(i).account === receiverAccount){
                     msgListModel.set(i, {
                                          picture:  msgListModel.get(i).picture,
                                          name: msgListModel.get(i).name,
                                          account: msgListModel.get(i).account,
-                                         lastMessage: imgPath,
+                                         lastMessage: "[图片]",
                                          time: new Date().toLocaleString(),
                                          unreadCount: msgListModel.get(i).unreadCount + 1,
                                          _isGroup:msgListModel.get(i)._isGroup
@@ -158,6 +160,4 @@ Rectangle {
             }
         }
     }
-=======
->>>>>>> 7e49a3bde3438632ae5f3cf2185c868a414c2371
 }

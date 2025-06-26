@@ -104,15 +104,11 @@ FrameLessWindow {
                                 break;
                             }
                         }
-<<<<<<< HEAD
                             EchooClient.removeFriendssignals(account)
                             EchooClient.removeFriendRequest(account)
 
-=======
-
                         EchooClient.removeFriendsSignals(account);
                         EchooClient.removeFriend(account);
->>>>>>> 7e49a3bde3438632ae5f3cf2185c868a414c2371
                         chatwidget.close();
                         }
 

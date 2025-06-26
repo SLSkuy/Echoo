@@ -128,11 +128,11 @@ FrameLessWindow {
 
             ListView{
                 model: listModel
-                implicitWidth: parent.width
-                implicitHeight:  parent.height
+                Layout.preferredWidth: parent.width
+                Layout.preferredHeight: parent.height
 
                 delegate: Rectangle{
-                    implicitWidth:ListView.view.width
+                    width:ListView.view.width
                     // height: parent.height/listModel.count
                     height: 40
                     RowLayout{
