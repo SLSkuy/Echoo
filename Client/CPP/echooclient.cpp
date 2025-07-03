@@ -32,7 +32,6 @@ void EchooClient::login(const QString &account, const QString &password)
             connect(_user, &Netizen::imgReceived, this, &EchooClient::imgReceived);
             connect(_user, &Netizen::receivedFriendRequest, this, &EchooClient::receivedFriendRequest);
             connect(_user, &Netizen::receivedFriendResponse, this, &EchooClient::receivedFriendResponse);
-            connect(_user, &Netizen::removeFriendSignal, this, &EchooClient::removeFriendSignal);
         }
     }
     emit loginSuccess(false);
@@ -86,6 +85,7 @@ void EchooClient::addFriendResponse(const QString &account, const bool result)
 void EchooClient::removeFriend(const QString &account)
 {
     _user->RemoveFriendRequest(account);
+    emit removeFriendsSignals(account);
 }
 
 void EchooClient::sendImage(const QString &receiverAccount, const QString &imgPath)

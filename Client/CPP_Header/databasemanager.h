@@ -37,7 +37,6 @@ public:
     QList<Message *> GetHistroyMessages(const QString &account) { return m_messages[account]; }
     QList<Message *> GetOfflineMessages() { return m_offlineMessages; }
     void UpdateOfflineMessages(QList<Message *> offlineMessages) { m_offlineMessages = offlineMessages; }
-    void ClassifyMessage(const QString account);
 
     // 数据管理
     bool loadFromDatabase();
@@ -47,18 +46,12 @@ public:
 private:
     // 单例访问指针
     static DatabaseManager *m_instance;
-
     // 数据库连接
     QSqlDatabase m_db;
-
     // 缓存管理
     QMap<QString, Group *> m_groups;       // 记录所有的群聊信息
     QMap<QString, Netizen *> m_netizens;   // 记录局域网中的所有账号
     QMap<QString, QList<Message *>> m_messages; // 记录给定账号的所有聊天信息
-<<<<<<< HEAD
-    QSet<Message *> m_allMessages;              // 消息集合，用于析构时唯一析构
-=======
-    QList<Message *> m_allMessages; // 消息集合，用于析构时唯一析构
->>>>>>> origin/Client-Logic
+    QSet<Message *> m_allMessages;  // 消息集合，用于析构时唯一析构
     QList<Message *> m_offlineMessages; // 发送的离线消息，当有用户上线时，监测是否有离线消息，若有则向其发送消息
 };

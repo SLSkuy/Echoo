@@ -5,7 +5,6 @@
 #include <QString>
 #include <QMap>
 #include <QDebug>
-#include <QtQml/qqmlregistration.h>
 
 class Group;
 class Communicator;
@@ -14,7 +13,6 @@ class Message;
 class Netizen : public QObject
 {
     Q_OBJECT
-    QML_ELEMENT
     Q_PROPERTY(QString nickname READ GetNickname WRITE SetNickname NOTIFY nicknameChanged)
     Q_PROPERTY(QString account READ GetAccount CONSTANT)
     Q_PROPERTY(bool online READ IsOnline NOTIFY onlineChanged)
@@ -29,10 +27,7 @@ public:
     // 用户属性获取，用户数据库信息存储
     QString GetPassword() {return m_password;}
     QString GetNickname()  { return m_nickName; }
-    QString GetAccount()  { return m_account; }
-    QString GetIpAddress()  { return m_ip; }
-    bool IsOnline() const { return m_isOnline; }
-    void SetNickname(QString nickname)
+    Q_INVOKABLE void SetNickname(QString nickname)
     {
         if (nickname != m_nickName) {
             m_nickName = nickname;
@@ -40,38 +35,32 @@ public:
             qDebug() << "update nickname";
         }
     }
+    QString GetAccount()  { return m_account; }
+    QString GetIpAddress()  { return m_ip; }
     void SetIpAddress(QString ip) { m_ip=ip; }
     void SetOnline(bool result) { m_isOnline=result; }
-<<<<<<< HEAD
     bool IsOnline() const { return m_isOnline; }
     Q_INVOKABLE QString GetSign() { return m_sign; }
     Q_INVOKABLE void SetSign(QString sign)
-=======
-    QString GetSign() { return m_sign; }
-    void SetSign(QString sign)
->>>>>>> origin/Client-Logic
     {
         if (sign != m_sign) {
             m_sign = sign;
             emit signChanged();
-<<<<<<< HEAD
             qDebug() << "update sign";
             qDebug() << m_sign;
-=======
->>>>>>> origin/Client-Logic
         }
     }
-
     // 头像
     Q_INVOKABLE void setAvatar(const QString &filePath);
-    void updateAvatar(const QString &base64Form) { m_avatar = base64Form; }
-    QString getAvatar() { return m_avatar; }
+    Q_INVOKABLE void updateAvatar(const QString &base64Form) { m_avatar = base64Form; }
+    Q_INVOKABLE QString getAvatar() {return m_avatar; }
 
     // 账号功能
-    QList<QString> GetFriendsAccount() { return m_friends.keys(); }
     Q_INVOKABLE QVariantList getFriends();
+    QList<QString> GetFriendsAccount(){return m_friends.keys();}
     Q_INVOKABLE QVariantList getGroups();
     bool LoginDetection(const QString &password);
+    void Logout() { m_isOnline = false; };
 
     // 好友管理
     bool AddFriend(Netizen *user);
@@ -98,7 +87,6 @@ signals:
     void imgReceived(Message *msg);
     void receivedFriendRequest(Netizen *newFriend);
     void receivedFriendResponse(Netizen *newFriend, const bool result);
-    void removeFriendSignal(const QString &account);
     void nicknameChanged();
     void onlineChanged();
     void ipChanged();

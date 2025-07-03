@@ -6,7 +6,7 @@
 #include "logger.h"
 #include "group.h"
 
-Message::Message(QObject *parent) : QObject(parent) {}
+Message::Message(QObject *parent): QObject(parent){}
 Message::Message(Netizen *sender,
                  QObject *receiver,
                  const QString &content,
