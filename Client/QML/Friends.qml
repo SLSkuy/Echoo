@@ -24,27 +24,27 @@ Rectangle{
 
         delegate:
             FriendItem{
-                id:friendItem
-                height: 40
-                width: notification.width
-                friendheadPortrait.source: model.headPortrait
-                friendname.text: model.name
-                friendpersonid: model.account
-                friendsign.text: model.sign
+            id:friendItem
+            height: 40
+            width: notification.width
+            friendheadPortrait.source: model.headPortrait
+            friendname.text: model.name
+            friendpersonid: model.account
+            friendsign.text: model.sign
 
-                friendTaphandler.onDoubleTapped: {
-                    if (Qt.LeftButton && Qt.ControlModifier) {
-                        if (friendItem.isSelected) {
-                            friendItem.isSelected = false;
-                            // s1=0
-                        } else {
-                            friendItem.isSelected = true;
-                            // s1=1
-                        }
+            friendTaphandler.onDoubleTapped: {
+                if (Qt.LeftButton && Qt.ControlModifier) {
+                    if (friendItem.isSelected) {
+                        friendItem.isSelected = false;
+                        // s1=0
+                    } else {
+                        friendItem.isSelected = true;
+                        // s1=1
                     }
                 }
-
             }
+
+        }
 
     }
 
@@ -59,28 +59,28 @@ Rectangle{
         var netizen = EchooClient.getThisInfo();
         var friends = netizen.getFriends()
         for (var i = 0; i < friends.length; i++) {
-                GlobalModels.addFriend(friends[i])
-            }
+            GlobalModels.addFriend(friends[i])
+        }
     }
 
     Connections {
-           target: EchooClient
-           function onReceivedFriendResponse(user, result) {
-               if(result){
-                   var messages = EchooClient.getMessageList(user.account)
-                   console.log("添加的好友： "+user.account)
-                   GlobalModels.addFriend(user)
-               }
-           }
+        target: EchooClient
+        function onReceivedFriendResponse(user, result) {
+            if(result){
+                var messages = EchooClient.getMessageList(user.account)
+                console.log("添加的好友： "+user.account)
+                GlobalModels.addFriend(user)
+            }
+        }
 
-       }
+    }
     Connections {
-           target: EchooClient
-           function onAcceptFriendRequestn(netizen) {
-                    GlobalModels.addFriend(netizen)
-               conosle.log("niaccpectlema")
-               }
-           }
+        target: EchooClient
+        function onAcceptFriendRequestn(netizen) {
+            GlobalModels.addFriend(netizen)
+            console.log("niaccpectlema")
+        }
+    }
 
 
 
@@ -107,20 +107,22 @@ Rectangle{
 
         target:EchooClient
 
-        function onRemoveFriendList(user) {
-                    var friendAcount=user.account;
-                    for (var j = 0; j < friendstotal.friendlistmodel.count; j++) {
-                        var item1 = friendstotal.friendlistmodel.get(j);
-                        if (item1.account === friendAcount) {
-                            friendstotal.friendlistmodel.remove(j);
-                            console.log("delete friend's")
-                            break;
-                        }
+        function onRemoveFriendList(netizen,myselfAccount) {
+            var friendAcount=netizen.account;
+            var currentUserAccount = EchooClient.getThisInfo().account;
+            if(currentUserAccount!==friendAcount){
+                console.log("这不是你要改的user")
+            }else{
+                for (var j = 0; j < friendstotal.friendlistmodel.count; j++) {
+                    var item1 = friendstotal.friendlistmodel.get(j);
+                    if (item1.account === myselfAccount) {
+                        friendstotal.friendlistmodel.remove(j);
+                        console.log("delete friend's")
+                        break;
                     }
-
                 }
-
-
+            }
+        }
     }
 }
 
