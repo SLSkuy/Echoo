@@ -15,7 +15,6 @@ FrameLessWindow{
     height:300
 
 
-
     ColumnLayout{
         anchors.fill:parent
 

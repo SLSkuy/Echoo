@@ -6,8 +6,6 @@ import QtQuick.Layouts
 
 Rectangle {
     id:friend_single
-    implicitHeight: row.implicitHeight
-    implicitWidth: row.implicitWidth
 
     property bool isSelected: false  // 新增选中状态
     property bool hovered

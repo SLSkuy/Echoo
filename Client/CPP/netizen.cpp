@@ -133,11 +133,8 @@ void Netizen::CommandProcess(Message *msg)
         emit receivedFriendResponse(user, false);
     } else if (command == "removeFriend") {
         // 双向删除好友
-
         user->RemoveFriend(m_account);
         RemoveFriend(user->GetAccount());
-        emit removefriendList(user);
-        emit removemessagList(user);
     }
 }
 

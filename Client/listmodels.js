@@ -21,7 +21,7 @@ function addFriend(user) {
         headPortrait: avatar,
         name: user.nickname,
         account: user.account,
-        sign: user.sign,
+        // sign: user.sign,
         // s1: 0
     });
 }
@@ -42,17 +42,6 @@ function addMessagelist(user, message) {
         account: user.account
     });
 }
-
-// function text(usr, account){
-//     for (var j = 0; j < friendstotal.friendlistmodel.count; j++) {
-//         var item1 = friendstotal.friendlistmodel.get(j);
-//         if (item1.account === account) {
-//             friendstotal.friendlistmodel.remove(j);
-//             console.log("delete")
-//             break;
-//         }
-//     }
-// }
 
 function clearfriendModel(modelName) {
     modelName.clear();

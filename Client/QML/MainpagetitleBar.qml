@@ -19,8 +19,8 @@ ColumnLayout{
         Button {
             id: minimizeButton
             text: "—"
-            Layout.preferredHeight: 35
-            Layout.preferredWidth: 35
+            implicitHeight: 35
+            implicitWidth: 35
             background: Rectangle{
                 color: minimizeButton.hovered ? "gray" : "transparent"
                 border.color: "transparent"
@@ -31,8 +31,8 @@ ColumnLayout{
         Button{
             id: closeButton
             text: "×"
-            Layout.preferredHeight: 35
-            Layout.preferredWidth: 35
+            implicitHeight: 35
+            implicitWidth: 35
             onClicked: Qt.quit()
             background: Rectangle{
                 color: closeButton.hovered ? "red" : "transparent"
@@ -50,8 +50,8 @@ ColumnLayout{
             Layout.fillWidth: true
             Layout.leftMargin:12
             Layout.bottomMargin:10
-            Layout.preferredWidth:parent.width -row1.spacing - search.Layout.leftMargin - morebutton.Layout.rightMargin -morebutton.width
-            Layout.preferredHeight: 30
+            Layout.preferredWidth:parent.implicitWidth -row1.spacing - search.Layout.leftMargin - morebutton.Layout.rightMargin -morebutton.implicitWidth
+            implicitHeight: 30
             placeholderText:"🔍 搜索 "
             placeholderTextColor: "gray"
             background:Rectangle{

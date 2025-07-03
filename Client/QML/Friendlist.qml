@@ -6,16 +6,13 @@ import QtQuick.Layouts
 
 Rectangle{
     id:root
+    width: parent.width
     state: "hideState"
-
-    implicitHeight: column.implicitHeight
-    implicitWidth: column.implicitWidth
 
     property alias friendlist_text : text
     property alias more : more
 
     ColumnLayout{
-        id:column
         anchors.fill: parent
         RowLayout{
             id:row
@@ -40,8 +37,8 @@ Rectangle{
 
         Friends{
             id:friends
-            Layout.preferredHeight: root.height
-            Layout.preferredWidth: root.width
+            height: root.height
+            width: root.width
         }
     }
     states: [

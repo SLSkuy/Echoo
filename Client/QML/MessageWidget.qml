@@ -10,12 +10,11 @@ ListView {
     property color otherMessageColor: "lightblue"
     property string myNickname: ""
     property string receiverName: receivername
-    // property alias messageConte: message
     // property alias picture: picture
 
     delegate: Rectangle {
-        width: messageText.text === "" ? Math.max(messageText.implicitWidth + 10, imagemessage.width + 10): imagemessage.width + 20
-        height: messageText.text === "" ? Math.max(messageText.implicitHeight + 10, imagemessage.height + 10):implicitHeight+40
+        width: message === "" ? Math.max(messageText.implicitWidth + 10, imagemessage.width + 10): imagemessage.width + 20
+        height: message === "" ? Math.max(messageText.implicitHeight + 10, imagemessage.height + 10):implicitHeight+40
         color: isMe ? myMessageColor : otherMessageColor
         radius: 5
 
