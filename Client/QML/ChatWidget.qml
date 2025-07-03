@@ -104,9 +104,10 @@ FrameLessWindow {
                                 break;
                             }
                         }
-                            EchooClient.removeFriendssignals(account)
-                            EchooClient.removeFriendRequest(account)
 
+
+                        var netizen = EchooClient.getNetizen(account.text)
+                        EchooClient.removeFriendsListed(netizen)
                         EchooClient.removeFriendsSignals(account);
                         EchooClient.removeFriend(account);
                         chatwidget.close();

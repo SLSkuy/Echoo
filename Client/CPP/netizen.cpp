@@ -136,8 +136,6 @@ void Netizen::CommandProcess(Message *msg)
 
         user->RemoveFriend(m_account);
         RemoveFriend(user->GetAccount());
-        emit removefriendList(user);
-        emit removemessagList(user);
     }
 }
 

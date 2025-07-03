@@ -92,8 +92,6 @@ signals:
     void ipChanged();
     void signChanged();
     void avatarChanged();
-    void removefriendList(Netizen *notFriend);
-    void removemessagList(Netizen *notFriend);
 
 private:
     QString m_nickName;
