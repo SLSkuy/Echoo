@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON) # Globally preventing the fallback behaviour
 
 find_package(Qt6 REQUIRED COMPONENTS Quick Network Sql)
 
-qt_standard_project_setup(REQUIRES 6.5)
+qt_standard_project_setup(REQUIRES 6.9)
 
 qt_add_executable(appEchoo-Client)
 

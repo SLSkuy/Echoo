@@ -186,6 +186,7 @@ void Communicator::OnlineProcess(QJsonObject &obj)
             Netizen *user = db->GetNetizen(account);
             user->SetOnline(true);
             user->SetIpAddress(ip);
+            user->SetNickname(nickName);
             user->updateAvatar(avatar);
             user->SetSign(sign);
 
