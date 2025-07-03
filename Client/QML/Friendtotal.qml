@@ -3,8 +3,12 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 Rectangle{
-ColumnLayout {
-    anchors.fill: parent
+    implicitHeight: column.implicitHeight
+    implicitWidth: column.implicitWidth
+
+    ColumnLayout {
+        id:column
+        anchors.fill: parent
 
 
     // 好友通知标题栏
@@ -46,7 +50,6 @@ ColumnLayout {
 
     // 分割线
     Rectangle {
-        width: parent.width
         Layout.preferredWidth: parent.width
         Layout.preferredHeight: 1
         color: "#E6E6E6"
@@ -56,11 +59,11 @@ ColumnLayout {
     ListView {
         id: friendlist
         model: listModel
-        width: parent.width
-        height: parent.height
+        Layout.preferredWidth: parent.width
+        Layout.preferredHeight: parent.height
 
         delegate: Friendlist {
-            height: parent.height
+            Layout.preferredHeight: parent.height
             width: notification.width
             friendlist_text.text: model.text
         }

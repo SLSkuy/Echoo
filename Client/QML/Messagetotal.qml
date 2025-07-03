@@ -67,7 +67,18 @@ Rectangle {
             console.log("Accepting friend request from:", netizen.account)
             GlobalModels.addMessagelist(netizen, message)
         }
+        function onRemovemessagList(user){
+            account=user.account;
+            for (var i = 0; i < messagetotal.messagelistModel.count; i++) {
+                var item = messagetotal.messagelistModel.get(i);
+                if (item.account === account) {
+                    messagetotal.messagelistModel.remove(i);
+                    break;
+                }
+            }
+        }
     }
+
 
 
     Connections {

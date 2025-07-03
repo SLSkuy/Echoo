@@ -21,7 +21,7 @@ function addFriend(user) {
         headPortrait: avatar,
         name: user.nickname,
         account: user.account,
-        // sign: user.sign,
+        sign: user.sign,
         // s1: 0
     });
 }

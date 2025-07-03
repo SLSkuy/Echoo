@@ -104,11 +104,13 @@ FrameLessWindow {
                                 break;
                             }
                         }
-                            EchooClient.removeFriendssignals(account)
-                            EchooClient.removeFriendRequest(account)
+                        EchooClient.removeFriendssignals(account)
+                        EchooClient.removeFriendRequest(account)
+                        EchooClient.removeFriendsSignals(account);
+                        EchooClient.removeFriend(account);
 
                         chatwidget.close();
-                        }
+                    }
 
                     background: Rectangle {
                         color: "white"
@@ -156,20 +158,20 @@ FrameLessWindow {
                         }
 
                         Component.onCompleted: {
-                        // 传入账号获取消息列表和昵称
+                            // 传入账号获取消息列表和昵称
                             var messageList = EchooClient.getMessageList(account);
                             var user = EchooClient.getThisInfo();
                             myNickname=user.nickname;
                             for (var i = 0; i < messageList.length; i++) {
                                 // 示例处理
                                 messageModel.append({
-                                    picture:"",
-                                    message: messageList[i].content,
-                                    isMe: !(messageList[i].sender.account === account)})
-                                }
+                                                        picture:"",
+                                                        message: messageList[i].content,
+                                                        isMe: !(messageList[i].sender.account === account)})
                             }
                         }
                     }
+                }
 
                 // 消息输入区
                 Rectangle {
@@ -240,7 +242,7 @@ FrameLessWindow {
                                     nameFilters: ["Image files (*.png *.jpg *.jpeg)"] // 过滤图片文件
                                     onAccepted: {
                                         var filePath = fileDialog.selectedFile.toString();
-                                        EchooClient.triggerImage(account,filePath);
+                                        //EchooClient.triggerImage(account,filePath);
                                         EchooClient.sendImage(account,filePath);
                                         messageModel.append({ picture:filePath, isMe: true })
 

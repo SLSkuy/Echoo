@@ -13,8 +13,8 @@ ListView {
     // property alias picture: picture
 
     delegate: Rectangle {
-        width: message === "" ? Math.max(messageText.implicitWidth + 10, imagemessage.width + 10): imagemessage.width + 20
-        height: message === "" ? Math.max(messageText.implicitHeight + 10, imagemessage.height + 10):implicitHeight+40
+        width: messageText.text === "" ? Math.max(messageText.implicitWidth + 10, imagemessage.width + 10): imagemessage.width + 20
+        height: messageText.text === "" ? Math.max(messageText.implicitHeight + 10, imagemessage.height + 10):implicitHeight+40
         color: isMe ? myMessageColor : otherMessageColor
         radius: 5
 
