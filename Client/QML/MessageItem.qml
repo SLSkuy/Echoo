@@ -18,6 +18,7 @@ Rectangle {
 
     property bool hovered: false
     property alias receivername: messageItem.nickname
+    property alias unreadCountContainer :_unreadCountContainer
     color: hovered ? "#E6E6E6" : "transparent"
 
     RowLayout {
@@ -86,7 +87,7 @@ Rectangle {
             Layout.rightMargin: 10
             Layout.bottomMargin: 5
             visible: parseInt(messageItem.unreadCount.text) > 0 // 只有当未读消息数大于0时才显示
-
+            // visible: true
             Label {
                 anchors.centerIn: parent
                 id: _unreadCount
@@ -121,7 +122,6 @@ Rectangle {
                 groupchat.show();
                 groupchat.raise(); // 关键：置顶窗口
                 groupchat.requestActivate(); // 激活窗口
-                // groupchat.unreadCount.text = "0"; //点击进聊天界面就会让未读消息清零
             } else {
                 if(!chatWidget) {
                     var component2 = Qt.createComponent("ChatWidget.qml");
@@ -136,8 +136,6 @@ Rectangle {
                 chatWidget.show();
                 chatWidget.raise();
                 chatWidget.requestActivate();
-
-                // chatWidget.unreadCount.text = "0"; //点击进聊天界面就会让未读消息清零
             }
             unreadCount.text = "0"
         }

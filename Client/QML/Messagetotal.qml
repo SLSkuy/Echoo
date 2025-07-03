@@ -28,6 +28,7 @@ Rectangle {
             unreadCount: model.unreadCount
             isGroup: model._isGroup
             messageid: model.account
+            unreadCountContainer.visible: model.unread
         }
     }
 
@@ -92,8 +93,9 @@ Rectangle {
                                          account: msgListModel.get(i).account,
                                          lastMessage: msg.content,
                                          time: new Date().toLocaleString(),
-                                         unreadCount: msgListModel.get(i).unreadCount + 1,
-                                         _isGroup:msgListModel.get(i)._isGroup
+                                         unreadCount: 1,
+                                         _isGroup:msgListModel.get(i)._isGroup,
+                                         unread: 1
                                      })
                     msgListModel.move(i, 0, 1);
                 }
@@ -110,9 +112,11 @@ Rectangle {
                                          account: msgListModel.get(i).account,
                                          lastMessage: "[图片]",
                                          time: new Date().toLocaleString(),
-                                         unreadCount: msgListModel.get(i).unreadCount + 1,
-                                         _isGroup:msgListModel.get(i)._isGroup
+                                         unreadCount: 1,
+                                         _isGroup:msgListModel.get(i)._isGroup,
+                                         unread: 1
                                      })
+                    // console.log(unreadCount);
                     msgListModel.move(i, 0, 1);
                 }
             }
@@ -131,7 +135,8 @@ Rectangle {
                                          lastMessage: content,
                                          time: new Date().toLocaleString(),
                                          unreadCount: msgListModel.get(i).unreadCount + 1,
-                                         _isGroup:msgListModel.get(i)._isGroup
+                                         _isGroup:msgListModel.get(i)._isGroup,
+                                         unread: 0
                                      })
                     msgListModel.move(i, 0, 1);
                     console.log("111111111111");
@@ -153,7 +158,8 @@ Rectangle {
                                          lastMessage: "[图片]",
                                          time: new Date().toLocaleString(),
                                          unreadCount: msgListModel.get(i).unreadCount + 1,
-                                         _isGroup:msgListModel.get(i)._isGroup
+                                         _isGroup:msgListModel.get(i)._isGroup,
+                                         unread: 0
                                      })
                     msgListModel.move(i, 0, 1);
                 }

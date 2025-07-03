@@ -39,7 +39,8 @@ function addMessagelist(user, message) {
         time: lastMsg.timestamp,
         unreadCount: 0,
         _isGroup: 0,
-        account: user.account
+        account: user.account,
+        unread: 0
     });
 }
 
