@@ -56,8 +56,8 @@ signals:
     void acceptFriendRequestn(Netizen *);                //发送同意信号，添加好友到好友列表
     void acceptFriendRequestnm(Netizen *, QVariantList); //发送同意信号，添加好友到消息列表
     void removeFriendsSignals(const QString &account);
-    void removeFriendList(Netizen *notFriend);
-    void removeMessagList(Netizen *notFriend);
+    void removeFriendList(Netizen *);
+    void removeMessagList(Netizen *);
 
 private:
     Netizen *_user;

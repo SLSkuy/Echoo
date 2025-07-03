@@ -108,7 +108,7 @@ Rectangle{
         target:EchooClient
 
         function onRemoveFriendList(user) {
-                    friendAcount=user.account;
+                    var friendAcount=user.account;
                     for (var j = 0; j < friendstotal.friendlistmodel.count; j++) {
                         var item1 = friendstotal.friendlistmodel.get(j);
                         if (item1.account === friendAcount) {

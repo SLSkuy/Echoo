@@ -107,8 +107,8 @@ FrameLessWindow {
 
 
                         var netizen = EchooClient.getNetizen(account.text)
-                        EchooClient.removeFriendsListed(netizen)
-                        EchooClient.removeFriendsSignals(account);
+                        EchooClient.removeFriendList(netizen)
+                        // EchooClient.removeFriendsSignals(account);
                         EchooClient.removeFriend(account);
                         chatwidget.close();
                         }

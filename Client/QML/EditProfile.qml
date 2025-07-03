@@ -289,7 +289,7 @@ FrameLessWindow {
                         sex.color="pink"
                     }
                     region.text=regionCombo.currentText
-                    _image.source = EchooClient.getThisInfo().getAvatar()
+                    // _image.source = EchooClient.getThisInfo().getAvatar()
                     userheadPortrait.source=_image.source
                     myself_headPortrait.source=_image.source
                     _editprofile.close()
