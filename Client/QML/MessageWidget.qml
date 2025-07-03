@@ -10,6 +10,7 @@ ListView {
     property color otherMessageColor: "lightblue"
     property string myNickname: ""
     property string receiverName: receivername
+    // property alias messageConte: message
     // property alias picture: picture
 
     delegate: Rectangle {

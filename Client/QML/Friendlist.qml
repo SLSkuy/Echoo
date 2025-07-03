@@ -8,8 +8,8 @@ Rectangle{
     id:root
     state: "hideState"
 
-    // implicitHeight: column.implicitHeight
-    // implicitWidth: column.implicitWidth
+    implicitHeight: column.implicitHeight
+    implicitWidth: column.implicitWidth
 
     property alias friendlist_text : text
     property alias more : more

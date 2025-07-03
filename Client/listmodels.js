@@ -43,6 +43,17 @@ function addMessagelist(user, message) {
     });
 }
 
+// function text(usr, account){
+//     for (var j = 0; j < friendstotal.friendlistmodel.count; j++) {
+//         var item1 = friendstotal.friendlistmodel.get(j);
+//         if (item1.account === account) {
+//             friendstotal.friendlistmodel.remove(j);
+//             console.log("delete")
+//             break;
+//         }
+//     }
+// }
+
 function clearfriendModel(modelName) {
     modelName.clear();
 

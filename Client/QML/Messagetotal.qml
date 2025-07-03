@@ -80,7 +80,6 @@ Rectangle {
     }
 
 
-
     Connections {
         target: EchooClient
         function onMessageReceived(msg) {
