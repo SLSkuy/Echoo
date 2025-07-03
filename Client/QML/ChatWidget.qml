@@ -328,7 +328,6 @@ FrameLessWindow {
 
     TapHandler{
         onTapped:{
-            messageItem.unreadCountContainer.visible = false
             clearunreadcount();
         }
     }

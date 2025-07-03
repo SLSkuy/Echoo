@@ -166,4 +166,7 @@ Rectangle {
             }
         }
     }
+    function onClearunreadcount(){
+        //TODO
+    }
 }
