@@ -89,7 +89,7 @@ Rectangle{
 
         target:EchooClient
 
-        function onRemoveFriendsSignals(account){
+        function onRemoveFriendssignals(account){
             for (var j = 0; j < friendstotal.friendlistmodel.count; j++) {
                 var item1 = friendstotal.friendlistmodel.get(j);
                 if (item1.account === account) {
