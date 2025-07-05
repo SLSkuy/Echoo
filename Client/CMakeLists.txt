@@ -65,6 +65,7 @@ source_group("QML Files\\PersonPage" FILES
     QML/PersonPage.qml
     QML/EditProfile.qml
     QML/EditTitle.qml
+    QML/Avatar.qml
 )
 
 target_include_directories(appEchoo-Client PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/CPP_Header)

@@ -17,6 +17,7 @@ class UdpBroadcaster : public QObject {
     Q_OBJECT
 public:
     UdpBroadcaster(Netizen *netizen = nullptr);
+    ~UdpBroadcaster();
     void startBroadcast();
     void checkTimeout();
     QString getLocalIP();
