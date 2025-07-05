@@ -45,7 +45,7 @@ FrameLessWindow {
                 anchors.topMargin: 20
                 anchors.centerIn: parent
                 // source:"qrc:/resources/LoginImage.png"
-                source:EchooClient.getThisInfo().getAvatar()
+                source:EchooClient.getThisInfo().avatarFilePath();
             }
 
             FileDialog {

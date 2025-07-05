@@ -16,6 +16,7 @@ class TcpManager : public QObject {
     Q_OBJECT
 public:
     TcpManager(QObject *parent = nullptr);
+    ~TcpManager();
     void onlineProcess(const QJsonObject &obj);
     void offlineProcess(const QJsonObject &obj);
     QTcpSocket *getSocket(const QString &account);

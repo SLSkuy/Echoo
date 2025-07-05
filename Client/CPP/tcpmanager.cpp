@@ -9,6 +9,15 @@ TcpManager::TcpManager(QObject *parent): QObject(parent)
     connect(_tcpServer, &QTcpServer::newConnection, this, &TcpManager::onNewConnection);
 }
 
+TcpManager::~TcpManager()
+{
+    _tcpServer->deleteLater();
+    for(auto it = m_sockets.begin();it != m_sockets.end();it++)
+    {
+        it.value()->deleteLater();
+    }
+}
+
 QTcpSocket *TcpManager::getSocket(const QString &account)
 {
     return m_sockets.contains(account) ? m_sockets[account] : nullptr;

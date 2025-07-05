@@ -4,13 +4,36 @@
 #pragma once
 
 #include <QString>
-#include <QTcpSocket>
+#include <QTextStream>
+#include <QIODevice>
 
 class Logger
 {
 public:
+    class Stream {
+    public:
+        Stream(void (*logFunction)(const QString&));
+        ~Stream();
+
+        template <typename T>
+        Stream& operator<<(const T& value) {
+            m_stream << value;
+            return *this;
+        }
+
+    private:
+        QString m_buffer;
+        QTextStream m_stream;
+        void (*m_logFunc)(const QString&);
+    };
+
     static void Log(const QString &content);
     static void Error(const QString &content);
     static void Warning(const QString &content);
-    static void Message(const QString &content, QTcpSocket *socket);
+
+    static Stream log();
+    static Stream warning();
+    static Stream error();
 };
+
+

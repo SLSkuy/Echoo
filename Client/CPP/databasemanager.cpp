@@ -35,7 +35,7 @@ DatabaseManager::~DatabaseManager()
         it.value()->deleteLater();
     }
     qDeleteAll(m_allMessages);
-    // qDeleteAll(m_offlineMessages);
+    qDeleteAll(m_offlineMessages);
 }
 
 bool DatabaseManager::initDatabase()

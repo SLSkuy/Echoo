@@ -18,6 +18,12 @@ UdpBroadcaster::UdpBroadcaster(Netizen *netizen): _netizen(netizen),QObject(neti
     _timer->start(5000);    // 每5s广播一次在线消息
 }
 
+UdpBroadcaster::~UdpBroadcaster()
+{
+    _udpSocket->deleteLater();
+    _timer->deleteLater();
+}
+
 QString UdpBroadcaster::getLocalIP()
 {
     // 获取本机IP
