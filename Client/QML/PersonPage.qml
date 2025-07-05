@@ -17,8 +17,8 @@ FrameLessWindow{
         var n=EchooClient.getThisInfo();
         _username.text=n.nickname
         account = n.account
-        tx.source=n.getAvatar()
-        qm_nr.text=n.GetSign()
+        tx.source=n.avatarFilePath()
+        qm_nr.text=n.sign
 
     }
 

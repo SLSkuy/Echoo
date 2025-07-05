@@ -54,6 +54,9 @@ public:
     Q_INVOKABLE void setAvatar(const QString &filePath);
     Q_INVOKABLE void updateAvatar(const QString &base64Form) { m_avatar = base64Form; }
     Q_INVOKABLE QString getAvatar() {return m_avatar; }
+    Q_INVOKABLE QString avatarFilePath(){return generateTempAvatarFile();};
+    QString generateTempAvatarFile();
+    void cleanupTempAvatarFile();
 
     // 账号功能
     Q_INVOKABLE QVariantList getFriends();
@@ -99,6 +102,7 @@ private:
     QString m_password;
     bool m_isOnline;
     QString m_avatar; // 使用base64存储的头像信息
+    QString m_cachedAvatarFilePath; // 使用临时文件记录头像信息避免多个Image引用同一个base64导致崩溃
     QString m_sign;
 
     QMap<QString, Netizen *> m_friends;

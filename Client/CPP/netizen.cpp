@@ -1,5 +1,6 @@
 #include <QJsonObject>
 #include <QFile>
+#include <QStandardPaths>
 
 #include "databasemanager.h"
 #include "communicator.h"
@@ -18,6 +19,7 @@ Netizen::Netizen(const QString &nickName, const QString &account, const QString 
 
 Netizen::~Netizen()
 {
+    cleanupTempAvatarFile();
     delete _cmc;
 }
 
@@ -233,4 +235,60 @@ void Netizen::setAvatar(const QString &filePath)
     // 自动设置图片解析前缀
     QString base64 = QString::fromLatin1(imageData.toBase64());
     m_avatar = QString("data:image/%1;base64,%2").arg(imageType, base64);
+}
+
+QString Netizen::generateTempAvatarFile()
+{
+    if (!m_cachedAvatarFilePath.isEmpty() && QFile::exists(m_cachedAvatarFilePath)) {
+        Logger::Log("Using cached avatar:" + m_cachedAvatarFilePath);
+        return "file:///" + m_cachedAvatarFilePath;
+    }
+
+    if (!m_avatar.startsWith("data:image/"))
+        return {};
+
+    int base64Index = m_avatar.indexOf("base64,");
+    if (base64Index < 0)
+        return {};
+
+    QString mimeType = m_avatar.mid(11, m_avatar.indexOf(";") - 11);
+    QString ext = mimeType == "jpeg" ? "jpg" : mimeType;
+
+    QByteArray base64Data = m_avatar.mid(base64Index + 7).toUtf8();
+    QByteArray imageData = QByteArray::fromBase64(base64Data);
+
+    QString tempPath = QStandardPaths::writableLocation(QStandardPaths::TempLocation) + "/avatar_temp." + ext;
+
+    QFile file(tempPath);
+    if (file.open(QIODevice::WriteOnly)) {
+        file.write(imageData);
+        file.close();
+
+        // 保存路径以供清理
+        m_cachedAvatarFilePath = tempPath;
+
+        return "file:///" + tempPath;
+    }
+
+    Logger::warning() << "Failed to write avatar image to temp file.";
+    return {};
+}
+
+void Netizen::cleanupTempAvatarFile()
+{
+    if (m_cachedAvatarFilePath.isEmpty()) {
+        Logger::log() << " No cached avatar path set.";
+        return;
+    }
+
+    QFile file(m_cachedAvatarFilePath);
+    if (file.exists()) {
+        bool success = file.remove();
+        if (success)
+            Logger::log() << "Avatar file deleted:" << m_cachedAvatarFilePath;
+        else
+            Logger::warning() << "Failed to delete avatar file.";
+    } else {
+        Logger::log() << "Temp file does not exist:" << m_cachedAvatarFilePath;
+    }
 }
