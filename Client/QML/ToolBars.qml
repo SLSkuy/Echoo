@@ -86,7 +86,7 @@ import QtQuick.Window
                 Image {
                     id:_myself
                     anchors.fill: parent
-                    source: EchooClient.getThisInfo().getAvatar()
+                    source: EchooClient.getThisInfo().avatar
                 }
             }
             Button{

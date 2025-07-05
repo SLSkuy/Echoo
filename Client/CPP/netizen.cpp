@@ -27,7 +27,7 @@ bool Netizen::LoginDetection(const QString &password)
         // 连接p2p服务器
         _cmc = new Communicator(this);
 
-        m_ip = _cmc->GetLocalIP();
+        m_ip = _cmc->getLocalIP();
         connect(_cmc, &Communicator::messageReceived, this, &Netizen::messageReceived);
         connect(_cmc, &Communicator::groupMessageReceived, this, &Netizen::groupMessageReceived);
         connect(_cmc, &Communicator::imageReceived, this, &Netizen::imgReceived);
@@ -49,7 +49,7 @@ void Netizen::SendMessage(const QString &receiverAccount, const QString &content
     if (HasFriend(receiverAccount)) {
         // 创建消息实体对象,接受者设置为空用于委托检测是否有对应好友
         Message *msg = new Message(this, receiver, content, curTime);
-        _cmc->SendMessage(msg);
+        _cmc->sendMessage(msg);
 
         QString rec = receiverAccount;
         DatabaseManager::instance()->AddMessage(rec,msg);
@@ -66,7 +66,7 @@ void Netizen::SendGroupMessage(const QString &groupAccount, const QString &conte
     if (HasGroup(groupAccount)) {
         // 创建消息实体
         Message *msg = new Message(this, receiver, content, curTime);
-        _cmc->SendGroupMessage(msg);
+        _cmc->sendGroupMessage(msg);
     } else {
         Logger::Warning(m_account + " not in group " + groupAccount);
     }
@@ -86,7 +86,7 @@ void Netizen::SendImage(const QString &receiverAccount, const QString &imgPath)
             Logger::Error("Fail to load image.");
             return;
         }
-        _cmc->SendMessage(msg);
+        _cmc->sendMessage(msg);
 
         QString rec = receiverAccount;
         DatabaseManager::instance()->AddMessage(rec,msg);
@@ -150,7 +150,7 @@ void Netizen::RemoveFriendRequest(const QString &account)
     user->RemoveFriend(m_account);
 
     Message *msg = new Message(this, user, "removeFriend", time, Message::Command);
-    _cmc->SendMessage(msg);
+    _cmc->sendMessage(msg);
 }
 
 void Netizen::AddFriendRequest(const QString &account)
@@ -160,7 +160,7 @@ void Netizen::AddFriendRequest(const QString &account)
     QDateTime time = QDateTime::currentDateTime();
 
     Message *msg = new Message(this, user, "addFriend", time, Message::Command);
-    _cmc->SendMessage(msg);
+    _cmc->sendMessage(msg);
 }
 
 void Netizen::AddFriendResponse(const QString &account, const bool result)
@@ -178,7 +178,7 @@ void Netizen::AddFriendResponse(const QString &account, const bool result)
 
     QString response = (result == true) ? "acceptFriend" : "rejectFriend";
     Message *msg = new Message(this, user, response, time, Message::Command);
-    _cmc->SendMessage(msg);
+    _cmc->sendMessage(msg);
 }
 
 QVariantList Netizen::getFriends()
