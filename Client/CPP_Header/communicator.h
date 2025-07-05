@@ -1,31 +1,29 @@
 #pragma once
 
-#include <QUdpSocket>
-#include <QTcpServer>
-#include <QTcpSocket>
-#include <QMap>
-#include <QTimer>
+#include <QObject>
+#include <QString>
 
 class Group;
 class Message;
 class Netizen;
+class MessageSender;
+class MessageProcessor;
+class TcpManager;
+class UdpBroadcaster;
 
 class Communicator : public QObject
 {
     Q_OBJECT
 public:
-    Communicator(Netizen *netizen);
+    Communicator(Netizen *user);
     ~Communicator();
-    // UDP广播通信
-    void SendPeriodicOnlineBroadcast();
-    void CheckUserTimeout();
-    QString GetLocalIP();
 
-    // 消息传输与处理
-    void SendMessage(Message *message);
-    void SendGroupMessage(Message *message);
-    void OnlineMessageProcess(QTcpSocket *socket);
-    void OfflineMessageProcess(Netizen *user);
+    // 消息发送
+    void sendMessage(Message *message);
+    void sendGroupMessage(Message *message);
+
+    // IP相关
+    QString getLocalIP();
 
 signals:
     void messageReceived(Message *message);
@@ -34,20 +32,11 @@ signals:
     void imageReceived(Message *message);
 
 private:
-    Netizen *_netizen;
-    QUdpSocket *_udpSocket; // 用于广播通信
-    QTcpServer *_tcpServer; // 用于接收其他客户端程序的连接
-    quint16 m_udpPort;
-    quint16 m_tcpPort;
-    QTimer *_timer;
+    Netizen *_user;
+    MessageSender *_msgSender;
+    MessageProcessor *_msgProcessor;
+    TcpManager *_tm;
+    UdpBroadcaster *_ub;
 
-    QMap<QString, QTcpSocket *> m_sockets; // 记录当前在线的账号的TcpSocket连接
-    QMap<QTcpSocket *, QByteArray> m_buffers; // TcpSocket缓冲
-    QMap<QString, QDateTime> m_lastSeen; // 最后一次在线时间
-
-    void OnUdpReadyRead();
-    void OnNewTcpConnection();
-    void OnlineProcess(QJsonObject &obj);
-    void OfflineProcess(QJsonObject &obj);
-    void ConnectProcess(const QString &account, const QString &ip);
+    void signalsConnect();
 };
