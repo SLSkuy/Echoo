@@ -11,7 +11,7 @@ void MessageProcessor::messageProcess(QTcpSocket *socket, const QByteArray &json
         QString type = doc["message_type"].toString();
 
         // 保存消息，接受的消息的sender即是此客户端的receiver
-        QString sender = message->GetSender()->GetAccount();
+        QString sender = message->GetSender()->getAccount();
         DatabaseManager::instance()->AddMessage(sender, message);
 
         // 触发消息接收信号

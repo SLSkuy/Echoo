@@ -39,12 +39,12 @@ void UdpBroadcaster::startBroadcast()
 {
     // 定时发送在线消息
     QJsonObject response;
-    response["nickName"] = _netizen->GetNickname();
-    response["account"] = _netizen->GetAccount();
+    response["nickName"] = _netizen->getNickname();
+    response["account"] = _netizen->getAccount();
     response["online"] = true;
-    response["ip"] = _netizen->GetIpAddress();
+    response["ip"] = _netizen->getIpAddress();
     response["avatar"] = _netizen->getAvatar();
-    response["sign"] = _netizen->GetSign();
+    response["sign"] = _netizen->getSign();
     QJsonDocument doc(response);
     _udpSocket->writeDatagram(doc.toJson(), QHostAddress::Broadcast, m_udpPort);
 }
@@ -68,8 +68,8 @@ void UdpBroadcaster::checkTimeout()
     for (const QString &account : toOffline) {
         if (DatabaseManager::instance()->Contains(account)) {
             Netizen *netizen = DatabaseManager::instance()->GetNetizen(account);
-            if (netizen->IsOnline()) {
-                netizen->SetOnline(false);
+            if (netizen->isOnline()) {
+                netizen->setOnline(false);
                 Logger::Log(account + " timeout offline.");
 
                 // 发送用户离线信号

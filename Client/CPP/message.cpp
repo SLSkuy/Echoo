@@ -28,7 +28,7 @@ QByteArray Message::ToJson()
     // 进行类型转换，检测是发送群消息还是私聊
     if (auto user = qobject_cast<Netizen *>(m_receiver)) {
         json["message_type"] = "individual";
-        json["receiver_account"] = user->GetAccount();
+        json["receiver_account"] = user->getAccount();
     } else if (auto group = qobject_cast<class Group *>(m_receiver)) {
         json["message_type"] = "group";
         json["receiver_account"] = group->GetGroupAccount();
@@ -40,7 +40,7 @@ QByteArray Message::ToJson()
     }
 
     // 设置键值对
-    json["sender_account"] = m_sender->GetAccount();
+    json["sender_account"] = m_sender->getAccount();
     json["content"] = m_content;
     json["timestamp"] = m_timestamp.toString();
 

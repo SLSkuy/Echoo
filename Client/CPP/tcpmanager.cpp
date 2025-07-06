@@ -71,14 +71,14 @@ void TcpManager::onlineProcess(const QJsonObject &obj)
     DatabaseManager *db = DatabaseManager::instance();
     if (db->Contains(account)) {
         // 存在该用户
-        if (!db->GetNetizen(account)->IsOnline()) {
+        if (!db->GetNetizen(account)->isOnline()) {
             // 检测用户是否在线，若为否则标志为在线，并告诉对方自己也在线
             Netizen *user = db->GetNetizen(account);
-            user->SetOnline(true);
-            user->SetIpAddress(ip);
-            user->SetNickname(nickName);
+            user->setOnline(true);
+            user->setIpAddress(ip);
+            user->setNickname(nickName);
             user->updateAvatar(avatar);
-            user->SetSign(sign);
+            user->setSign(sign);
 
             // 在线处理
             connectProcess(account, ip);
@@ -90,8 +90,8 @@ void TcpManager::onlineProcess(const QJsonObject &obj)
     } else {
         // 不存在该用户，则添加
         Netizen *newUser = new Netizen(nickName, account, NULL, nullptr);
-        newUser->SetIpAddress(ip);
-        newUser->SetOnline(true);
+        newUser->setIpAddress(ip);
+        newUser->setOnline(true);
         newUser->updateAvatar(avatar);
         db->AddNetizen(newUser);
 
@@ -107,8 +107,8 @@ void TcpManager::offlineProcess(const QJsonObject &obj)
     QString account = obj["account"].toString();
     if (DatabaseManager::instance()->Contains(account)) {
         auto netizen = DatabaseManager::instance()->GetNetizen(account);
-        if (netizen->IsOnline()) {
-            netizen->SetOnline(false);
+        if (netizen->isOnline()) {
+            netizen->setOnline(false);
 
             // 删除socket连接
             m_buffers.remove(m_sockets[account]);

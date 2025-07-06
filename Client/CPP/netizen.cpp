@@ -1,294 +1,117 @@
-#include <QJsonObject>
-#include <QFile>
-#include <QStandardPaths>
+#include <qvariant.h>
 
-#include "databasemanager.h"
-#include "communicator.h"
-#include "message.h"
+#include "group.h"
 #include "netizen.h"
-#include "logger.h"
+#include "userprofilemanager.h"
+#include "sessionmanager.h"
+#include "chatoperation.h"
+#include "communicator.h"
 
 Netizen::Netizen(QObject *parent) : QObject(parent) {}
-Netizen::Netizen(const QString &nickName, const QString &account, const QString &password, QObject *parent)
-    : m_nickName(nickName)
-    , m_account(account)
-    , m_password(password)
-    , m_isOnline(false)
-    , QObject(parent)
-{}
+Netizen::Netizen(const QString &nickname, const QString &account, const QString &password, QObject *parent)
+{
+    // 初始化用户资料
+    _upm = new UserProfileManager(nickname,this);
+    _sm = new SessionManager(account,password,this);
+}
 
 Netizen::~Netizen()
 {
-    cleanupTempAvatarFile();
-    delete _cmc;
+    _upm->deleteLater();
+    _sm->deleteLater();
+    _co->deleteLater();
 }
+
+void Netizen::signalConnect()
+{
+    // 消息接收
+    connect(_sm, &SessionManager::messageReceived, this, &Netizen::messageReceived);
+    connect(_sm, &SessionManager::groupMessageReceived, this, &Netizen::groupMessageReceived);
+    connect(_sm, &SessionManager::imageReceived, this, &Netizen::imgReceived);
+    connect(_co, &ChatOperation::receivedFriendRequest, this, &Netizen::receivedFriendRequest);
+    connect(_co, &ChatOperation::receivedFriendResponse, this, &Netizen::receivedFriendResponse);
+
+    // 命令处理
+    connect(_sm, &SessionManager::commandReceived, _co, &ChatOperation::commandProcess);
+
+    // 属性处理
+    connect(_sm, &SessionManager::onlineChanged, this, &Netizen::onlineChanged);
+    connect(_sm, &SessionManager::ipChanged, this, &Netizen::ipChanged);
+    connect(_upm, &UserProfileManager::nicknameChanged, this, &Netizen::nicknameChanged);
+    connect(_upm, &UserProfileManager::signChanged, this, &Netizen::signChanged);
+    connect(_upm, &UserProfileManager::avatarChanged, this, &Netizen::avatarChanged);
+}
+
+// 账号操作
+void Netizen::Logout() {_sm->logout();}
+QList<QString> Netizen::GetFriendsAccount() { return _co->getFriendsAccount(); }
 
 bool Netizen::LoginDetection(const QString &password)
 {
-    if (password == m_password) {
-        // 连接p2p服务器
-        _cmc = new Communicator(this);
+    Communicator *cmc = _sm->login(password);
+    if(cmc)
+    {
+        _co = new ChatOperation(cmc,this);
 
-        m_ip = _cmc->getLocalIP();
-        connect(_cmc, &Communicator::messageReceived, this, &Netizen::messageReceived);
-        connect(_cmc, &Communicator::groupMessageReceived, this, &Netizen::groupMessageReceived);
-        connect(_cmc, &Communicator::imageReceived, this, &Netizen::imgReceived);
-        connect(_cmc, &Communicator::commandReceived, this, &Netizen::CommandProcess);
-
-        // 设置在线信息
-        m_isOnline = true;
+        signalConnect();
         return true;
     }
     return false;
-}
-
-void Netizen::SendMessage(const QString &receiverAccount, const QString &content)
-{
-    // 从数据库获取发送对象指针
-    Netizen *receiver = DatabaseManager::instance()->GetNetizen(receiverAccount);
-    QDateTime curTime = QDateTime::currentDateTime();
-
-    if (HasFriend(receiverAccount)) {
-        // 创建消息实体对象,接受者设置为空用于委托检测是否有对应好友
-        Message *msg = new Message(this, receiver, content, curTime);
-        _cmc->sendMessage(msg);
-
-        QString rec = receiverAccount;
-        DatabaseManager::instance()->AddMessage(rec,msg);
-    } else {
-        Logger::Warning(receiverAccount + " is not " + m_account + "'s friend.");
-    }
-}
-
-void Netizen::SendGroupMessage(const QString &groupAccount, const QString &content)
-{
-    Group *receiver = DatabaseManager::instance()->GetGroup(groupAccount);
-    QDateTime curTime = QDateTime::currentDateTime();
-
-    if (HasGroup(groupAccount)) {
-        // 创建消息实体
-        Message *msg = new Message(this, receiver, content, curTime);
-        _cmc->sendGroupMessage(msg);
-    } else {
-        Logger::Warning(m_account + " not in group " + groupAccount);
-    }
-}
-
-void Netizen::SendImage(const QString &receiverAccount, const QString &imgPath)
-{
-    // 从数据库获取发送对象指针
-    Netizen *receiver = DatabaseManager::instance()->GetNetizen(receiverAccount);
-    QDateTime curTime = QDateTime::currentDateTime();
-
-    if (HasFriend(receiverAccount)) {
-        // 创建消息实体对象,接受者设置为空用于委托检测是否有对应好友
-        Message *msg = new Message(this, receiver, imgPath, curTime, Message::Image);
-        if (!msg->LoadImage()) {
-            // 图片加载失败
-            Logger::Error("Fail to load image.");
-            return;
-        }
-        _cmc->sendMessage(msg);
-
-        QString rec = receiverAccount;
-        DatabaseManager::instance()->AddMessage(rec,msg);
-    } else {
-        Logger::Warning(receiverAccount + " is not " + m_account + "'s friend.");
-    }
-}
-
-bool Netizen::AddFriend(Netizen *user)
-{
-    if (HasFriend(user->GetAccount())) {
-        // Logger::Warning(user->GetAccount() + " is already your friend.");
-        return false;
-    } else {
-        // Logger::Log("Add friend " + user->GetAccount());
-        m_friends.insert(user->GetAccount(), user);
-        return true;
-    }
-}
-
-bool Netizen::RemoveFriend(const QString &account)
-{
-    if (HasFriend(account)) {
-        Logger::Log("Remove friend " + account);
-        m_friends.remove(account);
-        return true;
-    }
-    Logger::Warning("you don't have friend " + account);
-    return false;
-}
-
-void Netizen::CommandProcess(Message *msg)
-{
-    Netizen *user = msg->GetSender();
-    QString command = msg->GetMessage();
-    if (command == "addFriend") {
-        emit receivedFriendRequest(user);
-    } else if (command == "acceptFriend") {
-        // 确认接受则双向确认
-        user->AddFriend(this);
-        AddFriend(user);
-        emit receivedFriendResponse(user, true);
-    } else if (command == "rejectFriend") {
-        emit receivedFriendResponse(user, false);
-    } else if (command == "removeFriend") {
-        // 双向删除好友
-
-        user->RemoveFriend(m_account);
-        RemoveFriend(user->GetAccount());
-    }
-}
-
-void Netizen::RemoveFriendRequest(const QString &account)
-{
-    // 发送删除好友请求
-    Netizen *user = DatabaseManager::instance()->GetNetizen(account);
-    QDateTime time = QDateTime::currentDateTime();
-
-    // 本地客户端双向删除
-    RemoveFriend(account);
-    user->RemoveFriend(m_account);
-
-    Message *msg = new Message(this, user, "removeFriend", time, Message::Command);
-    _cmc->sendMessage(msg);
-}
-
-void Netizen::AddFriendRequest(const QString &account)
-{
-    // 发送添加好友请求
-    Netizen *user = DatabaseManager::instance()->GetNetizen(account);
-    QDateTime time = QDateTime::currentDateTime();
-
-    Message *msg = new Message(this, user, "addFriend", time, Message::Command);
-    _cmc->sendMessage(msg);
-}
-
-void Netizen::AddFriendResponse(const QString &account, const bool result)
-{
-    // 发送添加好友回应
-    Netizen *user = DatabaseManager::instance()->GetNetizen(account);
-    QDateTime time = QDateTime::currentDateTime();
-
-    // 若同意添加好友则双向添加
-    // 发送确认信息给对方使对方也进行双向添加确认
-    if (result) {
-        AddFriend(user);
-        user->AddFriend(this);
-    }
-
-    QString response = (result == true) ? "acceptFriend" : "rejectFriend";
-    Message *msg = new Message(this, user, response, time, Message::Command);
-    _cmc->sendMessage(msg);
 }
 
 QVariantList Netizen::getFriends()
 {
-    QList<Netizen *> friends = m_friends.values();
+    QList<Netizen *> friends = _co->getFriends();
     QVariantList list;
     for (auto it = friends.begin(); it != friends.end(); it++) {
         list.append(QVariant::fromValue(*it));
     }
+
     return list;
 }
-
 QVariantList Netizen::getGroups()
 {
-    QList<Group *> groups = m_groups.values();
+    QList<Group *> groups = _co->getGroups();
     QVariantList list;
     for (auto it = groups.begin(); it != groups.end(); it++) {
         list.append(QVariant::fromValue(*it));
     }
     return list;
-};
-
-void Netizen::setAvatar(const QString &filePath)
-{
-    QString path = QUrl(filePath).toLocalFile();    // 转换为本地路径
-
-    QFile file(path);
-    if (!file.open(QIODevice::ReadOnly)) {
-        Logger::Error("Can't open image: " + filePath);
-        return;
-    }
-
-    QByteArray imageData = file.readAll();
-    file.close();
-
-    if (imageData.isEmpty()) {
-        Logger::Error("Image file is empty: " + filePath);
-        return;
-    }
-
-    // 判断图片格式
-    QString imageType;
-    if (imageData.startsWith("\x89PNG")) {
-        imageType = "png";
-    } else if (imageData.startsWith("\xFF\xD8\xFF")) {
-        imageType = "jpeg";
-    } else {
-        Logger::Error("Unsupported image format: " + filePath);
-        return;
-    }
-
-    // 自动设置图片解析前缀
-    QString base64 = QString::fromLatin1(imageData.toBase64());
-    m_avatar = QString("data:image/%1;base64,%2").arg(imageType, base64);
 }
 
-QString Netizen::generateTempAvatarFile()
-{
-    if (!m_cachedAvatarFilePath.isEmpty() && QFile::exists(m_cachedAvatarFilePath)) {
-        Logger::Log("Using cached avatar:" + m_cachedAvatarFilePath);
-        return "file:///" + m_cachedAvatarFilePath;
-    }
+// 消息操作
+void Netizen::sendMessage(const QString &receiverAccount, const QString &content) { _co->sendMessage(receiverAccount,content); }
+void Netizen::sendGroupMessage(const QString &groupAccount, const QString &content) { _co->sendGroupMessage(groupAccount,content); }
+void Netizen::sendImage(const QString &receiverAccount, const QString &imgPath) { _co->sendImage(receiverAccount,imgPath); }
 
-    if (!m_avatar.startsWith("data:image/"))
-        return {};
+// 属性获取
+QString Netizen::getNickname() { return _upm->nickname(); }
+QString Netizen::getAccount() { return _sm->getAccount(); }
+QString Netizen::getPassword() { return _sm->getPassword(); }
+bool Netizen::isOnline() { return _sm->isOnline(); }
+QString Netizen::getIpAddress() { return _sm->getLocalIP(); }
+QString Netizen::getSign() { return _upm->sign(); }
+QString Netizen::getAvatar() { return _upm->avatar(); }
+QString Netizen::getAvatarTmpFile() { return _upm->avatarTmpFilePath(); }
 
-    int base64Index = m_avatar.indexOf("base64,");
-    if (base64Index < 0)
-        return {};
+// 属性更新
+void Netizen::setNickname(const QString &nickname) { _upm->setNickname(nickname); }
+void Netizen::setIpAddress(const QString &ip) { _sm->setIpAddress(ip); }
+void Netizen::setSign(const QString &sign) { _upm->setSign(sign); }
+void Netizen::setOnline(const bool online) { _sm->setOnline(online); }
+void Netizen::updateAvatar(const QString &base64) { _upm->updateAvatar(base64); }
+void Netizen::setAvatar(const QString &filePath) { _upm->setAvatarFromFile(filePath); }
 
-    QString mimeType = m_avatar.mid(11, m_avatar.indexOf(";") - 11);
-    QString ext = mimeType == "jpeg" ? "jpg" : mimeType;
+// 好友管理
+bool Netizen::addFriend(Netizen *user) { return _co->addFriend(user); }
+bool Netizen::removeFriend(const QString &account) { return _co->removeFriend(account); }
+void Netizen::removeFriendRequest(const QString &account) { return _co->removeFriendRequest(account); }
+void Netizen::addFriendRequest(const QString &account) { return _co->addFriendRequest(account); }
+void Netizen::addFriendResponse(const QString &account, const bool result) { return _co->addFriendResponse(account,result); }
+bool Netizen::hasFriend(const QString &account) { return _co->hasFriend(account); }
 
-    QByteArray base64Data = m_avatar.mid(base64Index + 7).toUtf8();
-    QByteArray imageData = QByteArray::fromBase64(base64Data);
-
-    QString tempPath = QStandardPaths::writableLocation(QStandardPaths::TempLocation) + "/avatar_temp." + ext;
-
-    QFile file(tempPath);
-    if (file.open(QIODevice::WriteOnly)) {
-        file.write(imageData);
-        file.close();
-
-        // 保存路径以供清理
-        m_cachedAvatarFilePath = tempPath;
-
-        return "file:///" + tempPath;
-    }
-
-    Logger::warning() << "Failed to write avatar image to temp file.";
-    return {};
-}
-
-void Netizen::cleanupTempAvatarFile()
-{
-    if (m_cachedAvatarFilePath.isEmpty()) {
-        Logger::log() << " No cached avatar path set.";
-        return;
-    }
-
-    QFile file(m_cachedAvatarFilePath);
-    if (file.exists()) {
-        bool success = file.remove();
-        if (success)
-            Logger::log() << "Avatar file deleted:" << m_cachedAvatarFilePath;
-        else
-            Logger::warning() << "Failed to delete avatar file.";
-    } else {
-        Logger::log() << "Temp file does not exist:" << m_cachedAvatarFilePath;
-    }
-}
+// 群组功能
+bool Netizen::createGroup(const QString &name, const QString &owner) { return _co->createGroup(name,owner); }
+bool Netizen::joinGroup(Group *group) { return _co->joinGroup(group); }
+bool Netizen::leaveGroup(Group *group) { return _co->leaveGroup(group); }
+bool Netizen::hasGroup(const QString &account) { return _co->hasGroup(account); }
