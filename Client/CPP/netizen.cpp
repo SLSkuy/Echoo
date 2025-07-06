@@ -13,6 +13,7 @@ Netizen::Netizen(const QString &nickname, const QString &account, const QString 
     // 初始化用户资料
     _upm = new UserProfileManager(nickname,this);
     _sm = new SessionManager(account,password,this);
+    _co = new ChatOperation(_cmc,this);
 }
 
 Netizen::~Netizen()
@@ -48,11 +49,9 @@ QList<QString> Netizen::GetFriendsAccount() { return _co->getFriendsAccount(); }
 
 bool Netizen::LoginDetection(const QString &password)
 {
-    Communicator *cmc = _sm->login(password);
-    if(cmc)
+    _cmc = _sm->login(password);
+    if(_cmc)
     {
-        _co = new ChatOperation(cmc,this);
-
         signalConnect();
         return true;
     }

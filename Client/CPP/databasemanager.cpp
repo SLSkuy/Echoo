@@ -112,7 +112,7 @@ bool DatabaseManager::loadFromDatabase()
     QSqlQuery query;
 
     // 加载所有用户
-    if (!query.exec("SELECT account, nickname, password, avatar, sign, ip, online FROM netizens")) {
+    if (!query.exec("SELECT account, nickname, password, avatar, sign FROM netizens")) {
         qWarning() << "Failed to query netizens:" << query.lastError().text();
         return false;
     }
@@ -123,11 +123,8 @@ bool DatabaseManager::loadFromDatabase()
         QString password = query.value(2).toString();
         QString avatar = query.value(3).toString();
         QString sign = query.value(4).toString();
-        QString ip = query.value(5).toString();
-        bool online = query.value(6).toInt() != 0;
 
         Netizen *user = new Netizen(nickname, account, password);
-        user->setIpAddress(ip);
         user->setOnline(false);
         user->setSign(sign);
         user->updateAvatar(avatar);
@@ -218,16 +215,14 @@ bool DatabaseManager::saveToDatabase()
     }
 
     // 保存netizens
-    query.prepare("INSERT INTO netizens (account, nickname, password, avatar, sign, ip, online) "
-                  "VALUES (?, ?, ?, ?, ?, ?, ?)");
+    query.prepare("INSERT INTO netizens (account, nickname, password, avatar, sign) "
+                  "VALUES (?, ?, ?, ?, ?)");
     for (auto user : m_netizens.values()) {
         query.addBindValue(user->getAccount());
         query.addBindValue(user->getNickname());
         query.addBindValue(user->getPassword());
         query.addBindValue(user->getAvatarBase64());
         query.addBindValue(user->getSign());
-        query.addBindValue(user->getIpAddress());
-        query.addBindValue(user->isOnline() ? 1 : 0);
 
         if (!query.exec()) {
             qWarning() << "Failed to insert netizen:" << query.lastError().text();

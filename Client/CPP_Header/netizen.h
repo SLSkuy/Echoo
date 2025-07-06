@@ -4,6 +4,7 @@
 #include <QtQml/qqmlregistration.h>
 
 class UserProfileManager;
+class Communicator;
 class SessionManager;
 class ChatOperation;
 class Message;
@@ -87,6 +88,7 @@ private:
     UserProfileManager *_upm;
     SessionManager *_sm;
     ChatOperation *_co;
+    Communicator *_cmc;
 
     void signalConnect();
 };
