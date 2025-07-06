@@ -6,10 +6,12 @@
 #include <QObject>
 #include <QString>
 
+class Netizen;
+
 class UserProfileManager : public QObject {
     Q_OBJECT
 public:
-    UserProfileManager(QString nickname,QObject *parent = nullptr);
+    UserProfileManager(QString nickname,Netizen *parent = nullptr);
     ~UserProfileManager();
 
     // 基础资料获取操作
@@ -36,4 +38,6 @@ private:
     QString m_sign;
     QString m_avatar;
     QString m_cachedAvatarFilePath;
+
+    Netizen *_owner;
 };

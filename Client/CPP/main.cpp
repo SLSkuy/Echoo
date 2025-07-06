@@ -25,6 +25,8 @@ int main(int argc, char *argv[])
 
 
     int ret = app.exec();
-    DatabaseManager::instance()->destroy();
+    // 如果存在则销毁，防止未登陆时程序关闭而数据库单例并未创建导致虚空指针销毁
+    if(DatabaseManager::instance())
+        DatabaseManager::instance()->destroy();
     return ret;
 }

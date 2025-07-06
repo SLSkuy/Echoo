@@ -18,7 +18,7 @@ class Netizen : public QObject
     Q_PROPERTY(bool online READ isOnline NOTIFY onlineChanged)
     Q_PROPERTY(QString ipAddress READ getIpAddress WRITE setIpAddress NOTIFY ipChanged)
     Q_PROPERTY(QString sign READ getSign WRITE setSign NOTIFY signChanged)
-    Q_PROPERTY(QString avatar READ getAvatar WRITE updateAvatar NOTIFY avatarChanged)
+    Q_PROPERTY(QString avatar READ getAvatarTmpFile WRITE updateAvatar NOTIFY avatarChanged)
 
 public:
     explicit Netizen(QObject *parent = nullptr);
@@ -44,8 +44,8 @@ public:
     bool isOnline();
     QString getIpAddress();
     QString getSign();
-    QString getAvatar();    // 只有一处引用时可以是直接通过avatar属性获取头像，否则使用临时文件
-    Q_INVOKABLE QString getAvatarTmpFile();
+    QString getAvatarBase64();    // 只有一处引用时可以是直接通过avatar属性获取头像，否则使用临时文件
+    QString getAvatarTmpFile();
 
     // 属性更新
     void setNickname(const QString &nickname);

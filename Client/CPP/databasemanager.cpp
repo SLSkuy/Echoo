@@ -224,7 +224,7 @@ bool DatabaseManager::saveToDatabase()
         query.addBindValue(user->getAccount());
         query.addBindValue(user->getNickname());
         query.addBindValue(user->getPassword());
-        query.addBindValue(user->getAvatar());
+        query.addBindValue(user->getAvatarBase64());
         query.addBindValue(user->getSign());
         query.addBindValue(user->getIpAddress());
         query.addBindValue(user->isOnline() ? 1 : 0);

@@ -3,10 +3,12 @@
 #include <QUrl>
 
 #include "userprofilemanager.h"
+#include "netizen.h"
 #include "logger.h"
 
-UserProfileManager::UserProfileManager(QString nickname,QObject *parent)
+UserProfileManager::UserProfileManager(QString nickname,Netizen *parent)
     :QObject(parent)
+    ,_owner(parent)
     ,m_nickname(nickname)
 {}
 
@@ -105,7 +107,7 @@ QString UserProfileManager::generateAvatarTmpFile()
     QByteArray imageData = QByteArray::fromBase64(base64Data);
 
     // 临时存储在系统默认TMP文件夹中
-    QString tempPath = QStandardPaths::writableLocation(QStandardPaths::TempLocation) + "/avatar_temp." + ext;
+    QString tempPath = QStandardPaths::writableLocation(QStandardPaths::TempLocation) + "/avatar_temp" + _owner->getAccount() + "." + ext;
 
     QFile file(tempPath);
     if (file.open(QIODevice::WriteOnly)) {

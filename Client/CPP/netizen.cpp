@@ -91,7 +91,7 @@ QString Netizen::getPassword() { return _sm->getPassword(); }
 bool Netizen::isOnline() { return _sm->isOnline(); }
 QString Netizen::getIpAddress() { return _sm->getLocalIP(); }
 QString Netizen::getSign() { return _upm->sign(); }
-QString Netizen::getAvatar() { return _upm->avatar(); }
+QString Netizen::getAvatarBase64() { return _upm->avatar(); }
 QString Netizen::getAvatarTmpFile() { return _upm->avatarTmpFilePath(); }
 
 // 属性更新
