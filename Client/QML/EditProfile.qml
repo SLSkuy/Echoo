@@ -45,7 +45,7 @@ FrameLessWindow {
                 anchors.topMargin: 20
                 anchors.centerIn: parent
                 // source:"qrc:/resources/LoginImage.png"
-                source:EchooClient.getThisInfo().avatarFilePath();
+                source:EchooClient.getThisInfo().avatar
             }
 
             FileDialog {
@@ -270,13 +270,13 @@ FrameLessWindow {
                     if(nicknameField.text.length>0){
                         usernametext=nicknameField.text;
                         newName=nicknameField.text;
-                        n.SetNickname(newName);
+                        n.nickname = newName;
                     }
 
                     if(signatureField.text.length>0){
                         signature.text=signatureField.text;
                         newSign=signature.text;
-                        n.SetSign(newSign);
+                        n.sign = newSign;
                     }
 
                     if(genderCombo.currentText==="男"){

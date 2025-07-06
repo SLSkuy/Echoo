@@ -23,9 +23,9 @@ void EchooClient::login(const QString &account, const QString &password)
             emit loginSuccess(true);
 
             // 连接消息发送
-            connect(this, &EchooClient::triggerMessage, _user, &Netizen::SendMessage);
-            connect(this, &EchooClient::triggerGroupMessage, _user, &Netizen::SendGroupMessage);
-            connect(this, &EchooClient::triggerImage, _user, &Netizen::SendImage);
+            connect(this, &EchooClient::triggerMessage, _user, &Netizen::sendMessage);
+            connect(this, &EchooClient::triggerGroupMessage, _user, &Netizen::sendGroupMessage);
+            connect(this, &EchooClient::triggerImage, _user, &Netizen::sendImage);
             // 连接消息接收
             connect(_user, &Netizen::messageReceived, this, &EchooClient::messageReceived);
             connect(_user, &Netizen::groupMessageReceived, this, &EchooClient::groupMessageReceived);
@@ -74,23 +74,23 @@ QVariantList EchooClient::getNetizenList()
 
 void EchooClient::addFriendRequest(const QString &account)
 {
-    _user->AddFriendRequest(account);
+    _user->addFriendRequest(account);
 }
 
 void EchooClient::addFriendResponse(const QString &account, const bool result)
 {
-    _user->AddFriendResponse(account, result);
+    _user->addFriendResponse(account, result);
 }
 
 void EchooClient::removeFriend(const QString &account)
 {
-    _user->RemoveFriendRequest(account);
+    _user->removeFriendRequest(account);
     emit removeFriendsSignals(account);
 }
 
 void EchooClient::sendImage(const QString &receiverAccount, const QString &imgPath)
 {
-    _user->SendImage(receiverAccount, imgPath);
+    _user->sendImage(receiverAccount, imgPath);
 }
 
 void EchooClient::setAvatar(const QString &filePath)

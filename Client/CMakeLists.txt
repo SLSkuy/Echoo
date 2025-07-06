@@ -23,6 +23,9 @@ qt_add_qml_module(appEchoo-Client
         SOURCES CPP_Header/tcpmanager.h CPP/tcpmanager.cpp
         SOURCES CPP_Header/messagesender.h CPP/messagesender.cpp
         SOURCES CPP_Header/messageprocessor.h CPP/messageprocessor.cpp
+        SOURCES CPP_Header/userprofilemanager.h CPP/userprofilemanager.cpp
+        SOURCES CPP_Header/chatoperation.h CPP/chatoperation.cpp
+        SOURCES CPP_Header/sessionmanager.h CPP/sessionmanager.cpp
 )
 
 source_group("QML Files\\Account Window" FILES

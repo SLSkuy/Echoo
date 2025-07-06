@@ -3,12 +3,14 @@
 #include <QObject>
 #include <QString>
 #include <QMap>
+#include <QtQml/qqmlregistration.h>
 
 class Netizen;
 
 class Group : public QObject
 {
     Q_OBJECT
+    QML_ELEMENT
     Q_PROPERTY(QString groupName READ GetGroupName NOTIFY groupNameChanged)
     Q_PROPERTY(QString account READ GetGroupAccount NOTIFY accountChanged)
     Q_PROPERTY(QString owner READ GetGroupOwner NOTIFY ownerChanged)

@@ -6,7 +6,7 @@ MessageSender::MessageSender(TcpManager *tcpManager): QObject(tcpManager) {}
 
 void MessageSender::sendMessage(Message *message)
 {
-    QString receiverAccount = qobject_cast<Netizen *>(message->GetReceiver())->GetAccount();
+    QString receiverAccount = qobject_cast<Netizen *>(message->GetReceiver())->getAccount();
     QTcpSocket *socket = _tcpManager->getSocket(receiverAccount);
     if (socket) {
         // 消息序列化
@@ -37,7 +37,7 @@ void MessageSender::sendOfflineMessage(Netizen *user)
     for (QList<Message *>::iterator it = offlines.begin(); it != offlines.end(); ++it) {
         if (auto receiver = qobject_cast<Netizen *>((*it)->GetReceiver())) {
             if (receiver == user) {
-                qDebug() << "Sending offline message to user:" << user->GetAccount()
+                qDebug() << "Sending offline message to user:" << user->getAccount()
                 << "content:" << (*it)->GetMessage();
                 sendMessage(*it);
                 toRemove.append(*it);

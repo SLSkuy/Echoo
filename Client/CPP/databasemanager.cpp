@@ -28,14 +28,14 @@ DatabaseManager::~DatabaseManager()
 {
     saveToDatabase();
     // 释放内存
-    for (auto it = m_groups.begin(); it != m_groups.end(); ++it) {
-        it.value()->deleteLater();
-    }
-    for (auto it = m_netizens.begin(); it != m_netizens.end(); ++it) {
-        it.value()->deleteLater();
-    }
     qDeleteAll(m_allMessages);
     qDeleteAll(m_offlineMessages);
+    for (auto it = m_groups.begin(); it != m_groups.end(); ++it) {
+        delete it.value();
+    }
+    for (auto it = m_netizens.begin(); it != m_netizens.end(); ++it) {
+        delete it.value();
+    }
 }
 
 bool DatabaseManager::initDatabase()
@@ -112,7 +112,7 @@ bool DatabaseManager::loadFromDatabase()
     QSqlQuery query;
 
     // 加载所有用户
-    if (!query.exec("SELECT account, nickname, password, avatar, sign, ip, online FROM netizens")) {
+    if (!query.exec("SELECT account, nickname, password, avatar, sign FROM netizens")) {
         qWarning() << "Failed to query netizens:" << query.lastError().text();
         return false;
     }
@@ -123,13 +123,10 @@ bool DatabaseManager::loadFromDatabase()
         QString password = query.value(2).toString();
         QString avatar = query.value(3).toString();
         QString sign = query.value(4).toString();
-        QString ip = query.value(5).toString();
-        bool online = query.value(6).toInt() != 0;
 
         Netizen *user = new Netizen(nickname, account, password);
-        user->SetIpAddress(ip);
-        user->SetOnline(false);
-        user->SetSign(sign);
+        user->setOnline(false);
+        user->setSign(sign);
         user->updateAvatar(avatar);
 
         m_netizens.insert(account, user);
@@ -149,8 +146,8 @@ bool DatabaseManager::loadFromDatabase()
         Netizen *friendUser = m_netizens.value(friendAccount, nullptr);
 
         if (user && friendUser) {
-            user->AddFriend(friendUser);
-            friendUser->AddFriend(user);
+            user->addFriend(friendUser);
+            friendUser->addFriend(user);
         } else {
             qWarning() << "Friend link failed for " << userAccount << " -> " << friendAccount;
         }
@@ -218,16 +215,14 @@ bool DatabaseManager::saveToDatabase()
     }
 
     // 保存netizens
-    query.prepare("INSERT INTO netizens (account, nickname, password, avatar, sign, ip, online) "
-                  "VALUES (?, ?, ?, ?, ?, ?, ?)");
+    query.prepare("INSERT INTO netizens (account, nickname, password, avatar, sign) "
+                  "VALUES (?, ?, ?, ?, ?)");
     for (auto user : m_netizens.values()) {
-        query.addBindValue(user->GetAccount());
-        query.addBindValue(user->GetNickname());
-        query.addBindValue(user->GetPassword());
-        query.addBindValue(user->getAvatar());
-        query.addBindValue(user->GetSign());
-        query.addBindValue(user->GetIpAddress());
-        query.addBindValue(user->IsOnline() ? 1 : 0);
+        query.addBindValue(user->getAccount());
+        query.addBindValue(user->getNickname());
+        query.addBindValue(user->getPassword());
+        query.addBindValue(user->getAvatarBase64());
+        query.addBindValue(user->getSign());
 
         if (!query.exec()) {
             qWarning() << "Failed to insert netizen:" << query.lastError().text();
@@ -239,7 +234,7 @@ bool DatabaseManager::saveToDatabase()
     // 保存好友关系
     query.prepare("INSERT INTO friends (user_account, friend_account) VALUES (?, ?)");
     for (auto user : m_netizens.values()) {
-        QString userAccount = user->GetAccount();
+        QString userAccount = user->getAccount();
         for (const QString &friendAccount : user->GetFriendsAccount()) {
             query.addBindValue(userAccount);
             query.addBindValue(friendAccount);
@@ -255,11 +250,11 @@ bool DatabaseManager::saveToDatabase()
     query.prepare("INSERT INTO messages (sender, receiver, content, timestamp, type) "
                   "VALUES (?, ?, ?, ?, ?)");
     for (auto msg : m_allMessages) {
-        query.addBindValue(msg->GetSender()->GetAccount());
+        query.addBindValue(msg->GetSender()->getAccount());
 
         QString recAccount;
         if (Netizen *n = qobject_cast<Netizen*>(msg->GetReceiver())) {
-            recAccount = n->GetAccount();
+            recAccount = n->getAccount();
         } else if (Group *g = qobject_cast<Group*>(msg->GetReceiver())) {
             recAccount = g->GetGroupAccount();
         } else {
@@ -285,12 +280,12 @@ bool DatabaseManager::saveToDatabase()
 bool DatabaseManager::AddNetizen(Netizen *user)
 {
     // 检测是否存在对应用户
-    if (user && !Contains(user->GetAccount())) {
-        m_netizens.insert(user->GetAccount(), user);
-        Logger::Log("Account " + user->GetAccount() + " add successfully.");
+    if (user && !Contains(user->getAccount())) {
+        m_netizens.insert(user->getAccount(), user);
+        Logger::Log("Account " + user->getAccount() + " add successfully.");
         return true;
     } else {
-        Logger::Error("Account " + user->GetAccount() + " already exist.");
+        Logger::Error("Account " + user->getAccount() + " already exist.");
         return false;
     }
 }
