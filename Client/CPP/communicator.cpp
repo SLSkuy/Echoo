@@ -19,6 +19,7 @@ Communicator::Communicator(Netizen *user) : _user(user),QObject(user)
     _ub = new UdpBroadcaster(user);
     _msgProcessor = new MessageProcessor(this);
     _msgSender = new MessageSender(_tm);
+    signalsConnect();
 }
 
 Communicator::~Communicator()
