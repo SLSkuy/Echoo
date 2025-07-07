@@ -48,16 +48,6 @@ void Communicator::signalsConnect()
     connect(_ub,&UdpBroadcaster::userOffline,_tm,&TcpManager::offlineProcess);
 }
 
-void Communicator::setIpAddress(const QString &ip)
-{
-    if(ip != m_ip)
-    {
-        m_ip = ip;
-        emit ipChanged();
-    }
-}
-
-
 void Communicator::sendMessage(Message *message)
 {
     _msgSender->sendMessage(message);

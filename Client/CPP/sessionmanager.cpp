@@ -27,3 +27,12 @@ void SessionManager::setOnline(bool online)
         emit onlineChanged(m_isOnline);
     }
 }
+
+void SessionManager::setIpAddress(const QString &ip)
+{
+    if(ip != m_ip)
+    {
+        m_ip = ip;
+        emit ipChanged();
+    }
+}

@@ -24,14 +24,18 @@ public:
     QString getAccount() { return m_account; }
     QString getPassword() { return m_password; }
     bool isOnline() { return m_isOnline; }
+    QString ipAddress() { return m_ip; }
 
     // 属性设置
     void setOnline(bool online);
+    void setIpAddress(const QString &ip);
 
 signals:
     void onlineChanged(bool isOnline);
+    void ipChanged();
 
 private:
+    QString m_ip;
     QString m_account;
     QString m_password;
     bool m_isOnline;

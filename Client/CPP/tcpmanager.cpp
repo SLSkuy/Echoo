@@ -64,7 +64,6 @@ void TcpManager::onlineProcess(const QJsonObject &obj)
     QString nickName = obj["nickName"].toString();
     QString account = obj["account"].toString();
     QString ip = obj["ip"].toString();
-    QString avatar = obj["avatar"].toString();
     QString sign = obj["sign"].toString();
 
     // 检测当前设备本地数据库是否存在广播者信息
@@ -77,7 +76,6 @@ void TcpManager::onlineProcess(const QJsonObject &obj)
             user->setOnline(true);
             user->setIpAddress(ip);
             user->setNickname(nickName);
-            user->updateAvatar(avatar);
             user->setSign(sign);
 
             // 在线处理
@@ -92,7 +90,6 @@ void TcpManager::onlineProcess(const QJsonObject &obj)
         Netizen *newUser = new Netizen(nickName, account, NULL, nullptr);
         newUser->setIpAddress(ip);
         newUser->setOnline(true);
-        newUser->updateAvatar(avatar);
         db->AddNetizen(newUser);
 
         // 在线处理

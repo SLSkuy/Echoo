@@ -38,7 +38,7 @@ void Netizen::signalConnect()
 
     // 属性处理
     connect(_sm, &SessionManager::onlineChanged, this, &Netizen::onlineChanged);
-    connect(_cmc, &Communicator::ipChanged, this, &Netizen::ipChanged);
+    connect(_sm, &SessionManager::ipChanged, this, &Netizen::ipChanged);
     connect(_upm, &UserProfileManager::nicknameChanged, this, &Netizen::nicknameChanged);
     connect(_upm, &UserProfileManager::signChanged, this, &Netizen::signChanged);
     connect(_upm, &UserProfileManager::avatarChanged, this, &Netizen::avatarChanged);
@@ -98,7 +98,7 @@ QString Netizen::getAvatarTmpFile() { return _upm->avatarTmpFilePath(); }
 
 // 属性更新
 void Netizen::setNickname(const QString &nickname) { _upm->setNickname(nickname); }
-void Netizen::setIpAddress(const QString &ip) { _cmc->setIpAddress(ip); }
+void Netizen::setIpAddress(const QString &ip) { _sm->setIpAddress(ip); }
 void Netizen::setSign(const QString &sign) { _upm->setSign(sign); }
 void Netizen::setOnline(const bool online) { _sm->setOnline(online); }
 void Netizen::updateAvatar(const QString &base64) { _upm->updateAvatar(base64); }
