@@ -139,6 +139,12 @@ FrameLessWindow {
             width: parent.width
             height: parent.height - 120
 
+            TapHandler{
+                onTapped:{
+                    EchooClient.clearunreadcount(account);
+                }
+            }
+
             Column {
                 anchors.fill: parent
 
@@ -179,6 +185,12 @@ FrameLessWindow {
                     width: parent.width
                     height: 143
                     color: "white"
+
+                    TapHandler{
+                        onTapped:{
+                            EchooClient.clearunreadcount(account);
+                        }
+                    }
 
 
                     ToolBar{
@@ -246,8 +258,6 @@ FrameLessWindow {
                                         // EchooClient.triggerImage(account,filePath);
                                         EchooClient.sendImage(account,filePath);
                                         messageModel.append({ picture:filePath, isMe: true })
-
-
                                     }
                                 }
                             }
@@ -263,6 +273,11 @@ FrameLessWindow {
                         placeholderText: "输入消息..."
                         placeholderTextColor: "grey"
                         width:40
+                        TapHandler{
+                            onTapped:{
+                                EchooClient.clearunreadcount(account);
+                            }
+                        }
                     }
 
                     // 发送按钮
@@ -279,6 +294,7 @@ FrameLessWindow {
                             EchooClient.triggerMessage(account,messageInput.text);
                             messageModel.append({ sender: "我", message: messageInput.text, isMe: true })
                             messageInput.text = ""
+                            EchooClient.clearunreadcount(account);
 
                         }
                     }
@@ -291,12 +307,14 @@ FrameLessWindow {
                         onClicked: {
                             chatwidget.visible = false
                             console.log("关闭聊天窗口" )
+                            EchooClient.clearunreadcount(account);
 
                         }
                     }
                 }
             }
         }
+
     }
 
     // 接受消息
@@ -327,10 +345,8 @@ FrameLessWindow {
     //       console.log("out")
     //   }
 
-    TapHandler{
-        onTapped:{
-            clearunreadcount();
-        }
+
+    Component.onCompleted: {
+        EchooClient.clearunreadcount(account);
     }
-    signal clearunreadcount();
 }

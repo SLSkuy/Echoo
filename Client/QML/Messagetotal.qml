@@ -92,7 +92,7 @@ Rectangle {
                                          name: msgListModel.get(i).name,
                                          account: msgListModel.get(i).account,
                                          lastMessage: msg.content,
-                                         time: new Date().toLocaleString(),
+                                         time: new Date().toLocaleString,
                                          unreadCount: 1,
                                          _isGroup:msgListModel.get(i)._isGroup,
                                          unread: 1
@@ -111,7 +111,7 @@ Rectangle {
                                          name: msgListModel.get(i).name,
                                          account: msgListModel.get(i).account,
                                          lastMessage: "[图片]",
-                                         time: new Date().toLocaleString(),
+                                         time: new Date().toLocaleString,
                                          unreadCount: 1,
                                          _isGroup:msgListModel.get(i)._isGroup,
                                          unread: 1
@@ -133,7 +133,7 @@ Rectangle {
                                          name: msgListModel.get(i).name,
                                          account: msgListModel.get(i).account,
                                          lastMessage: content,
-                                         time: new Date().toLocaleString(),
+                                         time: new Date().toLocaleString,
                                          unreadCount: msgListModel.get(i).unreadCount + 1,
                                          _isGroup:msgListModel.get(i)._isGroup,
                                          unread: 0
@@ -156,7 +156,7 @@ Rectangle {
                                          name: msgListModel.get(i).name,
                                          account: msgListModel.get(i).account,
                                          lastMessage: "[图片]",
-                                         time: new Date().toLocaleString(),
+                                         time: new Date().toLocaleString,
                                          unreadCount: msgListModel.get(i).unreadCount + 1,
                                          _isGroup:msgListModel.get(i)._isGroup,
                                          unread: 0
@@ -165,8 +165,25 @@ Rectangle {
                 }
             }
         }
+        function onClearunreadcount(account){
+            var messages = EchooClient.getMessageList(account)
+            var netizen = EchooClient.getThisInfo()
+            // var friends = netizen.getFriends()
+            for(var i = 0; i < msgListModel.count; i++){
+                if(msgListModel.get(i).account === account){
+                    msgListModel.set(i, {
+                                         picture:  msgListModel.get(i).picture,
+                                         name: msgListModel.get(i).name,
+                                         account: msgListModel.get(i).account,
+                                         lastMessage: msgListModel.get(i).lastMessage,
+                                         time: msgListModel.get(i).time,
+                                         unreadCount: msgListModel.get(i).unreadCount + 1,
+                                         _isGroup:msgListModel.get(i)._isGroup,
+                                         unread: 0
+                                     })
+                }
+            }
+        }
     }
-    function onClearunreadcount(){
-        //TODO
-    }
+
 }

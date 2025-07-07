@@ -58,6 +58,7 @@ signals:
     void removeFriendsSignals(const QString &account);
     void removeFriendList(Netizen *Friend, const QString &account);
     void removeMessagList(Netizen *);
+    void clearunreadcount(const QString &account);
 
 private:
     Netizen *_user;
