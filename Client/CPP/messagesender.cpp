@@ -2,11 +2,12 @@
 #include "databasemanager.h"
 #include "tcpmanager.h"
 
-MessageSender::MessageSender(TcpManager *tcpManager): QObject(tcpManager) {}
+MessageSender::MessageSender(TcpManager *tcpManager): QObject(tcpManager),_tcpManager(tcpManager) {}
 
 void MessageSender::sendMessage(Message *message)
 {
     QString receiverAccount = qobject_cast<Netizen *>(message->GetReceiver())->getAccount();
+
     QTcpSocket *socket = _tcpManager->getSocket(receiverAccount);
     if (socket) {
         // 消息序列化

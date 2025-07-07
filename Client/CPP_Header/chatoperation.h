@@ -41,6 +41,10 @@ public:
 signals:
     void receivedFriendRequest(Netizen *newFriend);
     void receivedFriendResponse(Netizen *newFriend,bool result);
+    void messageReceived(Message *message);
+    void groupMessageReceived(Group *group, Message *message);
+    void commandReceived(Message *message);
+    void imageReceived(Message *message);
 
 private:
     QMap<QString, Netizen *> m_friends;

@@ -19,6 +19,7 @@ Communicator::Communicator(Netizen *user) : _user(user),QObject(user)
     _ub = new UdpBroadcaster(user);
     _msgProcessor = new MessageProcessor(this);
     _msgSender = new MessageSender(_tm);
+
     signalsConnect();
 }
 
@@ -46,6 +47,16 @@ void Communicator::signalsConnect()
     connect(_ub,&UdpBroadcaster::userOnline,_tm,&TcpManager::onlineProcess);
     connect(_ub,&UdpBroadcaster::userOffline,_tm,&TcpManager::offlineProcess);
 }
+
+void Communicator::setIpAddress(const QString &ip)
+{
+    if(ip != m_ip)
+    {
+        m_ip = ip;
+        emit ipChanged();
+    }
+}
+
 
 void Communicator::sendMessage(Message *message)
 {

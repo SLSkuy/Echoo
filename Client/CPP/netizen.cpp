@@ -13,7 +13,7 @@ Netizen::Netizen(const QString &nickname, const QString &account, const QString 
     // 初始化用户资料
     _upm = new UserProfileManager(nickname,this);
     _sm = new SessionManager(account,password,this);
-    _co = new ChatOperation(_cmc,this);
+    _co = new ChatOperation(nullptr,this);
 }
 
 Netizen::~Netizen()
@@ -27,18 +27,18 @@ Netizen::~Netizen()
 void Netizen::signalConnect()
 {
     // 消息接收
-    connect(_sm, &SessionManager::messageReceived, this, &Netizen::messageReceived);
-    connect(_sm, &SessionManager::groupMessageReceived, this, &Netizen::groupMessageReceived);
-    connect(_sm, &SessionManager::imageReceived, this, &Netizen::imgReceived);
+    connect(_co, &ChatOperation::messageReceived, this, &Netizen::messageReceived);
+    connect(_co, &ChatOperation::groupMessageReceived, this, &Netizen::groupMessageReceived);
+    connect(_co, &ChatOperation::imageReceived, this, &Netizen::imgReceived);
     connect(_co, &ChatOperation::receivedFriendRequest, this, &Netizen::receivedFriendRequest);
     connect(_co, &ChatOperation::receivedFriendResponse, this, &Netizen::receivedFriendResponse);
 
     // 命令处理
-    connect(_sm, &SessionManager::commandReceived, _co, &ChatOperation::commandProcess);
+    connect(_co, &ChatOperation::commandReceived, _co, &ChatOperation::commandProcess);
 
     // 属性处理
     connect(_sm, &SessionManager::onlineChanged, this, &Netizen::onlineChanged);
-    connect(_sm, &SessionManager::ipChanged, this, &Netizen::ipChanged);
+    connect(_cmc, &Communicator::ipChanged, this, &Netizen::ipChanged);
     connect(_upm, &UserProfileManager::nicknameChanged, this, &Netizen::nicknameChanged);
     connect(_upm, &UserProfileManager::signChanged, this, &Netizen::signChanged);
     connect(_upm, &UserProfileManager::avatarChanged, this, &Netizen::avatarChanged);
@@ -50,9 +50,11 @@ QList<QString> Netizen::GetFriendsAccount() { return _co->getFriendsAccount(); }
 
 bool Netizen::LoginDetection(const QString &password)
 {
-    _cmc = _sm->login(password);
-    if(_cmc)
+    if(_sm->login(password))
     {
+        delete _cmc;
+        _cmc = new Communicator(this);
+        _co = new ChatOperation(_cmc,this);
         signalConnect();
         return true;
     }
@@ -89,14 +91,14 @@ QString Netizen::getNickname() { return _upm->nickname(); }
 QString Netizen::getAccount() { return _sm->getAccount(); }
 QString Netizen::getPassword() { return _sm->getPassword(); }
 bool Netizen::isOnline() { return _sm->isOnline(); }
-QString Netizen::getIpAddress() { return _sm->getLocalIP(); }
+QString Netizen::getIpAddress() { return _cmc->getLocalIP(); }
 QString Netizen::getSign() { return _upm->sign(); }
 QString Netizen::getAvatarBase64() { return _upm->avatar(); }
 QString Netizen::getAvatarTmpFile() { return _upm->avatarTmpFilePath(); }
 
 // 属性更新
 void Netizen::setNickname(const QString &nickname) { _upm->setNickname(nickname); }
-void Netizen::setIpAddress(const QString &ip) { _sm->setIpAddress(ip); }
+void Netizen::setIpAddress(const QString &ip) { _cmc->setIpAddress(ip); }
 void Netizen::setSign(const QString &sign) { _upm->setSign(sign); }
 void Netizen::setOnline(const bool online) { _sm->setOnline(online); }
 void Netizen::updateAvatar(const QString &base64) { _upm->updateAvatar(base64); }

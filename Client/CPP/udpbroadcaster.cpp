@@ -43,10 +43,9 @@ void UdpBroadcaster::startBroadcast()
     response["account"] = _netizen->getAccount();
     response["online"] = true;
     response["ip"] = _netizen->getIpAddress();
-    response["avatar"] = _netizen->getAvatarBase64();
     response["sign"] = _netizen->getSign();
     QJsonDocument doc(response);
-    _udpSocket->writeDatagram(doc.toJson(), QHostAddress::Broadcast, m_udpPort);
+    _udpSocket->writeDatagram(doc.toJson(QJsonDocument::Compact), QHostAddress::Broadcast, m_udpPort);
 }
 
 void UdpBroadcaster::checkTimeout()
