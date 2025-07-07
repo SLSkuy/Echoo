@@ -71,6 +71,7 @@ void ChatOperation::commandProcess(Message *msg)
     Netizen *user = msg->GetSender();
     QString command = msg->GetMessage();
     if (command == "addFriend") {
+        qDebug() << "add friend.";
         emit receivedFriendRequest(user);
 
     } else if (command == "acceptFriend") {

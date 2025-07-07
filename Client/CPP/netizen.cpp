@@ -27,14 +27,14 @@ Netizen::~Netizen()
 void Netizen::signalConnect()
 {
     // 消息接收
-    connect(_co, &ChatOperation::messageReceived, this, &Netizen::messageReceived);
-    connect(_co, &ChatOperation::groupMessageReceived, this, &Netizen::groupMessageReceived);
-    connect(_co, &ChatOperation::imageReceived, this, &Netizen::imgReceived);
+    connect(_cmc, &Communicator::messageReceived, this, &Netizen::messageReceived);
+    connect(_cmc, &Communicator::groupMessageReceived, this, &Netizen::groupMessageReceived);
+    connect(_cmc, &Communicator::imageReceived, this, &Netizen::imgReceived);
     connect(_co, &ChatOperation::receivedFriendRequest, this, &Netizen::receivedFriendRequest);
     connect(_co, &ChatOperation::receivedFriendResponse, this, &Netizen::receivedFriendResponse);
 
     // 命令处理
-    connect(_co, &ChatOperation::commandReceived, _co, &ChatOperation::commandProcess);
+    connect(_cmc, &Communicator::commandReceived, _co, &ChatOperation::commandProcess);
 
     // 属性处理
     connect(_sm, &SessionManager::onlineChanged, this, &Netizen::onlineChanged);
