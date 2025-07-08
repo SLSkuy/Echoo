@@ -9,10 +9,10 @@ EchooClient::EchooClient(QObject *parent) : QObject(parent)
     DatabaseManager::instance()->initDatabase();
     DatabaseManager::instance()->loadFromDatabase();
 
-    // Netizen *user1 = DatabaseManager::instance()->GetNetizen("123");
-    // Netizen *user2 = DatabaseManager::instance()->GetNetizen("111");
-    // user1->addFriend(user2);
-    // user2->addFriend(user1);
+    Netizen *user1 = DatabaseManager::instance()->GetNetizen("123");
+    Netizen *user2 = DatabaseManager::instance()->GetNetizen("111");
+    user1->addFriend(user2);
+    user2->addFriend(user1);
 }
 
 EchooClient::~EchooClient(){}

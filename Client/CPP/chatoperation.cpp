@@ -20,9 +20,6 @@ void ChatOperation::sendMessage(const QString &receiverAccount, const QString &c
         // 创建消息实体对象,接受者设置为空用于委托检测是否有对应好友
         Message *msg = new Message(_owner, receiver, content, curTime);
         _cmc->sendMessage(msg);
-
-        QString rec = receiverAccount;
-        DatabaseManager::instance()->AddMessage(rec,msg);
     } else {
         Logger::warning() << receiverAccount + " is not your friend.";
     }

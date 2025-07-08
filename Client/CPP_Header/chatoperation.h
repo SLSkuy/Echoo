@@ -3,7 +3,6 @@
 
 #include <QObject>
 #include <QMap>
-#include <qDebug>
 
 class Netizen;
 class Group;

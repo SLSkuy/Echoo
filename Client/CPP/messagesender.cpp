@@ -24,6 +24,7 @@ void MessageSender::sendMessage(Message *message)
         DatabaseManager::instance()->AddMessage(receiverAccount, message);
     } else {
         // 用户当前不在线
+        qDebug() << "add offline messgae" << message;
         DatabaseManager::instance()->AddOfflineMessage(message);
     }
 }
