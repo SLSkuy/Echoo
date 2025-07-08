@@ -94,7 +94,8 @@ bool DatabaseManager::initDatabase()
             "receiver TEXT,"
             "content TEXT,"
             "timestamp TEXT,"
-            "type INTEGER)")) {
+            "type INTEGER,"
+            "image_data TEXT)")) {
         qWarning() << "Failed to create messages table:" << query.lastError().text();
         return false;
     }
@@ -144,7 +145,6 @@ bool DatabaseManager::loadFromDatabase()
 
         Netizen *user = m_netizens.value(userAccount, nullptr);
         Netizen *friendUser = m_netizens.value(friendAccount, nullptr);
-
         if (user && friendUser) {
             user->addFriend(friendUser);
             friendUser->addFriend(user);
@@ -155,7 +155,7 @@ bool DatabaseManager::loadFromDatabase()
 
 
     // 加载消息
-    if (!query.exec("SELECT sender, receiver, content, timestamp, type FROM messages")) {
+    if (!query.exec("SELECT sender, receiver, content, timestamp, type, image_data FROM messages")) {
         qWarning() << "Failed to query messages:" << query.lastError().text();
         return false;
     }
@@ -166,6 +166,7 @@ bool DatabaseManager::loadFromDatabase()
         QString content = query.value(2).toString();
         QString timestampStr = query.value(3).toString();
         int type = query.value(4).toInt();
+        QString imageData = query.value(5).toString();
 
         Netizen *sender = m_netizens[senderAccount];
         if (!sender) {
@@ -187,7 +188,8 @@ bool DatabaseManager::loadFromDatabase()
 
         QDateTime timestamp = QDateTime::fromString(timestampStr, Qt::ISODate);
         Message *msg = new Message(sender, receiver, content, timestamp, static_cast<Message::MessageType>(type));
-        m_allMessages.insert(msg);  // 记录消息
+        msg->setImageData(imageData); // 加载图片Base64数据
+        m_allMessages.insert(msg);
     }
 
     return true;
@@ -247,24 +249,26 @@ bool DatabaseManager::saveToDatabase()
     }
 
     // 保存消息
-    query.prepare("INSERT INTO messages (sender, receiver, content, timestamp, type) "
-                  "VALUES (?, ?, ?, ?, ?)");
+    query.prepare("INSERT INTO messages (sender, receiver, content, timestamp, type, image_data) "
+                  "VALUES (?, ?, ?, ?, ?, ?)");
+
     for (auto msg : m_allMessages) {
-        query.addBindValue(msg->getSender()->getAccount());
+        query.addBindValue(msg->GetSender()->getAccount());
 
         QString recAccount;
-        if (Netizen *n = qobject_cast<Netizen*>(msg->getReceiver())) {
+        if (Netizen *n = qobject_cast<Netizen*>(msg->GetReceiver())) {
             recAccount = n->getAccount();
-        } else if (Group *g = qobject_cast<Group*>(msg->getReceiver())) {
+        } else if (Group *g = qobject_cast<Group*>(msg->GetReceiver())) {
             recAccount = g->GetGroupAccount();
         } else {
             recAccount = "";
         }
 
         query.addBindValue(recAccount);
-        query.addBindValue(msg->getMessage());
-        query.addBindValue(msg->getMessageTime());
+        query.addBindValue(msg->GetMessage());
+        query.addBindValue(msg->GetMessageTime());
         query.addBindValue(static_cast<int>(msg->getMessageType()));
+        query.addBindValue(msg->getImageData()); // 新增图片数据
 
         if (!query.exec()) {
             qWarning() << "Failed to insert message:" << query.lastError().text();

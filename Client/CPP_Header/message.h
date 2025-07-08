@@ -25,14 +25,14 @@ public:
             MessageType mType = Text,
             QObject *parent = nullptr);
 
-    QString getMessage() { return m_content; }
-    QObject *getReceiver() { return m_receiver; }
-    QString getMessageTime() { return m_timestamp.toString(); }
+    QString GetMessage() { return m_content; }
+    QObject *GetReceiver() { return m_receiver; }
+    QString GetMessageTime() { return m_timestamp.toString(); }
     int getMessageType() {return m_messageType;}
     QString getImageData() { return m_imageData; }
     void setImageData(QString base64) { m_imageData = base64; }
     bool loadImage();
-    Netizen *getSender()  { return m_sender; }
+    Netizen *GetSender()  { return m_sender; }
     void setSender(Netizen *sender) { m_sender = sender; }
 
     // 使用Json作为消息传输媒介

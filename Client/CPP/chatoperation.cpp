@@ -5,9 +5,8 @@
 #include "logger.h"
 #include "netizen.h"
 
-ChatOperation::ChatOperation(Communicator *cmc,Netizen *owner)
-    :_cmc(cmc)
-    ,_owner(owner)
+ChatOperation::ChatOperation(Netizen *owner)
+    :_owner(owner)
     ,QObject(owner)
 {}
 
@@ -68,8 +67,8 @@ void ChatOperation::sendImage(const QString &receiverAccount, const QString &img
 
 void ChatOperation::commandProcess(Message *msg)
 {
-    Netizen *user = msg->getSender();
-    QString command = msg->getMessage();
+    Netizen *user = msg->GetSender();
+    QString command = msg->GetMessage();
     if (command == "addFriend") {
         qDebug() << "add friend.";
         emit receivedFriendRequest(user);
@@ -106,10 +105,10 @@ void ChatOperation::commandProcess(Message *msg)
 bool ChatOperation::addFriend(Netizen *user)
 {
     if (hasFriend(user->getAccount())) {
-        Logger::Warning(user->getAccount() + " is already your friend.");
+        Logger::Warning(_owner->getAccount()+ ": " + user->getAccount() + " is already your friend.");
         return false;
     } else {
-        Logger::Log("Add friend " + user->getAccount());
+        Logger::Log(_owner->getAccount()+ ": " + "Add friend " + user->getAccount());
         m_friends.insert(user->getAccount(), user);
         return true;
     }
