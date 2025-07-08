@@ -25,13 +25,14 @@ public:
             MessageType mType = Text,
             QObject *parent = nullptr);
 
-    QString GetMessage() { return m_content; }
-    QObject *GetReceiver() { return m_receiver; }
-    QString GetMessageTime() { return m_timestamp.toString(); }
-    int GetMessageType() {return m_messageType;}
-    bool LoadImage();
-    QString GetImageData() const { return m_imageData.toBase64(); }
-    Netizen *GetSender()  { return m_sender; }
+    QString getMessage() { return m_content; }
+    QObject *getReceiver() { return m_receiver; }
+    QString getMessageTime() { return m_timestamp.toString(); }
+    int getMessageType() {return m_messageType;}
+    QString getImageData() { return m_imageData; }
+    void setImageData(QString base64) { m_imageData = base64; }
+    bool loadImage();
+    Netizen *getSender()  { return m_sender; }
     void setSender(Netizen *sender) { m_sender = sender; }
 
     // 使用Json作为消息传输媒介
@@ -49,6 +50,6 @@ private:
     QObject *m_receiver = nullptr; // 可以是Netizen或Group
     QString m_content;
     QDateTime m_timestamp;
-    QByteArray m_imageData = NULL; // 若传输图片时启用
+    QString m_imageData = NULL; // 若传输图片时启用
     MessageType m_messageType = Text;
 };

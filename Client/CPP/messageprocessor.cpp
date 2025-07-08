@@ -11,14 +11,14 @@ void MessageProcessor::messageProcess(QTcpSocket *socket, const QByteArray &json
         QString type = doc["message_type"].toString();
 
         // 保存消息，接受的消息的sender即是此客户端的receiver
-        QString sender = message->GetSender()->getAccount();
+        QString sender = message->getSender()->getAccount();
         DatabaseManager::instance()->AddMessage(sender, message);
 
         // 触发消息接收信号
         if (type == "individual") {
             emit messageReceived(message);
         } else if (type == "group") {
-            Group *group = qobject_cast<Group *>(message->GetReceiver());
+            Group *group = qobject_cast<Group *>(message->getReceiver());
             emit groupMessageReceived(group, message);
         } else if (type == "command") {
             emit commandReceived(message);

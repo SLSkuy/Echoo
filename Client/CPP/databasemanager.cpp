@@ -250,21 +250,21 @@ bool DatabaseManager::saveToDatabase()
     query.prepare("INSERT INTO messages (sender, receiver, content, timestamp, type) "
                   "VALUES (?, ?, ?, ?, ?)");
     for (auto msg : m_allMessages) {
-        query.addBindValue(msg->GetSender()->getAccount());
+        query.addBindValue(msg->getSender()->getAccount());
 
         QString recAccount;
-        if (Netizen *n = qobject_cast<Netizen*>(msg->GetReceiver())) {
+        if (Netizen *n = qobject_cast<Netizen*>(msg->getReceiver())) {
             recAccount = n->getAccount();
-        } else if (Group *g = qobject_cast<Group*>(msg->GetReceiver())) {
+        } else if (Group *g = qobject_cast<Group*>(msg->getReceiver())) {
             recAccount = g->GetGroupAccount();
         } else {
             recAccount = "";
         }
 
         query.addBindValue(recAccount);
-        query.addBindValue(msg->GetMessage());
-        query.addBindValue(msg->GetMessageTime());
-        query.addBindValue(static_cast<int>(msg->GetMessageType()));
+        query.addBindValue(msg->getMessage());
+        query.addBindValue(msg->getMessageTime());
+        query.addBindValue(static_cast<int>(msg->getMessageType()));
 
         if (!query.exec()) {
             qWarning() << "Failed to insert message:" << query.lastError().text();
