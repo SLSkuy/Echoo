@@ -114,7 +114,7 @@ Rectangle{
 
             for (var j = 0; j < friendstotal.friendlistmodel.count; j++) {
                 var item1 = friendstotal.friendlistmodel.get(j);
-                if (item1.account === myselfAccount) {
+                if (item1.account === friendAcount) {
                     friendstotal.friendlistmodel.remove(j);
                     console.log("delete friend's")
                     break;

@@ -108,7 +108,7 @@ FrameLessWindow {
                         var myselfAccount = EchooClient.getThisInfo().account;
                         var netizen = EchooClient.getNetizen(account)
                         // EchooClient.removeFriendList(netizen,myselfAccount)
-                        // EchooClient.removeFriendsSignals(account);
+                        EchooClient.removeFriendsSignals(account);
                         EchooClient.removeFriend(account);
                         chatwidget.close();
                         }
@@ -349,22 +349,22 @@ FrameLessWindow {
     Component.onCompleted: {
         EchooClient.clearunreadcount(account);
     }
-    Connections {
+    // Connections {
 
-        target:EchooClient
+    //     target:EchooClient
 
-        function onRemoveMessagList(netizen) {
-            var friendAcount=netizen.account;
+    //     function onRemoveMessagList(netizen) {
+    //         var friendAcount=netizen.account;
 
-            console.log("removestart")
+    //         console.log("removestart")
 
-            for (var i = 0; i < messagetotal.messagelistModel.count; i++) {
-                var item = messagetotal.messagelistModel.get(i);
-                if (item.account === friendAcount) {
-                    messagetotal.messagelistModel.remove(i);
-                    break;
-                }
-            }
-        }
-    }
+    //         for (var i = 0; i < messagetotal.messagelistModel.count; i++) {
+    //             var item = messagetotal.messagelistModel.get(i);
+    //             if (item.account === friendAcount) {
+    //                 messagetotal.messagelistModel.remove(i);
+    //                 break;
+    //             }
+    //         }
+    //     }
+    // }
 }

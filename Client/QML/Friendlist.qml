@@ -6,7 +6,7 @@ import QtQuick.Layouts
 
 Rectangle{
     id:root
-    state: "hideState"
+    state: "showState"
 
     implicitHeight: column.implicitHeight
     implicitWidth: column.implicitWidth

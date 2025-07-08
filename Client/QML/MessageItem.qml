@@ -15,10 +15,11 @@ Rectangle {
     property int unreadCount
     property bool isGroup: false
     property string messageid
-
+    property var thischatWidget
     property bool hovered: false
     property alias receivername: messageItem.nickname
     property alias unreadCountContainer :_unreadCountContainer
+
     color: hovered ? "#E6E6E6" : "transparent"
 
     RowLayout {
@@ -105,9 +106,11 @@ Rectangle {
     }
 
     TapHandler {
+
         //设置初始值为null
         property var groupchat: null;
         property var chatWidget: null;
+
         onTapped: {
             if(isGroup){
                 if(!groupchat) {
@@ -130,14 +133,29 @@ Rectangle {
                             flags: Qt.Window | Qt.FramelessWindowHint, account:messageid, receiver:nickname
                         });
                     }
+                    thischatWidget=chatWidget;
                     chatWidget.topBar.toptext = messageItem.nickname
                 }
 
                 chatWidget.show();
                 chatWidget.raise();
                 chatWidget.requestActivate();
+
             }
+
+
             unreadCount.text = "0"
+        }
+        function onRemoveMessagList(user){
+            var account=user.account;
+            for (var i = 0; i < messagetotal.messagelistModel.count; i++) {
+                var item = messagetotal.messagelistModel.get(i);
+                if (item.account === account) {
+                    thischatWidget.close();
+                    messagetotal.messagelistModel.remove(i);
+                    break;
+                }
+            }
         }
     }
     function onClearunreadcount(){
@@ -173,5 +191,19 @@ Rectangle {
     //         time = new Date().toLocaleString(Qt.locale(), "yyyy-MM-dd hh:mm:ss")
     //     }
     // }
+    Connections {
+        target: EchooClient
 
+        function onRemoveMessagList(user){
+            var account=user.account;
+            for (var i = 0; i < messagetotal.messagelistModel.count; i++) {
+                var item = messagetotal.messagelistModel.get(i);
+                if (item.account === account) {
+                    thischatWidget.close();
+                    messagetotal.messagelistModel.remove(i);
+                    break;
+                }
+            }
+        }
+    }
 }

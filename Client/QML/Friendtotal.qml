@@ -41,6 +41,7 @@ Rectangle{
                 onTapped: {
                     if (notification.friendnotification) {
                         notification.friendnotification.visible = true  // 点击时显示
+                        notification.friendnotification.show()
                         notification.friendnotification.raise()
                         notification.friendnotification.requestActivate()
                     }
