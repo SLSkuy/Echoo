@@ -83,6 +83,7 @@ signals:
     void imgReceived(Message *msg);
     void receivedFriendRequest(Netizen *newFriend);
     void receivedFriendResponse(Netizen *newFriend, const bool result);
+    void removeFriendList11(Netizen *Friend, const QString &account);
 
 private:
     UserProfileManager *_upm = nullptr;

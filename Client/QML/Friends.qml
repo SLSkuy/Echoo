@@ -107,9 +107,10 @@ Rectangle{
 
         target:EchooClient
 
-        function onRemoveFriendList(netizen,myselfAccount) {
+        function onRemoveFriendList11(netizen,myselfAccount) {
             var friendAcount=netizen.account;
             var currentUserAccount = EchooClient.getThisInfo().account;
+            console.log("removestart")
             if(currentUserAccount!==friendAcount){
                 console.log("这不是你要改的user")
             }else{

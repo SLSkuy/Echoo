@@ -31,6 +31,7 @@ void Netizen::signalConnect()
     connect(_cmc, &Communicator::groupMessageReceived, this, &Netizen::groupMessageReceived);
     connect(_cmc, &Communicator::imageReceived, this, &Netizen::imgReceived);
     connect(_co, &ChatOperation::receivedFriendRequest, this, &Netizen::receivedFriendRequest);
+    connect(_co, &ChatOperation::removeFriendList11, this, &Netizen::removeFriendList11);
     connect(_co, &ChatOperation::receivedFriendResponse, this, &Netizen::receivedFriendResponse);
 
     // 命令处理

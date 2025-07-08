@@ -31,6 +31,7 @@ void EchooClient::login(const QString &account, const QString &password)
             connect(_user, &Netizen::groupMessageReceived, this, &EchooClient::groupMessageReceived);
             connect(_user, &Netizen::imgReceived, this, &EchooClient::imgReceived);
             connect(_user, &Netizen::receivedFriendRequest, this, &EchooClient::receivedFriendRequest);
+            connect(_user, &Netizen::removeFriendList11, this, &EchooClient::removeFriendList11);
             connect(_user, &Netizen::receivedFriendResponse, this, &EchooClient::receivedFriendResponse);
         }
     }

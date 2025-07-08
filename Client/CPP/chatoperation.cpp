@@ -88,6 +88,7 @@ void ChatOperation::commandProcess(Message *msg)
         user->removeFriend(_owner->getAccount());
         _owner->removeFriend(user->getAccount());
 
+        emit removeFriendList11(user, _owner->getAccount());
     }
 }
 
@@ -126,6 +127,8 @@ void ChatOperation::removeFriendRequest(const QString &account)
 
     Message *msg = new Message(_owner, user, "removeFriend", time, Message::Command);
     _cmc->sendMessage(msg);
+    QString myAccouunt = _owner->getAccount();
+    // emit removeFriendList11(user, myAccouunt);
 }
 
 void ChatOperation::addFriendRequest(const QString &account)
