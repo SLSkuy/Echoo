@@ -111,17 +111,15 @@ Rectangle{
             var friendAcount=netizen.account;
             var currentUserAccount = EchooClient.getThisInfo().account;
             console.log("removestart")
-            if(currentUserAccount!==friendAcount){
-                console.log("这不是你要改的user")
-            }else{
-                for (var j = 0; j < friendstotal.friendlistmodel.count; j++) {
-                    var item1 = friendstotal.friendlistmodel.get(j);
-                    if (item1.account === myselfAccount) {
-                        friendstotal.friendlistmodel.remove(j);
-                        console.log("delete friend's")
-                        break;
-                    }
+
+            for (var j = 0; j < friendstotal.friendlistmodel.count; j++) {
+                var item1 = friendstotal.friendlistmodel.get(j);
+                if (item1.account === myselfAccount) {
+                    friendstotal.friendlistmodel.remove(j);
+                    console.log("delete friend's")
+                    break;
                 }
+
             }
         }
     }

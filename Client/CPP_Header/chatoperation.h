@@ -42,6 +42,7 @@ signals:
     void receivedFriendRequest(Netizen *newFriend);
     void receivedFriendResponse(Netizen *newFriend,bool result);
     void removeFriendList11(Netizen *Friend, const QString &account);
+    void removeMessagList(Netizen *Friend);
 
 private:
     QMap<QString, Netizen *> m_friends;

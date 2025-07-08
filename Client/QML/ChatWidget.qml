@@ -349,4 +349,22 @@ FrameLessWindow {
     Component.onCompleted: {
         EchooClient.clearunreadcount(account);
     }
+    Connections {
+
+        target:EchooClient
+
+        function onRemoveMessagList(netizen) {
+            var friendAcount=netizen.account;
+
+            console.log("removestart")
+
+            for (var i = 0; i < messagetotal.messagelistModel.count; i++) {
+                var item = messagetotal.messagelistModel.get(i);
+                if (item.account === friendAcount) {
+                    messagetotal.messagelistModel.remove(i);
+                    break;
+                }
+            }
+        }
+    }
 }

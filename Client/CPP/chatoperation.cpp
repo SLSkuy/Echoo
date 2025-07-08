@@ -89,6 +89,7 @@ void ChatOperation::commandProcess(Message *msg)
         _owner->removeFriend(user->getAccount());
 
         emit removeFriendList11(user, _owner->getAccount());
+        emit removeMessagList(user);
     }
 }
 

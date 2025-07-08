@@ -84,6 +84,7 @@ signals:
     void receivedFriendRequest(Netizen *newFriend);
     void receivedFriendResponse(Netizen *newFriend, const bool result);
     void removeFriendList11(Netizen *Friend, const QString &account);
+    void removeMessagList(Netizen *Friend);
 
 private:
     UserProfileManager *_upm = nullptr;
