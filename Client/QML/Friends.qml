@@ -85,23 +85,27 @@ Rectangle{
 
 
 
-    Connections {
+    // Connections {
 
-        target:EchooClient
+    //     target:EchooClient
 
-        function onRemoveFriendsSignals(account){
-            for (var j = 0; j < friendstotal.friendlistmodel.count; j++) {
-                var item1 = friendstotal.friendlistmodel.get(j);
-                if (item1.account === account) {
-                    friendstotal.friendlistmodel.remove(j);
-                    console.log("delete")
-                    break;
-                }
-            }
-        }
+    //     function onRemoveFriendsSignals(account){
+    //         for (var j = 0; j < friendstotal.friendlistmodel.count; j++) {
+    //             var item1 = friendstotal.friendlistmodel.get(j);
+    //             if (item1.account === account) {
+    //                 if(friendPersonpage){
+    //                     console("删除已存在的好友主页");
+    //                     friendPersonpage.close();
+    //                 }
+    //                 friendstotal.friendlistmodel.remove(j);
+    //                 console.log("delete")
+    //                 break;
+    //             }
+    //         }
+    //     }
 
 
-    }
+    // }
 
 
 }
