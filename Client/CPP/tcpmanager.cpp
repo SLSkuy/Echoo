@@ -79,12 +79,12 @@ void TcpManager::onlineProcess(const QJsonObject &obj)
             user->setIpAddress(ip);
             user->setNickname(nickName);
             user->setSign(sign);
-            if (user->getAvatarHash() != avatarHash) {
-                _owner->avatarRequest(account);  // ChatOperation or Netizen 的封装方法
-            }
 
             // 在线处理
             connectProcess(account, ip);
+            if (user->getAvatarHash() != avatarHash) {
+                _owner->avatarRequest(account); // ChatOperation or Netizen 的封装方法
+            }
 
             // 发送信号处理对方离线时发送给对方的消息
             emit offlineMessageProcess(db->GetNetizen(account));
@@ -97,12 +97,12 @@ void TcpManager::onlineProcess(const QJsonObject &obj)
         newUser->setOnline(true);
         newUser->setSign(sign);
         db->AddNetizen(newUser);
-        if (newUser->getAvatarHash() != avatarHash) {
-            _owner->avatarRequest(account);  // ChatOperation or Netizen 的封装方法
-        }
 
         // 在线处理
         connectProcess(account, ip);
+        if (newUser->getAvatarHash() != avatarHash) {
+            _owner->avatarRequest(account); // ChatOperation or Netizen 的封装方法
+        }
         Logger::Log(account + " online.");
     }
 }

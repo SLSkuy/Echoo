@@ -47,6 +47,7 @@ QByteArray Message::ToJson()
     // 设置消息类型
     if (m_messageType == Command) {
         json["message_type"] = "command";
+        json["image"] = getImageData();
     } else if (m_messageType == Image) {
         json["message_type"] = "image";
         json["content"] = getImageData();
@@ -71,7 +72,7 @@ Message* Message::FromJson(const QByteArray &jsonData)
     // 读取Json对象数据
     QString senderAccount = json["sender_account"].toString();
     QString receiverAccount = json["receiver_account"].toString();
-    QString messageType = json["receiver_type"].toString();
+    QString messageType = json["message_type"].toString();
     QString content = json["content"].toString();
     QDateTime timestamp = QDateTime::fromString(json["timestamp"].toString(), Qt::ISODate);
 
@@ -84,7 +85,9 @@ Message* Message::FromJson(const QByteArray &jsonData)
         receiver = DatabaseManager::instance()->GetGroup(receiverAccount);
     } else if (messageType == "command") {
         receiver = DatabaseManager::instance()->GetNetizen(receiverAccount);
-        return new Message(sender, receiver, content, timestamp, Command);
+        Message *msg = new Message(sender, receiver, content, timestamp, Command);
+        msg->setImageData(json["image"].toString());
+        return msg;
     } else if (messageType == "image") {
         receiver = DatabaseManager::instance()->GetNetizen(receiverAccount);
         return new Message(sender, receiver, content, timestamp, Image);
