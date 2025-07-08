@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QMap>
+#include <qDebug>
 
 class Netizen;
 class Group;
@@ -13,7 +14,8 @@ class ChatOperation : public QObject
 {
     Q_OBJECT
 public:
-    ChatOperation(Communicator *cmc,Netizen *owner = nullptr);
+    ChatOperation(Netizen *owner = nullptr);
+    void setCommunicator(Communicator *cmc) { _cmc = cmc; }
 
     // 消息功能
     void sendMessage(const QString &receiverAccount, const QString &content);
@@ -50,4 +52,3 @@ private:
     Netizen *_owner;
     Communicator *_cmc;
 };
-

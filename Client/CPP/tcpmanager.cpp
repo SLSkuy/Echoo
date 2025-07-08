@@ -83,6 +83,7 @@ void TcpManager::onlineProcess(const QJsonObject &obj)
             // 在线处理
             connectProcess(account, ip);
             if (user->getAvatarHash() != avatarHash) {
+                qDebug() << "请求" << account << "对方头像";
                 _owner->avatarRequest(account); // ChatOperation or Netizen 的封装方法
             }
 
@@ -101,6 +102,7 @@ void TcpManager::onlineProcess(const QJsonObject &obj)
         // 在线处理
         connectProcess(account, ip);
         if (newUser->getAvatarHash() != avatarHash) {
+            qDebug() << "请求" << account << "对方头像";
             _owner->avatarRequest(account); // ChatOperation or Netizen 的封装方法
         }
         Logger::Log(account + " online.");
