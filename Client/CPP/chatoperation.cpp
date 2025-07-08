@@ -20,9 +20,6 @@ void ChatOperation::sendMessage(const QString &receiverAccount, const QString &c
         // 创建消息实体对象,接受者设置为空用于委托检测是否有对应好友
         Message *msg = new Message(_owner, receiver, content, curTime);
         _cmc->sendMessage(msg);
-
-        QString rec = receiverAccount;
-        DatabaseManager::instance()->AddMessage(rec,msg);
     } else {
         Logger::warning() << receiverAccount + " is not your friend.";
     }
@@ -91,12 +88,14 @@ void ChatOperation::commandProcess(Message *msg)
         emit removeMessagList(user);
 
     }else if (command == "requestAvatar") {
+        qDebug() << "receive avatar request";
         QString avatarBase64 = _owner->getAvatarBase64();
         Message *msg = new Message(_owner,user,"responseAvatar",QDateTime::currentDateTime(),Message::Command);
         msg->setImageData(avatarBase64);
 
         _cmc->sendMessage(msg);
     }else if (command == "responseAvatar") {
+        qDebug() << "receive acatar response";
         QString avatarBase64 = msg->getImageData();
         user->updateAvatar(avatarBase64);
     }
