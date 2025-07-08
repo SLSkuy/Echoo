@@ -47,6 +47,7 @@ public:
     QString getSign();
     QString getAvatarBase64();    // 只有一处引用时可以是直接通过avatar属性获取头像，否则使用临时文件
     QString getAvatarTmpFile();
+    QString getAvatarHash();   // 获取头像哈希值，哈希值变更后再主动TCP请求获取新的头像信息
 
     // 属性更新
     void setNickname(const QString &nickname);
@@ -63,6 +64,7 @@ public:
     void addFriendRequest(const QString &account);
     void addFriendResponse(const QString &account, const bool result);
     bool hasFriend(const QString &account);
+    void avatarRequest(const QString &account);
 
     // 群组功能
     bool createGroup(const QString &name, const QString &owner);

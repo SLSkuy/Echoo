@@ -2,8 +2,9 @@
 #include "databasemanager.h"
 #include "logger.h"
 
-TcpManager::TcpManager(QObject *parent): QObject(parent)
+TcpManager::TcpManager(Netizen *parent): QObject(parent)
 {
+    _owner = parent;
     _tcpServer = new QTcpServer(this);
     _tcpServer->listen(QHostAddress::AnyIPv4,m_tcpPort);
     connect(_tcpServer, &QTcpServer::newConnection, this, &TcpManager::onNewConnection);
@@ -65,6 +66,7 @@ void TcpManager::onlineProcess(const QJsonObject &obj)
     QString account = obj["account"].toString();
     QString ip = obj["ip"].toString();
     QString sign = obj["sign"].toString();
+    QString avatarHash = obj["avatar"].toString();
 
     // 检测当前设备本地数据库是否存在广播者信息
     DatabaseManager *db = DatabaseManager::instance();
@@ -77,6 +79,9 @@ void TcpManager::onlineProcess(const QJsonObject &obj)
             user->setIpAddress(ip);
             user->setNickname(nickName);
             user->setSign(sign);
+            if (user->getAvatarHash() != avatarHash) {
+                _owner->avatarRequest(account);  // ChatOperation or Netizen 的封装方法
+            }
 
             // 在线处理
             connectProcess(account, ip);
@@ -90,7 +95,11 @@ void TcpManager::onlineProcess(const QJsonObject &obj)
         Netizen *newUser = new Netizen(nickName, account, NULL, nullptr);
         newUser->setIpAddress(ip);
         newUser->setOnline(true);
+        newUser->setSign(sign);
         db->AddNetizen(newUser);
+        if (newUser->getAvatarHash() != avatarHash) {
+            _owner->avatarRequest(account);  // ChatOperation or Netizen 的封装方法
+        }
 
         // 在线处理
         connectProcess(account, ip);

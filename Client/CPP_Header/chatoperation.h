@@ -30,6 +30,7 @@ public:
     bool hasFriend(const QString &account) { return m_friends.contains(account); }
     QList<Netizen *> getFriends() { return m_friends.values(); }
     QList<QString> getFriendsAccount() { return m_friends.keys();}
+    void requestAvatar(const QString &account);
 
     // 群组管理
     bool createGroup(const QString &name, const QString &owner) {return false;}

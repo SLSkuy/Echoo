@@ -15,7 +15,7 @@ class Netizen;
 class TcpManager : public QObject {
     Q_OBJECT
 public:
-    TcpManager(QObject *parent = nullptr);
+    TcpManager(Netizen *parent = nullptr);
     ~TcpManager();
     void onlineProcess(const QJsonObject &obj);
     void offlineProcess(const QJsonObject &obj);
@@ -29,6 +29,7 @@ private slots:
     void onNewConnection();
 
 private:
+    Netizen *_owner;
     QTcpServer *_tcpServer;
     quint16 m_tcpPort = 1145;
     QMap<QString, QTcpSocket *> m_sockets;

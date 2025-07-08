@@ -49,7 +49,7 @@ QByteArray Message::ToJson()
         json["message_type"] = "command";
     } else if (m_messageType == Image) {
         json["message_type"] = "image";
-        json["content"] = GetImageData();
+        json["content"] = getImageData();
         // 使用base64进行图片传递
     }
 
@@ -93,7 +93,7 @@ Message* Message::FromJson(const QByteArray &jsonData)
     return new Message(sender, receiver, content, timestamp);
 }
 
-bool Message::LoadImage()
+bool Message::loadImage()
 {
     if (m_content.startsWith("file:///")) {
         m_content = QUrl(m_content).toLocalFile();
@@ -105,30 +105,13 @@ bool Message::LoadImage()
         return false;
     }
 
-    m_imageData = file.readAll();
+    m_imageData = file.readAll().toBase64();
     file.close();
 
     if (m_imageData.isEmpty()) {
         Logger::Error("Empty image: " + m_content);
         return false;
     }
-
-    // 获取图片格式前缀
-    QString imageType;
-    if (m_imageData.startsWith("\x89PNG")) {
-        imageType = "png";
-    } else if (m_imageData.startsWith("\xFF\xD8\xFF")) {
-        imageType = "jpeg";
-    } else if (m_imageData.mid(0, 6) == "GIF89a" || m_imageData.mid(0, 6) == "GIF87a") {
-        imageType = "gif";
-    } else {
-        Logger::Error("Unsupported image format: " + m_content);
-        return false;
-    }
-
-    // 自动设置解析格式前缀
-    QString base64 = QString::fromLatin1(m_imageData.toBase64());
-    m_content = QString("data:image/%1;base64,%2").arg(imageType, base64);
 
     return true;
 }

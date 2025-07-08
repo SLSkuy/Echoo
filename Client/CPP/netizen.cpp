@@ -1,4 +1,5 @@
 #include <qvariant.h>
+#include <QCryptographicHash>
 
 #include "group.h"
 #include "netizen.h"
@@ -52,7 +53,7 @@ bool Netizen::LoginDetection(const QString &password)
 {
     if(_sm->login(password))
     {
-        delete _cmc;
+        delete _co;
         _cmc = new Communicator(this);
         _co = new ChatOperation(_cmc,this);
         signalConnect();
@@ -95,6 +96,10 @@ QString Netizen::getIpAddress() { return _cmc->getLocalIP(); }
 QString Netizen::getSign() { return _upm->sign(); }
 QString Netizen::getAvatarBase64() { return _upm->avatar(); }
 QString Netizen::getAvatarTmpFile() { return _upm->avatarTmpFilePath(); }
+QString Netizen::getAvatarHash() {
+    QByteArray avatarData = QByteArray::fromBase64(_upm->avatar().toUtf8());
+    return QString(QCryptographicHash::hash(avatarData, QCryptographicHash::Md5).toHex());
+}
 
 // 属性更新
 void Netizen::setNickname(const QString &nickname) { _upm->setNickname(nickname); }
@@ -111,6 +116,7 @@ void Netizen::removeFriendRequest(const QString &account) { return _co->removeFr
 void Netizen::addFriendRequest(const QString &account) { return _co->addFriendRequest(account); }
 void Netizen::addFriendResponse(const QString &account, const bool result) { return _co->addFriendResponse(account,result); }
 bool Netizen::hasFriend(const QString &account) { return _co->hasFriend(account); }
+void Netizen::avatarRequest(const QString &account) { _co->requestAvatar(account); }
 
 // 群组功能
 bool Netizen::createGroup(const QString &name, const QString &owner) { return _co->createGroup(name,owner); }

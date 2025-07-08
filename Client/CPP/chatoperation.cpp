@@ -52,7 +52,7 @@ void ChatOperation::sendImage(const QString &receiverAccount, const QString &img
     if (hasFriend(receiverAccount)) {
         // 创建消息实体对象,接受者设置为空用于委托检测是否有对应好友
         Message *msg = new Message(_owner, receiver, imgPath, curTime, Message::Image);
-        if (!msg->LoadImage()) {
+        if (!msg->loadImage()) {
             // 图片加载失败
             Logger::Error("Fail to load image.");
             return;
@@ -68,8 +68,8 @@ void ChatOperation::sendImage(const QString &receiverAccount, const QString &img
 
 void ChatOperation::commandProcess(Message *msg)
 {
-    Netizen *user = msg->GetSender();
-    QString command = msg->GetMessage();
+    Netizen *user = msg->getSender();
+    QString command = msg->getMessage();
     if (command == "addFriend") {
         qDebug() << "add friend.";
         emit receivedFriendRequest(user);
@@ -88,6 +88,15 @@ void ChatOperation::commandProcess(Message *msg)
         user->removeFriend(_owner->getAccount());
         _owner->removeFriend(user->getAccount());
 
+    }else if (command == "requestAvatar") {
+        QString avatarBase64 = _owner->getAvatarBase64();
+        Message *msg = new Message(_owner,user,"responseAvatar",QDateTime::currentDateTime(),Message::Command);
+        msg->setImageData(avatarBase64);
+
+        _cmc->sendMessage(msg);
+    }else if (command == "responseAvatar") {
+        QString avatarBase64 = msg->getImageData();
+        user->updateAvatar(avatarBase64);
     }
 }
 
@@ -153,5 +162,15 @@ void ChatOperation::addFriendResponse(const QString &account, const bool result)
 
     QString response = (result == true) ? "acceptFriend" : "rejectFriend";
     Message *msg = new Message(_owner, user, response, time, Message::Command);
+    _cmc->sendMessage(msg);
+}
+
+void ChatOperation::requestAvatar(const QString &account)
+{
+    Netizen *user = DatabaseManager::instance()->GetNetizen(account);
+    QDateTime time = QDateTime::currentDateTime();
+
+    // 发送请求头像数据
+    Message *msg = new Message(_owner,user,"requestAvatar",time,Message::Command);
     _cmc->sendMessage(msg);
 }

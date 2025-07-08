@@ -6,7 +6,7 @@ MessageSender::MessageSender(TcpManager *tcpManager): QObject(tcpManager),_tcpMa
 
 void MessageSender::sendMessage(Message *message)
 {
-    QString receiverAccount = qobject_cast<Netizen *>(message->GetReceiver())->getAccount();
+    QString receiverAccount = qobject_cast<Netizen *>(message->getReceiver())->getAccount();
 
     QTcpSocket *socket = _tcpManager->getSocket(receiverAccount);
     if (socket) {
@@ -36,17 +36,17 @@ void MessageSender::sendOfflineMessage(Netizen *user)
     QList<Message *> offlines = DatabaseManager::instance()->GetOfflineMessages();
     QList<Message *> toRemove; // 记录已经发送的离线消息
     for (QList<Message *>::iterator it = offlines.begin(); it != offlines.end(); ++it) {
-        if (auto receiver = qobject_cast<Netizen *>((*it)->GetReceiver())) {
+        if (auto receiver = qobject_cast<Netizen *>((*it)->getReceiver())) {
             if (receiver == user) {
                 qDebug() << "Sending offline message to user:" << user->getAccount()
-                << "content:" << (*it)->GetMessage();
+                << "content:" << (*it)->getMessage();
                 sendMessage(*it);
                 toRemove.append(*it);
             }
         }
     }
     for (QList<Message *>::iterator it = toRemove.begin(); it != toRemove.end(); ++it) {
-        if ((*it)->GetReceiver() == user) {
+        if ((*it)->getReceiver() == user) {
             offlines.removeOne(*it); // 删除已经发送的离线消息
         }
     }
