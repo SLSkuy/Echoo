@@ -177,6 +177,7 @@ FrameLessWindow {
                                 // 示例处理
                                 messageModel.append({
                                     picture:"",
+                                    messagetime:messageList[i].timestamp,
                                     message: messageList[i].content,
                                     isMe: !(messageList[i].sender.account === account)})
                                 }
@@ -296,7 +297,7 @@ FrameLessWindow {
                         onClicked: {
                             console.log("发送消息: " + messageInput.text)
                             EchooClient.triggerMessage(account,messageInput.text);
-                            messageModel.append({ sender: "我", message: messageInput.text, isMe: true })
+                            messageModel.append({ sender: "我",messagetime:Qt.formatDateTime(new Date(), "hh:mm"), message: messageInput.text, isMe: true })
                             messageInput.text = ""
                             EchooClient.clearunreadcount(account);
 
@@ -325,7 +326,7 @@ FrameLessWindow {
     Connections {
         target: EchooClient
         function onMessageReceived(msg) {
-            messageModel.append({message: msg.content,isMe: !(msg.sender.account === account)})
+            messageModel.append({message: msg.content,messagetime:msg.timestamp,isMe: !(msg.sender.account === account)})
             console.log("message");
 
 

@@ -38,7 +38,8 @@ ListView {
 
         Label {
             id: timeText
-            text: isMe ? ( myNickname+ "  " +Qt.formatDateTime(new Date(), "hh:mm") ) : Qt.formatDateTime(new Date(), "hh:mm")+ "  " +receivername
+            // text: isMe ? ( myNickname+ "  " +Qt.formatDateTime(new Date(), "hh:mm") ) : Qt.formatDateTime(new Date(), "hh:mm")+ "  " +receivername
+            text: isMe ? ( myNickname+ "  " +messagetime ) : messagetime+ "  " +receivername
             //TODO
             color: "gray"
             font.pixelSize: 10
