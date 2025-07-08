@@ -37,6 +37,7 @@ public:
     QList<Message *> GetHistroyMessages(const QString &account) { return m_messages[account]; }
     QList<Message *> GetOfflineMessages() { return m_offlineMessages; }
     void UpdateOfflineMessages(QList<Message *> offlineMessages) { m_offlineMessages = offlineMessages; }
+    void DivideMessage(const QString &account);
 
     // 数据管理
     bool loadFromDatabase();

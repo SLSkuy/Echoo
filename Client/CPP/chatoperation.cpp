@@ -85,12 +85,14 @@ void ChatOperation::commandProcess(Message *msg)
         _owner->removeFriend(user->getAccount());
 
     }else if (command == "requestAvatar") {
+        qDebug() << "receive avatar request";
         QString avatarBase64 = _owner->getAvatarBase64();
         Message *msg = new Message(_owner,user,"responseAvatar",QDateTime::currentDateTime(),Message::Command);
         msg->setImageData(avatarBase64);
 
         _cmc->sendMessage(msg);
     }else if (command == "responseAvatar") {
+        qDebug() << "receive acatar response";
         QString avatarBase64 = msg->getImageData();
         user->updateAvatar(avatarBase64);
     }
