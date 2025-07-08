@@ -103,26 +103,7 @@ Rectangle{
 
     }
 
-    Connections {
 
-        target:EchooClient
-
-        function onRemoveFriendList11(netizen,myselfAccount) {
-            var friendAcount=netizen.account;
-            var currentUserAccount = EchooClient.getThisInfo().account;
-            console.log("removestart")
-
-            for (var j = 0; j < friendstotal.friendlistmodel.count; j++) {
-                var item1 = friendstotal.friendlistmodel.get(j);
-                if (item1.account === friendAcount) {
-                    friendstotal.friendlistmodel.remove(j);
-                    console.log("delete friend's")
-                    break;
-                }
-
-            }
-        }
-    }
 }
 
 

@@ -8,7 +8,7 @@ Rectangle {
     id:friend_single
     implicitHeight: row.implicitHeight
     implicitWidth: row.implicitWidth
-
+    property var friendPersonpage
     property bool isSelected: false  // 新增选中状态
     property bool hovered
         color: {
@@ -82,12 +82,36 @@ Rectangle {
                             flags: Qt.Window | Qt.FramelessWindowHint
                     });
                 }
+                friendPersonpage=friendpersonpage
             }
+
             friendpersonpage.show();
             friendpersonpage.raise(); // 关键：置顶窗口
             friendpersonpage.requestActivate(); // 激活窗口
         }
 
+    }
+    Connections {
+
+        target:EchooClient
+
+        function onRemoveFriendList11(netizen,myselfAccount) {
+            var friendAcount=netizen.account;
+            var currentUserAccount = EchooClient.getThisInfo().account;
+            console.log("removestart")
+
+            for (var j = 0; j < friendstotal.friendlistmodel.count; j++) {
+                var item1 = friendstotal.friendlistmodel.get(j);
+                if (item1.account === friendAcount) {
+                    if (friendPersonpage){
+                        friendPersonpage.close();}
+                    friendstotal.friendlistmodel.remove(j);
+                    console.log("delete friend's")
+                    break;
+                }
+
+            }
+        }
     }
 
 }

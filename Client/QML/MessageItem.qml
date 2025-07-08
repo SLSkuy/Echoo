@@ -15,7 +15,7 @@ Rectangle {
     property int unreadCount
     property bool isGroup: false
     property string messageid
-    property var thischatWidget
+    property var thisChatWidget
     property bool hovered: false
     property alias receivername: messageItem.nickname
     property alias unreadCountContainer :_unreadCountContainer
@@ -133,7 +133,7 @@ Rectangle {
                             flags: Qt.Window | Qt.FramelessWindowHint, account:messageid, receiver:nickname
                         });
                     }
-                    thischatWidget=chatWidget;
+                    thisChatWidget=chatWidget;
                     chatWidget.topBar.toptext = messageItem.nickname
                 }
 
@@ -146,17 +146,7 @@ Rectangle {
 
             unreadCount.text = "0"
         }
-        function onRemoveMessagList(user){
-            var account=user.account;
-            for (var i = 0; i < messagetotal.messagelistModel.count; i++) {
-                var item = messagetotal.messagelistModel.get(i);
-                if (item.account === account) {
-                    thischatWidget.close();
-                    messagetotal.messagelistModel.remove(i);
-                    break;
-                }
-            }
-        }
+
     }
     function onClearunreadcount(){
         unreadCount.text = "0"
@@ -199,7 +189,8 @@ Rectangle {
             for (var i = 0; i < messagetotal.messagelistModel.count; i++) {
                 var item = messagetotal.messagelistModel.get(i);
                 if (item.account === account) {
-                    thischatWidget.close();
+                    if(thisChatWidget)
+                        thisChatWidget.close();
                     messagetotal.messagelistModel.remove(i);
                     break;
                 }
