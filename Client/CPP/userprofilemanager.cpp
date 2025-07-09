@@ -87,6 +87,9 @@ QString UserProfileManager::generateAvatarTmpFile()
         return "file:///" + m_cachedAvatarFilePath;
     }
 
+    // 使用默认头像
+    if (m_avatar.isEmpty()) { return "qrc:/resources/default.jpg"; }
+
     // 检测是否为base64格式
     if (!m_avatar.startsWith("data:image/"))
     {
