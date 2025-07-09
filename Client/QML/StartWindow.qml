@@ -9,31 +9,6 @@ import QtQuick.Layouts
 FrameLessWindow{
     id: startWindow
 
-    Rectangle {
-        id: failure
-        anchors.centerIn: parent
-        width: 200
-        height: 70
-        color: "lightgray"
-        z:10
-        visible: false
-        ColumnLayout{
-            anchors.fill: parent
-            Label {
-                text: "登陆失败: 请重新输入账号密码！"
-                Layout.preferredWidth: parent.width
-                color: "red"
-            }
-            Button{
-                id:ok
-                text:"OK"
-                onClicked: {
-                    failure.visible = false
-                }
-            }
-        }
-
-    }
     Rectangle{
         id: rootContainer
         anchors.fill: parent
@@ -104,8 +79,6 @@ FrameLessWindow{
                     var user = userWindow.createObject()
                     user.show()
                     startWindow.close()
-                }else{
-                    failure.visible = true;
                 }
             }
         }
