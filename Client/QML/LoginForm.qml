@@ -11,8 +11,8 @@ GridLayout {
 
     Image{
         source: "qrc:/resources/LoginImage.png"
-        Layout.preferredHeight: 80
-        Layout.preferredWidth: 80
+        Layout.preferredHeight: 150
+        Layout.preferredWidth: 150
         Layout.alignment: Qt.AlignHCenter
         Layout.bottomMargin: 20
     }

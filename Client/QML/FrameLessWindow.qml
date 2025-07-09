@@ -1,27 +1,23 @@
 import QtQuick
+import QtQuick.Window
 
-Window{
+Window {
     id: window
     height: 450
     width: 320
     visible: true
     flags: Qt.FramelessWindowHint | Qt.Window
 
-    // 实现全局拖拽功能
-    MouseArea{
-        //TODO
-        id: dragArea
+    //实现全局拖拽功能
+    Item {
         anchors.fill: parent
-        hoverEnabled: true
-        cursorShape: Qt.ArrowCursor
-
-        onPressed:function() {
-            cursorShape = Qt.ClosedHandCursor
-            window.startSystemMove()
-        }
-
-        onReleased:{
-            cursorShape = Qt.ArrowCursor
+        DragHandler {
+            target: window
+            onActiveChanged: {
+                if (active) {
+                    window.startSystemMove();
+                }
+            }
         }
     }
 }

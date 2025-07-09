@@ -1,3 +1,5 @@
+//好友个人页面
+
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts

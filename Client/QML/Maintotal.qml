@@ -1,3 +1,6 @@
+//主页面
+//用于切换不同的页面
+
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts

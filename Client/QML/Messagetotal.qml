@@ -1,3 +1,5 @@
+//消息总页面
+
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
