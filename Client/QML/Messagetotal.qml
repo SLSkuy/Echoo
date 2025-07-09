@@ -94,7 +94,7 @@ Rectangle {
                                          name: msgListModel.get(i).name,
                                          account: msgListModel.get(i).account,
                                          lastMessage: msg.content,
-                                         time: new Date().toLocaleString(),
+                                         time: msg.timestamp,
                                          unreadCount: 1,
                                          _isGroup:msgListModel.get(i)._isGroup,
                                          unread: 1
@@ -113,7 +113,7 @@ Rectangle {
                                          name: msgListModel.get(i).name,
                                          account: msgListModel.get(i).account,
                                          lastMessage: "[图片]",
-                                         time: new Date().toLocaleString(),
+                                         time: msg.timestamp,
                                          unreadCount: 1,
                                          _isGroup:msgListModel.get(i)._isGroup,
                                          unread: 1
@@ -135,13 +135,12 @@ Rectangle {
                                          name: msgListModel.get(i).name,
                                          account: msgListModel.get(i).account,
                                          lastMessage: content,
-                                         time: new Date().toLocaleString(),
+                                         time: new Date().toLocaleString(Qt.locale(), "yyyy-MM-ddTHH:mm:ss"),
                                          unreadCount: msgListModel.get(i).unreadCount + 1,
                                          _isGroup:msgListModel.get(i)._isGroup,
-                                         unread: 0
+                                         unread: 0,
                                      })
                     msgListModel.move(i, 0, 1);
-                    console.log("111111111111");
                 }
                 console.log(i);
             }
@@ -158,7 +157,7 @@ Rectangle {
                                          name: msgListModel.get(i).name,
                                          account: msgListModel.get(i).account,
                                          lastMessage: "[图片]",
-                                         time: new Date().toLocaleString(),
+                                         time: new Date().toLocaleString(Qt.locale(), "yyyy-MM-ddTHH:mm:ss"),
                                          unreadCount: msgListModel.get(i).unreadCount + 1,
                                          _isGroup:msgListModel.get(i)._isGroup,
                                          unread: 0

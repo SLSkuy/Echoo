@@ -300,7 +300,7 @@ FrameLessWindow {
                             console.log("发送消息: " + messageInput.text)
 
                             EchooClient.triggerMessage(account,messageInput.text);
-                            messageModel.append({ sender: "我",messagetime: now.toLocaleString(Qt.locale("en_US"), "ddd MMM d HH:mm:ss yyyy"), message: messageInput.text, isMe: true })
+                            messageModel.append({ sender: "我",messagetime: now.toLocaleString(Qt.locale(), "yyyy-MM-ddTHH:mm:ss"), message: messageInput.text, isMe: true })
                             messageListView.positionViewAtEnd();
                             messageInput.text = ""
                             EchooClient.clearunreadcount(account);
