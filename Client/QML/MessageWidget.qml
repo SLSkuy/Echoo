@@ -10,6 +10,7 @@ ListView {
     property color otherMessageColor: "lightblue"
     property string myNickname: ""
     property string receiverName: receivername
+    clip: true
     // property alias messageConte: message
     // property alias picture: picture
 
@@ -65,4 +66,10 @@ ListView {
 
         }
     }
+    // Component.onCompleted: {
+
+    //             // 方法 1：直接定位到最后一项
+
+    //             positionViewAtEnd();
+    // }
 }

@@ -10,6 +10,7 @@ FrameLessWindow {
     property string receiver
     property string account
     property alias chatwidget: chatwidget
+    property var now: new Date()
     id:chatwidget
     visible: true
     width: 800
@@ -181,6 +182,7 @@ FrameLessWindow {
                                     message: messageList[i].content,
                                     isMe: !(messageList[i].sender.account === account)})
                                 }
+                            messageListView.positionViewAtEnd();
                             }
                         }
                     }
@@ -296,8 +298,10 @@ FrameLessWindow {
                         enabled: messageInput.text.length > 0  // 根据输入框内容启用或禁用按钮
                         onClicked: {
                             console.log("发送消息: " + messageInput.text)
+
                             EchooClient.triggerMessage(account,messageInput.text);
-                            messageModel.append({ sender: "我",messagetime:Qt.formatDateTime(new Date(), "hh:mm"), message: messageInput.text, isMe: true })
+                            messageModel.append({ sender: "我",messagetime: now.toLocaleString(Qt.locale("en_US"), "ddd MMM d HH:mm:ss yyyy"), message: messageInput.text, isMe: true })
+                            messageListView.positionViewAtEnd();
                             messageInput.text = ""
                             EchooClient.clearunreadcount(account);
 
@@ -327,6 +331,7 @@ FrameLessWindow {
         target: EchooClient
         function onMessageReceived(msg) {
             messageModel.append({message: msg.content,messagetime:msg.timestamp,isMe: !(msg.sender.account === account)})
+            messageListView.positionViewAtEnd();
             console.log("message");
 
 
