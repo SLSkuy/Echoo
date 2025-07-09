@@ -60,7 +60,7 @@ Rectangle {
                     font.pixelSize: 10
                     color: "grey"
                     clip: true
-                    visible: false
+                    visible: true
                 }
             }
         }

@@ -163,7 +163,7 @@ FrameLessWindow{
                 Layout.rightMargin:10
                 font.pixelSize: 20
                 Layout.alignment: Qt.AlignVCenter
-                visible: false
+                visible: true
 
             }
             Rectangle{
@@ -176,7 +176,7 @@ FrameLessWindow{
                     font.pixelSize: 15
                     Layout.alignment: Qt.AlignVCenter
                     Layout.fillWidth: true
-                    visible: false
+                    visible: true
                 }
             }
         }
