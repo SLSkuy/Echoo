@@ -48,6 +48,7 @@ Rectangle {
         for (var i = 0; i < friends.length; i++) {
             var messages = EchooClient.getMessageList(friends[i].account)
             GlobalModels.addMessagelist(friends[i], messages)
+            // console.log(messages)
         }
     }
 
