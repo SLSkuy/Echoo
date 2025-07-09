@@ -1,6 +1,7 @@
 #include <QDateTime>
 #include <QSqlQuery>
 #include <QSqlError>
+#include <algorithm>
 
 #include "databasemanager.h"
 #include "logger.h"
@@ -312,13 +313,8 @@ bool DatabaseManager::RemoveNetizen(const QString &account)
     return true;
 }
 
-#include <algorithm> // 用于 std::sort
-
 void DatabaseManager::DivideMessage(const QString &account)
 {
-    // 清空 m_messages，避免重复数据
-    m_messages.clear();
-
     // 遍历所有消息
     for (auto message : m_allMessages) {
         Netizen *sender = qobject_cast<Netizen *>(message->GetSender());
@@ -327,24 +323,19 @@ void DatabaseManager::DivideMessage(const QString &account)
         QString senderAccount = sender ? sender->getAccount() : "";
         QString receiverAccount;
 
-        // 获取 receiver 的账号（可能是 Netizen 或 Group）
         if (Netizen *n = qobject_cast<Netizen *>(receiver)) {
             receiverAccount = n->getAccount();
         } else if (Group *g = qobject_cast<Group *>(receiver)) {
             receiverAccount = g->GetGroupAccount();
         }
 
-        // 如果 account 是 sender，则按 receiver 分类存储
         if (senderAccount == account && !receiverAccount.isEmpty()) {
             m_messages[receiverAccount].append(message);
         }
-        // 如果 account 是 receiver，则按 sender 分类存储
         else if (receiverAccount == account && !senderAccount.isEmpty()) {
             m_messages[senderAccount].append(message);
         }
     }
-
-    // 对每个键的消息列表按时间排序（升序，即最早的在前）
     for (auto [key, messages] : m_messages.asKeyValueRange()) {
         std::sort(messages.begin(), messages.end(), [](Message *a, Message *b) {
             return a->GetDateTime() < b->GetDateTime();

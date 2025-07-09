@@ -20,8 +20,12 @@ void EchooClient::login(const QString &account, const QString &password)
         if (user->LoginDetection(password)) {
             // 设置当前用户的Netizen为从数据管理层获取到的Netizen对象
             _user = user;
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/Client-Logic
             DatabaseManager::instance()->DivideMessage(_user->getAccount());
+            emit loginSuccess(true);
 
             emit loginSuccess(true);
 
