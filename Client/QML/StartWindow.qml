@@ -11,7 +11,7 @@ FrameLessWindow{
     Rectangle {
         id: failure
         anchors.centerIn: parent
-        width: 180
+        width: 200
         height: 70
         color: "lightgray"
         z:10
@@ -19,7 +19,7 @@ FrameLessWindow{
         ColumnLayout{
             anchors.fill: parent
             Label {
-                text: "登陆失败: 账号和密码不匹配!"
+                text: "登陆失败: 请重新输入账号密码！"
                 Layout.preferredWidth: parent.width
                 color: "red"
             }

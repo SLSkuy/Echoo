@@ -13,7 +13,7 @@ Item{
     Rectangle {
         id: successIndicator
         color: "gray"
-        width: 180
+        width: 200
         height: 70
         anchors.centerIn: parent
         visible: false
@@ -37,7 +37,7 @@ Item{
     Rectangle {
         id: failure
         anchors.centerIn: parent
-        width: 180
+        width: 200
         height: 70
         color: "lightgray"
         z:10
