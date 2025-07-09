@@ -17,7 +17,7 @@ FrameLessWindow{
         var n=EchooClient.getThisInfo();
         _username.text=n.nickname
         account = n.account
-        tx.source=n.avatar
+        tx.source=n.avatar|| "qrc:/resources/LoginImage.png"
         qm_nr.text=n.sign
 
     }

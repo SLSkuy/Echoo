@@ -55,16 +55,16 @@ import QtQuick.Window
                 Layout.leftMargin:5
 
 
-                Button {
+                TapHandler {
                     //TODO
                     id: ma
-                    anchors.fill: parent
-                    hoverEnabled: true
+                    // anchors.fill: parent
+                    // hoverEnabled: true
 
                     property var personpage: null // 用于存储 personpage 对象的引用
                     property bool isPersonPageVisible: false // 用于跟踪窗口的可见性状态
 
-                        onClicked: {
+                        onTapped: {
                             var component = Qt.createComponent("PersonPage.qml");
                             if (component.status === Component.Ready) {
                                 if (personpage === null) {
@@ -86,7 +86,9 @@ import QtQuick.Window
                 Image {
                     id:_myself
                     anchors.fill: parent
-                    source: EchooClient.getThisInfo().avatar
+                    // height: headPortrait.width
+                    // width: headPortrait.height
+                    source: EchooClient.getThisInfo().avatar || "qrc:/resources/default.jpg"
                 }
             }
             Button{

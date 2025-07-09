@@ -45,7 +45,7 @@ FrameLessWindow {
                 anchors.topMargin: 20
                 anchors.centerIn: parent
                 // source:"qrc:/resources/LoginImage.png"
-                source:EchooClient.getThisInfo().avatar
+                source:EchooClient.getThisInfo().avatar|| "qrc:/resources/default.jpg"
             }
 
             FileDialog {
