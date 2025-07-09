@@ -12,7 +12,7 @@ Window {
     Item {
         anchors.fill: parent
         DragHandler {
-            target: window
+            target: null
             onActiveChanged: {
                 if (active) {
                     window.startSystemMove();

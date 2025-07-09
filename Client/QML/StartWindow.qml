@@ -8,6 +8,7 @@ import QtQuick.Layouts
 
 FrameLessWindow{
     id: startWindow
+
     Rectangle {
         id: failure
         anchors.centerIn: parent

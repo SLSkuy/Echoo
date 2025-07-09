@@ -1,6 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QIcon>
 
 #include "databasemanager.h"
 #include "echooclient.h"
@@ -8,6 +9,8 @@
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
+    QIcon icon(":/resources/LoginImage.png");
+    app.setWindowIcon(icon);
 
     QQmlApplicationEngine engine;
     // 先注册上下文再加载QML界面
