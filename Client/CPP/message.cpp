@@ -42,7 +42,8 @@ QByteArray Message::ToJson()
     // 设置键值对
     json["sender_account"] = m_sender->getAccount();
     json["content"] = m_content;
-    json["timestamp"] = m_timestamp.toString();
+    json["timestamp"] = m_timestamp.toString(Qt::ISODate);
+    qDebug() << json["timestamp"].toString();
 
     // 设置消息类型
     if (m_messageType == Command) {
@@ -75,6 +76,7 @@ Message* Message::FromJson(const QByteArray &jsonData)
     QString messageType = json["message_type"].toString();
     QString content = json["content"].toString();
     QDateTime timestamp = QDateTime::fromString(json["timestamp"].toString(), Qt::ISODate);
+    qDebug() << json["timestamp"].toString();
 
     // 创建Message类
     QObject *receiver = nullptr;

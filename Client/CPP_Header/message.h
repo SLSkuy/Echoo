@@ -27,7 +27,7 @@ public:
 
     QString GetMessage() { return m_content; }
     QObject *GetReceiver() { return m_receiver; }
-    QString GetMessageTime() { return m_timestamp.toString(); }
+    QString GetMessageTime() { return m_timestamp.toString(Qt::ISODate); }
     QDateTime GetDateTime() { return m_timestamp; }
     int getMessageType() {return m_messageType;}
     QString getImageData() { return m_imageData; }

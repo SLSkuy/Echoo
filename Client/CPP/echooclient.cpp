@@ -20,9 +20,8 @@ void EchooClient::login(const QString &account, const QString &password)
         if (user->LoginDetection(password)) {
             // 设置当前用户的Netizen为从数据管理层获取到的Netizen对象
             _user = user;
-            emit loginSuccess(true);
-
             DatabaseManager::instance()->DivideMessage(_user->getAccount());
+            emit loginSuccess(true);
 
             // 连接消息发送
             connect(this, &EchooClient::triggerMessage, _user, &Netizen::sendMessage);
